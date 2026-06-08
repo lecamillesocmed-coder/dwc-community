@@ -79,7 +79,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 
 /* Layout */
 #feed-layout{max-width:1120px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 290px;gap:24px;align-items:start;}
-@media(max-width:800px){#feed-layout{grid-template-columns:1fr;}#sidebar{display:none;}}
+@media(max-width:800px){
+  #feed-layout{grid-template-columns:1fr;padding:16px 12px;}
+  #sidebar{display:none;}
+  #mobile-rules{display:block;}
+  .topbar-member-count{display:none;}
+  #topbar{padding:0 12px;}
+  .topbar-brand{font-size:18px;}
+  .topbar-section{font-size:15px;}
+  .mod-btn{padding:3px 10px;font-size:11px;}
+  .topbar-user .name{display:none;}
+  .topbar-user .utitle{display:none;}
+}
+@media(min-width:801px){#mobile-rules{display:none;}}
 
 /* Composer */
 #composer{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid var(--muted);margin-bottom:20px;box-shadow:0 2px 12px rgba(92,45,78,.05);}
@@ -226,7 +238,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 #pending-screen{min-height:100vh;background:radial-gradient(ellipse at 60% 0%,#7a3060 0%,var(--plumdk) 45%,#1a0e16 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
 #footer{text-align:center;padding:20px 0 32px;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--muted);border-radius:4px;}
-/* Avatar modal */
+/* Mobile rules strip */
+#mobile-rules{margin:0 12px 16px;border-radius:12px;border:1px solid var(--muted);overflow:hidden;box-shadow:0 2px 8px rgba(92,45,78,.05);}
+.mobile-rules-toggle{width:100%;background:var(--plum);border:none;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.mobile-rules-toggle span{font-family:'DM Sans',sans-serif;font-weight:600;color:var(--cream);font-size:13px;letter-spacing:.1em;text-transform:uppercase;}
+.mobile-rules-toggle .chevron{color:var(--goldlt);font-size:14px;transition:transform .2s;}
+.mobile-rules-toggle.open .chevron{transform:rotate(180deg);}
+.mobile-rules-body{background:#fff;padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;}
+.mobile-rules-body.open{max-height:600px;padding:4px 16px 12px;}
 .avatar-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;}
 .avatar-modal-box{background:var(--cream);border-radius:16px;padding:28px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
 .avatar-modal-title{font-family:'Cormorant Garamond',serif;color:var(--plum);font-size:20px;font-weight:700;margin-bottom:6px;}
@@ -319,7 +338,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   <div id="filter-bar" class="hidden"></div>
 
   <div id="feed-view">
-    <div id="feed-layout">
+    <!-- Mobile house rules (hidden on desktop) -->
+  <div id="mobile-rules">
+    <button class="mobile-rules-toggle" id="mobile-rules-toggle">
+      <span>House Rules</span>
+      <span class="chevron">▼</span>
+    </button>
+    <div class="mobile-rules-body" id="mobile-rules-body">
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">🫶</span><div class="rule-text"><strong>Be kind, always</strong>Disagreements are fine. Unkindness isn't. This is a safe space for women.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">🗓️</span><div class="rule-text"><strong>One post per day</strong>Quality over quantity. You get one post every 24 hours — make it count.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">💬</span><div class="rule-text"><strong>Share freely</strong>Personal updates, insights, conversations — always welcome, always free.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);">☕</span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://buy.stripe.com/28EeVdcG5cHLeE4dkA5Rm08" target="_blank" style="color:var(--gold);">buy us a coffee</a> first. One time only.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">🚫</span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);font-size:22px;line-height:1;">✦</span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
+    </div>
+  </div>
+
+  <div id="feed-layout">
       <!-- Feed main -->
       <div id="feed-main">
         <div id="composer">
@@ -695,6 +730,14 @@ function openAvatarModal(){
   document.getElementById('avatar-modal').classList.remove('hidden');
 }
 window.openAvatarModal = openAvatarModal;
+
+// Mobile rules toggle
+document.getElementById('mobile-rules-toggle').addEventListener('click',()=>{
+  const toggle=document.getElementById('mobile-rules-toggle');
+  const body=document.getElementById('mobile-rules-body');
+  toggle.classList.toggle('open');
+  body.classList.toggle('open');
+});
 document.getElementById('avatar-cancel').onclick=()=>{ document.getElementById('avatar-modal').classList.add('hidden'); };
 document.getElementById('avatar-url-input').addEventListener('input', ()=>{
   const url=document.getElementById('avatar-url-input').value.trim();
