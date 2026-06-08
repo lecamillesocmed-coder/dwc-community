@@ -636,7 +636,15 @@ async function boot() {
   const email=loadSession();
   if(email){
     const users=await fbGet('users');
-    if(users){ allUsers=users; const u=users[sanKey(email)]; if(u&&u.status==='approved'){await signInUser(u);return;} }
+    if(users){
+      allUsers=users;
+      const u=users[sanKey(email)];
+      if(u&&u.status==='approved'){
+        if(!u.role) u.role='member';
+        await signInUser(u);
+        return;
+      }
+    }
   }
   hideEl('loading-screen'); showEl('auth-screen');
 }
@@ -672,6 +680,8 @@ document.getElementById('login-btn').onclick=async()=>{
   if(u.password!==hashPw(pw)){showErr('login-pass-err','Incorrect password.');btn.disabled=false;btn.textContent='Sign In';return;}
   if(u.status==='pending'){hideEl('auth-screen');showEl('pending-screen');btn.disabled=false;btn.textContent='Sign In';return;}
   if(u.status==='rejected'){showErr('login-email-err','Your account was not approved.');btn.disabled=false;btn.textContent='Sign In';return;}
+  // Ensure role is always explicitly set
+  if(!u.role) u.role='member';
   allUsers=users;await signInUser(u);
 };
 
@@ -931,7 +941,10 @@ function updateModBadge(){
 }
 
 // ── Mod dashboard ────────────────────────────────────────────
-function openMod(){hideEl('feed-view');showEl('mod-view');document.getElementById('topbar-section').textContent='Moderation';renderModDashboard();}
+function openMod(){
+  if(!canMod(currentUser)){return;}
+  hideEl('feed-view');showEl('mod-view');document.getElementById('topbar-section').textContent='Moderation';renderModDashboard();
+}
 document.getElementById('mod-back').onclick=()=>{hideEl('mod-view');showEl('feed-view');document.getElementById('topbar-section').textContent='Community';};
 
 function renderModDashboard(){renderPendingUsers();renderPendingPosts();renderPasswordResets();renderAllMembers();updateTabCounts();}
