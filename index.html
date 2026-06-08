@@ -647,8 +647,8 @@ const initials = n => (n||'').split(' ').map(x=>x[0]).join('').slice(0,2).toUppe
 const AV       = ['#5c2d4e','#7a4060','#8b6914','#3d4e5c','#4e3d2d','#5c4e3d'];
 const avBg     = n => AV[(n||' ').charCodeAt(0)%AV.length];
 const avHTML   = (n,sz,photo) => photo
-  ? `<div class="avatar" style="width:${sz}px;height:${sz}px;overflow:hidden;padding:0;background:${avBg(n)};"><img src="${esc(photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'"/></div>`
-  : `<div class="avatar" style="width:${sz}px;height:${sz}px;font-size:${Math.floor(sz*.38)}px;background:${avBg(n)}">${esc(initials(n))}</div>`;
+  ? `<div class="avatar" style="width:${sz}px;height:${sz}px;overflow:hidden;padding:0;background:${avBg(n)};"><img src="${esc(photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'"/><\/div>`
+  : `<div class="avatar" style="width:${sz}px;height:${sz}px;font-size:${Math.floor(sz*.38)}px;background:${avBg(n)}">${esc(initials(n))}<\/div>`;
 const showEl   = id => document.getElementById(id)?.classList.remove('hidden');
 const hideEl   = id => document.getElementById(id)?.classList.add('hidden');
 const getVal   = id => (document.getElementById(id)?.value||'').trim();
@@ -724,7 +724,7 @@ function renderMediaEmbed(post){
       + '<iframe src="https://www.youtube-nocookie.com/embed/' + ytId + '" '
       + 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" '
       + 'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" '
-      + 'allowfullscreen loading="lazy"></iframe></div>';
+      + 'allowfullscreen loading="lazy"><\/iframe><\/div>';
   }
   // Spotify
   const spotifyUrl = getSpotifyEmbed(text);
@@ -735,11 +735,11 @@ function renderMediaEmbed(post){
       + '<iframe src="' + spotifyUrl + '" width="100%" height="' + h + '" '
       + 'frameborder="0" allowtransparency="true" '
       + 'allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" '
-      + 'loading="lazy" style="border-radius:12px;display:block;"></iframe></div>';
+      + 'loading="lazy" style="border-radius:12px;display:block;"><\/iframe><\/div>';
   }
   // Direct image
   if(imageUrl){
-    return '<div class="post-image"><img src="' + esc(imageUrl) + '" loading="lazy" onerror="this.closest(\'.post-image\').style.display=\'none\'"/></div>';
+    return '<div class="post-image"><img src="' + esc(imageUrl) + '" loading="lazy" onerror="this.closest(\'.post-image\').style.display=\'none\'"/><\/div>';
   }
   return '';
 }
@@ -749,7 +749,7 @@ function linkify(text){
   const urlPattern = /https?:\/\/[^\s<>"]+/g;
   return escaped.replace(urlPattern, function(url){
     const display = url.length > 50 ? url.slice(0,50)+'\u2026' : url;
-    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">' + display + '</a>';
+    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">' + display + '<\/a>';
   });
 }
 
@@ -757,7 +757,7 @@ function labelBadgesHTML(labels) {
   if(!labels||!labels.length) return '';
   return labels.map(k=>{
     const l=MEMBER_LABELS.find(x=>x.key===k);
-    return l?`<span class="member-label ${l.cls}">${l.text}</span>`:'';
+    return l?`<span class="member-label ${l.cls}">${l.text}<\/span>`:'';
   }).join('');
 }
 
@@ -898,7 +898,7 @@ function openAvatarModal(){
   input.value=currentUser.photo||'';
   const preview=document.getElementById('avatar-modal-preview');
   if(currentUser.photo){ preview.innerHTML=`<img src="${esc(currentUser.photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`; }
-  else { preview.innerHTML=`<div class="avatar" style="width:56px;height:56px;font-size:21px;background:${avBg(currentUser.name)};display:flex;align-items:center;justify-content:center;">${esc(initials(currentUser.name))}</div>`; }
+  else { preview.innerHTML=`<div class="avatar" style="width:56px;height:56px;font-size:21px;background:${avBg(currentUser.name)};display:flex;align-items:center;justify-content:center;">${esc(initials(currentUser.name))}<\/div>`; }
   document.getElementById('avatar-modal').classList.remove('hidden');
 }
 window.openAvatarModal = openAvatarModal;
@@ -914,8 +914,8 @@ document.getElementById('avatar-cancel').onclick=()=>{ document.getElementById('
 document.getElementById('avatar-url-input').addEventListener('input', ()=>{
   const url=document.getElementById('avatar-url-input').value.trim();
   const preview=document.getElementById('avatar-modal-preview');
-  if(url){ preview.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ghost);>Invalid</div>'">`; }
-  else { preview.innerHTML=`<div class="avatar" style="width:56px;height:56px;font-size:21px;background:${avBg(currentUser.name)}">${esc(initials(currentUser.name))}</div>`; }
+  if(url){ preview.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ghost);>Invalid<\/div>'">`; }
+  else { preview.innerHTML=`<div class="avatar" style="width:56px;height:56px;font-size:21px;background:${avBg(currentUser.name)}">${esc(initials(currentUser.name))}<\/div>`; }
 });
 document.getElementById('avatar-save').onclick=async()=>{
   const url=document.getElementById('avatar-url-input').value.trim();
@@ -999,7 +999,7 @@ function renderFeed(){
     hideEl('pending-posts-notice');
   }
   const filtered=activeFilter==='all'?approved:approved.filter(p=>p.tag===activeFilter);
-  if(filtered.length===0){container.innerHTML=`<div class="empty-state"><p>Nothing here yet. Be the first to share.</p></div>`;return;}
+  if(filtered.length===0){container.innerHTML=`<div class="empty-state"><p>Nothing here yet. Be the first to share.<\/p><\/div>`;return;}
   container.innerHTML=filtered.map(renderPost).join('');
   // Auto-grow textareas in newly rendered posts
   container.querySelectorAll('textarea').forEach(ta=>{
@@ -1012,7 +1012,7 @@ function renderFilterBar(tags){
   const bar=document.getElementById('filter-bar');
   if(tags.length===0){hideEl('filter-bar');return;}
   showEl('filter-bar');
-  bar.innerHTML=['all',...tags].map(t=>`<button class="filter-tag${activeFilter===t?' active':''}" data-tag="${esc(t)}">#${esc(t)}</button>`).join('');
+  bar.innerHTML=['all',...tags].map(t=>`<button class="filter-tag${activeFilter===t?' active':''}" data-tag="${esc(t)}">#${esc(t)}<\/button>`).join('');
   bar.querySelectorAll('.filter-tag').forEach(btn=>{btn.onclick=()=>{activeFilter=btn.dataset.tag;renderFeed();};});
 }
 
@@ -1028,7 +1028,7 @@ function renderReactions(post){
       if(!names.length) return '';
       const titleStr = esc(names.join(', '));
       return '<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid var(--muted);font-size:13px;color:var(--ghost);" title="'+titleStr+'">'
-        +'<span style="font-size:16px;">'+r.emoji+'</span><span>'+names.length+'</span></span>';
+        +'<span style="font-size:16px;">'+r.emoji+'<\/span><span>'+names.length+'<\/span><\/span>';
     }).join('');
   }
   return REACTIONS.map(function(r){
@@ -1037,7 +1037,7 @@ function renderReactions(post){
     const reacted = currentUser && ids.includes(currentUser.id);
     const titleStr = esc(names.length ? r.label+': '+names.join(', ') : r.label);
     return '<button class="reaction-btn'+(reacted?' reacted-'+r.key:'')+'" data-action="react" data-post-id="'+post.id+'" data-reaction="'+r.key+'" title="'+titleStr+'">'
-      +'<span class="emoji">'+r.emoji+'</span>'+(names.length?'<span>'+names.length+'</span>':'')+'</button>';
+      +'<span class="emoji">'+r.emoji+'<\/span>'+(names.length?'<span>'+names.length+'<\/span>':'')+'<\/button>';
   }).join('');
 }
 
@@ -1050,36 +1050,36 @@ function renderPost(p){
   const authorLabels=labelBadgesHTML(author.labels||[]);
   const commentInputHTML = currentUser
     ? `<div class="comment-input-row" style="margin-top:${comments.length>0?'10px':'0'}">
-        <textarea placeholder="Add a comment…" rows="1" data-action="comment-input" data-id="${p.id}"></textarea>
-        <button class="comment-submit" data-action="submit-comment" data-id="${p.id}">Post</button>
-      </div>`
-    : `<p style="font-size:12px;color:var(--ghost);text-align:center;padding:10px 0;"><button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');" style="font-size:12px;">Sign in</button> or <button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');document.getElementById('register-form').classList.remove('hidden');" style="font-size:12px;">join</button> to comment.</p>`;
+        <textarea placeholder="Add a comment…" rows="1" data-action="comment-input" data-id="${p.id}"><\/textarea>
+        <button class="comment-submit" data-action="submit-comment" data-id="${p.id}">Post<\/button>
+      <\/div>`
+    : `<p style="font-size:12px;color:var(--ghost);text-align:center;padding:10px 0;"><button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');" style="font-size:12px;">Sign in<\/button> or <button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');document.getElementById('register-form').classList.remove('hidden');" style="font-size:12px;">join<\/button> to comment.<\/p>`;
   return `
   <article class="post-card" data-id="${p.id}">
     <div class="post-header">
       <div class="post-author">
         ${avHTML(author.name,42,author.photo)}
         <div>
-          <div class="post-author-name">${esc(author.name)}</div>
-          ${author.title?`<div class="post-author-title">${esc(author.title)}</div>`:''}
-          ${authorLabels?`<div class="post-author-labels">${authorLabels}</div>`:''}
-          <div class="post-time">${timeAgo(p.ts)}</div>
-        </div>
-      </div>
-      ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}">✕</button>`:''}
-    </div>
-    <div class="post-body">${linkify(p.text)}</div>
+          <div class="post-author-name">${esc(author.name)}<\/div>
+          ${author.title?`<div class="post-author-title">${esc(author.title)}<\/div>`:''}
+          ${authorLabels?`<div class="post-author-labels">${authorLabels}<\/div>`:''}
+          <div class="post-time">${timeAgo(p.ts)}<\/div>
+        <\/div>
+      <\/div>
+      ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}">✕<\/button>`:''}
+    <\/div>
+    <div class="post-body">${linkify(p.text)}<\/div>
     ${renderMediaEmbed(p)}
-    ${p.tag?`<span class="post-tag">#${esc(p.tag)}</span>`:''}
+    ${p.tag?`<span class="post-tag">#${esc(p.tag)}<\/span>`:''}
     <div class="post-actions">
       ${renderReactions(p)}
-      <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">💬 ${commentCount>0?commentCount+' ':''}Comment${commentCount!==1?'s':''}</button>
-    </div>
+      <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">💬 ${commentCount>0?commentCount+' ':''}Comment${commentCount!==1?'s':''}<\/button>
+    <\/div>
     <div class="comments-section hidden" id="comments-${p.id}">
       ${comments.map(c=>renderComment(c,p.id,false)).join('')}
       ${commentInputHTML}
-    </div>
-  </article>`;
+    <\/div>
+  <\/article>`;
 }
 
 function renderComment(c,postId,isReply){
@@ -1092,21 +1092,21 @@ function renderComment(c,postId,isReply){
     <div style="flex:1">
       <div class="comment-body${isReply?' reply-body':''}">
         <div class="comment-meta">
-          <span class="comment-author">${esc(author.name)}</span>
+          <span class="comment-author">${esc(author.name)}<\/span>
           <div style="display:flex;gap:8px;align-items:center;">
-            <span style="font-size:10px;color:var(--ghost)">${timeAgo(c.ts)}</span>
-            ${canDel?`<button class="delete-btn" style="font-size:11px;" data-action="delete-comment" data-post-id="${postId}" data-comment-id="${c.id}">✕</button>`:''}
-          </div>
-        </div>
-        <div class="comment-text">${esc(c.text)}</div>
-      </div>
+            <span style="font-size:10px;color:var(--ghost)">${timeAgo(c.ts)}<\/span>
+            ${canDel?`<button class="delete-btn" style="font-size:11px;" data-action="delete-comment" data-post-id="${postId}" data-comment-id="${c.id}">✕<\/button>`:''}
+          <\/div>
+        <\/div>
+        <div class="comment-text">${esc(c.text)}<\/div>
+      <\/div>
       <div class="comment-actions">
-        ${!isReply?`<button class="reply-btn" data-action="toggle-reply" data-post-id="${postId}" data-comment-id="${c.id}">Reply</button>`:''}
-      </div>
-      ${!isReply?`<div class="reply-form hidden" id="reply-form-${c.id}"><div class="comment-input-row"><textarea placeholder="Reply…" rows="1" data-action="reply-input"></textarea><button class="comment-submit" data-action="submit-reply" data-post-id="${postId}" data-comment-id="${c.id}">Post</button></div></div>`:''}
+        ${!isReply?`<button class="reply-btn" data-action="toggle-reply" data-post-id="${postId}" data-comment-id="${c.id}">Reply<\/button>`:''}
+      <\/div>
+      ${!isReply?`<div class="reply-form hidden" id="reply-form-${c.id}"><div class="comment-input-row"><textarea placeholder="Reply…" rows="1" data-action="reply-input"><\/textarea><button class="comment-submit" data-action="submit-reply" data-post-id="${postId}" data-comment-id="${c.id}">Post<\/button><\/div><\/div>`:''}
       ${replies.map(r=>renderComment(r,postId,true)).join('')}
-    </div>
-  </div>`;
+    <\/div>
+  <\/div>`;
 }
 
 function setupPostEvents(){
@@ -1181,48 +1181,48 @@ function updateTabCounts(){
 function renderPendingUsers(){
   const container=document.getElementById('tab-pending-users');
   const pending=Object.values(allUsers).filter(u=>u.status==='pending');
-  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No pending account requests.</p></div>`;return;}
+  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No pending account requests.<\/p><\/div>`;return;}
   container.innerHTML=pending.map(u=>`
     <div class="mod-card">
-      <div class="mod-card-header">${avHTML(u.name,44)}<div><div class="mod-name">${esc(u.name)}</div><div class="mod-email">${esc(u.email)}</div><div class="mod-registered">Registered ${timeAgo(u.joinedAt)}</div></div></div>
+      <div class="mod-card-header">${avHTML(u.name,44)}<div><div class="mod-name">${esc(u.name)}<\/div><div class="mod-email">${esc(u.email)}<\/div><div class="mod-registered">Registered ${timeAgo(u.joinedAt)}<\/div><\/div><\/div>
       <div class="title-row">
         <input class="title-input" type="text" placeholder="Assign a title (e.g. Editor, Coach, Writer…)" id="title-${sanKey(u.email)}"/>
-        <button class="btn btn-approve btn-sm" data-action="approve-user" data-key="${sanKey(u.email)}">Approve</button>
-        <button class="btn btn-reject btn-sm" data-action="reject-user" data-key="${sanKey(u.email)}">Reject</button>
-      </div>
-    </div>`).join('');
+        <button class="btn btn-approve btn-sm" data-action="approve-user" data-key="${sanKey(u.email)}">Approve<\/button>
+        <button class="btn btn-reject btn-sm" data-action="reject-user" data-key="${sanKey(u.email)}">Reject<\/button>
+      <\/div>
+    <\/div>`).join('');
   container.querySelectorAll('[data-action]').forEach(btn=>{btn.onclick=async()=>{const key=btn.dataset.key;if(btn.dataset.action==='approve-user'){const title=document.getElementById(`title-${key}`)?.value.trim();if(!title){alert('Please assign a title before approving.');return;}await fbUpdate(`users/${key}`,{status:'approved',title});const uData=await fbGet('users/'+key);const aid=uid();await fbSet('activity/'+aid,{id:aid,type:'joined',detail:'Joined the community',userId:key,userName:uData?.name||'Member',ts:Date.now()});}else{await fbUpdate(`users/${key}`,{status:'rejected'});}renderModDashboard();};});
 }
 
 function renderPendingPosts(){
   const container=document.getElementById('tab-pending-posts');
   const pending=Object.values(allPosts).filter(p=>p.status==='pending').sort((a,b)=>a.ts-b.ts);
-  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No posts awaiting approval.</p></div>`;return;}
-  container.innerHTML=pending.map(p=>{const author=getAuthor(p.authorId);return `<div class="mod-card"><div class="mod-card-header">${avHTML(author.name,36)}<div><div class="mod-name">${esc(author.name)}</div><div class="mod-registered">${timeAgo(p.ts)}</div></div></div><p style="font-size:14px;color:var(--dark);line-height:1.7;margin-bottom:12px;white-space:pre-wrap">${esc(p.text)}</p>${p.imageUrl?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:220px;object-fit:cover;"/>`:''}${p.tag?`<span class="post-tag" style="display:inline-block;margin-bottom:12px">#${esc(p.tag)}</span>`:''}<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn btn-approve btn-sm" data-action="approve-post" data-id="${p.id}">Approve</button><button class="btn btn-reject btn-sm" data-action="reject-post" data-id="${p.id}">Reject</button></div></div>`;}).join('');
+  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No posts awaiting approval.<\/p><\/div>`;return;}
+  container.innerHTML=pending.map(p=>{const author=getAuthor(p.authorId);return `<div class="mod-card"><div class="mod-card-header">${avHTML(author.name,36)}<div><div class="mod-name">${esc(author.name)}<\/div><div class="mod-registered">${timeAgo(p.ts)}<\/div><\/div><\/div><p style="font-size:14px;color:var(--dark);line-height:1.7;margin-bottom:12px;white-space:pre-wrap">${esc(p.text)}<\/p>${p.imageUrl?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:220px;object-fit:cover;"/>`:''}${p.tag?`<span class="post-tag" style="display:inline-block;margin-bottom:12px">#${esc(p.tag)}<\/span>`:''}<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn btn-approve btn-sm" data-action="approve-post" data-id="${p.id}">Approve<\/button><button class="btn btn-reject btn-sm" data-action="reject-post" data-id="${p.id}">Reject<\/button><\/div><\/div>`;}).join('');
   container.querySelectorAll('[data-action]').forEach(btn=>{btn.onclick=async()=>{await fbUpdate(`posts/${btn.dataset.id}`,{status:btn.dataset.action==='approve-post'?'approved':'rejected'});renderModDashboard();};});
 }
 
 function renderPasswordResets(){
   const container=document.getElementById('tab-password-resets');
   const pending=Object.values(allResets).filter(r=>r.status==='pending').sort((a,b)=>a.requestedAt-b.requestedAt);
-  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No password reset requests.</p></div>`;return;}
+  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No password reset requests.<\/p><\/div>`;return;}
   container.innerHTML=pending.map(r=>`
     <div class="mod-card">
       <div class="mod-card-header">
         ${avHTML(r.name||'?',44)}
         <div>
-          <div class="mod-name">${esc(r.name)}</div>
-          <div class="mod-email">${esc(r.email)}</div>
-          <div class="mod-registered">Requested ${timeAgo(r.requestedAt)}</div>
-        </div>
-      </div>
+          <div class="mod-name">${esc(r.name)}<\/div>
+          <div class="mod-email">${esc(r.email)}<\/div>
+          <div class="mod-registered">Requested ${timeAgo(r.requestedAt)}<\/div>
+        <\/div>
+      <\/div>
       <div class="title-row">
         <input class="title-input" type="text" placeholder="Enter a temporary password for this member" id="tmppw-${sanKey(r.email)}"/>
-        <button class="btn btn-approve btn-sm" data-action="resolve-reset" data-key="${sanKey(r.email)}" data-name="${esc(r.name)}">Set &amp; Resolve</button>
-        <button class="btn btn-reject btn-sm" data-action="dismiss-reset" data-key="${sanKey(r.email)}">Dismiss</button>
-      </div>
-      <p style="font-size:11px;color:var(--ghost);margin-top:8px;">Once you set a temporary password, share it with the member privately. They should sign in and change it immediately.</p>
-    </div>`).join('');
+        <button class="btn btn-approve btn-sm" data-action="resolve-reset" data-key="${sanKey(r.email)}" data-name="${esc(r.name)}">Set &amp; Resolve<\/button>
+        <button class="btn btn-reject btn-sm" data-action="dismiss-reset" data-key="${sanKey(r.email)}">Dismiss<\/button>
+      <\/div>
+      <p style="font-size:11px;color:var(--ghost);margin-top:8px;">Once you set a temporary password, share it with the member privately. They should sign in and change it immediately.<\/p>
+    <\/div>`).join('');
   container.querySelectorAll('[data-action]').forEach(btn=>{
     btn.onclick=async()=>{
       const key=btn.dataset.key;
@@ -1245,43 +1245,43 @@ const ACTIVITY_ICONS = { post:'📝', comment:'💬', reply:'↩️', reaction:'
 function renderActivity(){
   const container = document.getElementById('tab-activity');
   const items = Object.values(allActivity).sort((a,b)=>b.ts-a.ts).slice(0,100);
-  if(items.length===0){ container.innerHTML=`<div class="empty-state"><p>No activity yet.</p></div>`; return; }
+  if(items.length===0){ container.innerHTML=`<div class="empty-state"><p>No activity yet.<\/p><\/div>`; return; }
   container.innerHTML = `<div style="background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;">
     ${items.map((a,i,arr)=>`
     <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:${i<arr.length-1?'1px solid var(--muted)':'none'}">
       ${avHTML(a.userName||'?', 32)}
       <div style="flex:1;">
-        <span style="font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:14px;">${esc(a.userName)}</span>
-        <span style="font-size:13px;color:var(--mid);"> ${esc(a.detail)}</span>
-      </div>
-      <span style="font-size:11px;color:var(--ghost);white-space:nowrap;">${timeAgo(a.ts)}</span>
-    </div>`).join('')}
-  </div>`;
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:14px;">${esc(a.userName)}<\/span>
+        <span style="font-size:13px;color:var(--mid);"> ${esc(a.detail)}<\/span>
+      <\/div>
+      <span style="font-size:11px;color:var(--ghost);white-space:nowrap;">${timeAgo(a.ts)}<\/span>
+    <\/div>`).join('')}
+  <\/div>`;
 }
 
 function renderAllMembers(){
   const container=document.getElementById('tab-all-members');
   const members=Object.values(allUsers).filter(u=>u.email!==ADMIN_EMAIL.toLowerCase()).sort((a,b)=>a.name.localeCompare(b.name));
-  if(members.length===0){container.innerHTML=`<div class="empty-state"><p>No members yet.</p></div>`;return;}
+  if(members.length===0){container.innerHTML=`<div class="empty-state"><p>No members yet.<\/p><\/div>`;return;}
   container.innerHTML=`<div style="background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;">
     ${members.map(u=>`
     <div class="member-row">
       ${avHTML(u.name,36)}
       <div class="member-info">
-        <div class="member-name">${esc(u.name)}</div>
-        <div class="member-email">${esc(u.email)}</div>
-        ${(u.labels&&u.labels.length)?`<div class="member-labels-row">${labelBadgesHTML(u.labels)}</div>`:''}
-      </div>
-      ${u.title?`<span class="title-badge">${esc(u.title)}</span>`:''}
-      <span class="status-badge status-${u.role==='moderator'?'moderator':u.status}">${u.role==='moderator'?'Moderator':u.status}</span>
+        <div class="member-name">${esc(u.name)}<\/div>
+        <div class="member-email">${esc(u.email)}<\/div>
+        ${(u.labels&&u.labels.length)?`<div class="member-labels-row">${labelBadgesHTML(u.labels)}<\/div>`:''}
+      <\/div>
+      ${u.title?`<span class="title-badge">${esc(u.title)}<\/span>`:''}
+      <span class="status-badge status-${u.role==='moderator'?'moderator':u.status}">${u.role==='moderator'?'Moderator':u.status}<\/span>
       ${u.status==='approved'&&u.role!=='admin'?`
-        <button class="btn btn-sm ${u.role==='moderator'?'btn-reject':'btn-approve'}" data-action="toggle-mod" data-key="${sanKey(u.email)}" data-current-role="${u.role}">${u.role==='moderator'?'Remove Mod':'Make Mod'}</button>
-        <button class="btn btn-sm btn-admin" data-action="make-admin" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}">Make Admin</button>
-        <button class="btn btn-sm btn-ghost" data-action="edit-labels" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-labels="${esc(JSON.stringify(u.labels||[]))}">Labels</button>
-        <button class="btn btn-sm btn-reject" data-action="remove-member" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-id="${esc(u.id)}">Remove</button>
+        <button class="btn btn-sm ${u.role==='moderator'?'btn-reject':'btn-approve'}" data-action="toggle-mod" data-key="${sanKey(u.email)}" data-current-role="${u.role}">${u.role==='moderator'?'Remove Mod':'Make Mod'}<\/button>
+        <button class="btn btn-sm btn-admin" data-action="make-admin" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}">Make Admin<\/button>
+        <button class="btn btn-sm btn-ghost" data-action="edit-labels" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-labels="${esc(JSON.stringify(u.labels||[]))}">Labels<\/button>
+        <button class="btn btn-sm btn-reject" data-action="remove-member" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-id="${esc(u.id)}">Remove<\/button>
       `:''}
-    </div>`).join('')}
-  </div>`;
+    <\/div>`).join('')}
+  <\/div>`;
 
   container.querySelectorAll('[data-action]').forEach(btn=>{
     btn.onclick=async()=>{
@@ -1320,8 +1320,8 @@ function openLabelsModal(key,name,currentLabels){
   box.innerHTML=MEMBER_LABELS.map(l=>`
     <div class="label-checkbox-row">
       <input type="checkbox" id="lbl-${l.key}" value="${l.key}" ${currentLabels.includes(l.key)?'checked':''}>
-      <label for="lbl-${l.key}"><span class="member-label ${l.cls}">${l.text}</span></label>
-    </div>`).join('');
+      <label for="lbl-${l.key}"><span class="member-label ${l.cls}">${l.text}<\/span></label>
+    <\/div>`).join('');
   showEl('labels-modal');
 }
 document.getElementById('labels-cancel').onclick=()=>{hideEl('labels-modal');labelsTarget=null;};
