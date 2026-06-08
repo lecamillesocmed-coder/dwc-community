@@ -572,7 +572,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 import { initializeApp }               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get,
          update, remove, onValue, off,
-         push, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+         onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const ADMIN_EMAIL = "lecamillesocmed@gmail.com";
 const REACTIONS   = [
@@ -635,7 +635,18 @@ const fbSet    = async (p,v) => set(ref(db,p),v);
 const fbUpdate = async (p,v) => update(ref(db,p),v);
 const fbRemove = async p => remove(ref(db,p));
 
-function labelBadgesHTML(labels) {
+// Auto-detect URLs in text and convert to clickable links
+function getAutoImage(text){
+  const match = text.match(/(https?:\/\/[^\s]+\.(?:jpg|jpeg|png|webp|gif)(\?[^\s]*)?)/i);
+  return match ? match[1] : null;
+}
+
+  const escaped = esc(text);
+  return escaped.replace(/(https?:\/\/[^\s<>"]+)/g, url => {
+    const display = url.length > 50 ? url.slice(0,50)+'…' : url;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">${display}</a>`;
+  });
+}
   if(!labels||!labels.length) return '';
   return labels.map(k=>{
     const l=MEMBER_LABELS.find(x=>x.key===k);
@@ -707,19 +718,25 @@ function startPublicListeners(){
 }
 
 function startPresence(){
-  // Each visitor gets a unique presence node; on disconnect it's removed
-  const presenceRef = push(ref(db,'presence'));
+  // Use a stable key per browser tab stored in sessionStorage
+  let presenceKey = null;
+  try { presenceKey = sessionStorage.getItem('dwc_presence_key'); } catch{}
+  if(!presenceKey){
+    presenceKey = uid();
+    try { sessionStorage.setItem('dwc_presence_key', presenceKey); } catch{}
+  }
+  const presenceRef = ref(db, `presence/${presenceKey}`);
   set(presenceRef, { t: Date.now() });
   onDisconnect(presenceRef).remove();
 
   // Watch total presence count
   onValue(ref(db,'presence'), snap=>{
-    const live = snap.exists() ? Object.keys(snap.val()).length : 0;
-    const total = PRESENCE_BASE + live;
+    const live = snap.exists() ? Object.keys(snap.val()).length : 1;
+    const total = PRESENCE_BASE - 1 + live; // -1 so base 111 means 111 when 1 person is viewing
     const el = document.getElementById('topbar-member-count');
     if(el){
       const members = parseInt(el.getAttribute('data-members')||'0');
-      el.textContent = `· ${total} viewing · ${members} member${members===1?'':'s'}`;
+      el.textContent = `· ${total} online · ${members} member${members===1?'':'s'}`;
     }
   });
 }
@@ -956,8 +973,8 @@ function renderPost(p){
       </div>
       ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}">✕</button>`:''}
     </div>
-    <div class="post-body">${esc(p.text)}</div>
-    ${p.imageUrl?`<div class="post-image"><img src="${esc(p.imageUrl)}" loading="lazy" onerror="this.closest('.post-image').style.display='none'"/></div>`:''}
+    <div class="post-body">${linkify(p.text)}</div>
+    ${(p.imageUrl||getAutoImage(p.text))?`<div class="post-image"><img src="${esc(p.imageUrl||getAutoImage(p.text))}" loading="lazy" onerror="this.closest('.post-image').style.display='none'"/></div>`:''}
     ${p.tag?`<span class="post-tag">#${esc(p.tag)}</span>`:''}
     <div class="post-actions">
       ${renderReactions(p)}
@@ -973,7 +990,7 @@ function renderPost(p){
 function renderComment(c,postId,isReply){
   const author=getAuthor(c.authorId);
   const replies=c.replies?Object.values(c.replies).sort((a,b)=>a.ts-b.ts):[];
-  const canDel=c.authorId===currentUser.id||canMod(currentUser);
+  const canDel=currentUser&&(c.authorId===currentUser.id||canMod(currentUser));
   return `
   <div class="comment-item${isReply?' reply':''}" data-comment-id="${c.id}">
     ${avHTML(author.name,28,author.photo)}
