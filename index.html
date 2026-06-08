@@ -338,7 +338,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <div id="member-btns" class="hidden" style="display:flex;align-items:center;gap:8px;">
         <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
         <div class="avatar" id="topbar-avatar" style="width:30px;height:30px;font-size:11px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
-        <div class="topbar-user"><div class="name" id="topbar-name"></div><div class="utitle" id="topbar-title-tag"></div></div>
+        <div class="topbar-user"><div class="name" id="topbar-name"></div><div class="utitle" id="topbar-title-tag"></div><div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;" id="topbar-points"></div></div>
         <button class="signout-btn" id="signout-btn" style="margin-left:4px;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:11px;color:rgba(250,247,243,0.6);">Sign out</button>
       </div>
     </div>
@@ -372,6 +372,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);">☕</span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://buy.stripe.com/28EeVdcG5cHLeE4dkA5Rm08" target="_blank" style="color:var(--gold);">buy us a coffee</a> first. One time only.</div></div>
       <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">🚫</span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
       <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);font-size:22px;line-height:1;">✦</span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
+      <div class="rule-item" style="background:linear-gradient(135deg,#faf4ff,#fff8ee);border-radius:8px;padding:10px 12px;margin-top:4px;border:1px solid rgba(184,150,90,0.2);">
+        <span class="rule-emoji" style="color:var(--gold);font-size:20px;">🏆</span>
+        <div class="rule-text"><strong style="color:var(--gold);">Earn points &amp; win things</strong>The more you engage, the more you earn. Points unlock cover features, directory listings, and more — coming soon. You earn points for every ❤️ your posts receive, every approved post, and every comment of more than 5 words.</div>
+      </div>
     </div>
   </div>
 
@@ -424,6 +428,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
             <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);">☕</span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://buy.stripe.com/28EeVdcG5cHLeE4dkA5Rm08" target="_blank" style="color:var(--gold);">buy us a coffee</a> first. One time only.</div></div>
             <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">🚫</span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
             <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);font-size:22px;line-height:1;">✦</span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
+            <div class="rule-item" style="background:linear-gradient(135deg,#faf4ff,#fff8ee);border-radius:8px;padding:10px 12px;margin-top:4px;border:1px solid rgba(184,150,90,0.2);">
+              <span class="rule-emoji" style="color:var(--gold);font-size:20px;">🏆</span>
+              <div class="rule-text"><strong style="color:var(--gold);">Earn points &amp; win things</strong>The more you engage, the more you earn. Points unlock cover features, directory listings, and more — coming soon. You earn points for every ❤️ your posts receive, every approved post, and every comment of more than 5 words.</div>
+            </div>
           </div>
         </div>
 
@@ -676,6 +684,13 @@ async function logActivity(type, detail){
   });
 }
 
+async function awardPoints(userId, amount, reason){
+  const key = Object.keys(allUsers).find(k => allUsers[k].id === userId);
+  if(!key) return;
+  const current = allUsers[key].points || 0;
+  await fbUpdate('users/'+key, { points: current + amount });
+}
+
 // Inline confirm — replaces confirm() which is blocked in mobile iframes
 function inlineConfirm(title, msg){
   return new Promise(resolve => {
@@ -875,6 +890,9 @@ async function signInUser(user){
   else { av.textContent=initials(user.name); av.style.background=avBg(user.name); }
   document.getElementById('topbar-name').textContent=user.name;
   document.getElementById('topbar-title-tag').textContent=user.title||'';
+  const pts = user.points||0;
+  const ptsEl = document.getElementById('topbar-points');
+  if(ptsEl) ptsEl.textContent = pts > 0 ? '🏆 '+pts+' pts' : '';
   if(canMod(user)){showEl('mod-btn');document.getElementById('mod-btn').onclick=openMod;}
   const ca=document.getElementById('composer-avatar');ca.textContent=initials(user.name);ca.style.background=avBg(user.name);
   document.getElementById('composer-text').placeholder=`What's on your mind, ${user.name.split(' ')[0]}?`;
@@ -1060,9 +1078,10 @@ function renderPost(p){
       <div class="post-author">
         ${avHTML(author.name,42,author.photo)}
         <div>
-          <div class="post-author-name">${esc(author.name)}<\/div>
+          <div class="post-author-name">${esc(author.name)}</div>
           ${author.title?`<div class="post-author-title">${esc(author.title)}<\/div>`:''}
           ${authorLabels?`<div class="post-author-labels">${authorLabels}<\/div>`:''}
+          ${(author.points&&author.points>0)?`<div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;margin-top:1px;">🏆 ${author.points} pts<\/div>`:''}
           <div class="post-time">${timeAgo(p.ts)}<\/div>
         <\/div>
       <\/div>
@@ -1130,7 +1149,18 @@ function setupPostEvents(){
       }
       // If they clicked a different reaction (not removing their current one), set it
       const hadThis = currentReactions&&currentReactions[newKey]&&currentReactions[newKey][currentUser.id];
-      if(!hadThis){ await fbSet(reactionBase+'/'+newKey+'/'+currentUser.id, currentUser.id); const r=REACTIONS.find(x=>x.key===newKey); logActivity('reaction','Reacted with '+r.emoji+' '+r.label); }
+      if(!hadThis){
+        await fbSet(reactionBase+'/'+newKey+'/'+currentUser.id, currentUser.id);
+        const r=REACTIONS.find(x=>x.key===newKey);
+        logActivity('reaction','Reacted with '+r.emoji+' '+r.label);
+        // Award 5 points to post author for heart reactions
+        if(newKey==='heart'){
+          const post = allPosts[postId];
+          if(post && post.authorId !== currentUser.id){
+            await awardPoints(post.authorId, 5, 'heart reaction received');
+          }
+        }
+      }
     }
     if(action==='delete-post'){
       const ok = await inlineConfirm('Delete post', 'This will permanently remove this post.');
@@ -1138,7 +1168,15 @@ function setupPostEvents(){
       await fbRemove('posts/'+btn.dataset.id);
     }
     if(action==='toggle-comments'){document.getElementById(`comments-${btn.dataset.id}`)?.classList.toggle('hidden');}
-    if(action==='submit-comment'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const cid=uid();await fbSet(`posts/${btn.dataset.id}/comments/${cid}`,{id:cid,authorId:currentUser.id,text,ts:Date.now(),replies:{}});logActivity('comment','Left a comment');ta.value='';ta.style.height='';}
+    if(action==='submit-comment'){
+      const ta=btn.closest('.comment-input-row')?.querySelector('textarea');
+      const text=ta?.value.trim();if(!text)return;
+      const cid=uid();
+      await fbSet(`posts/${btn.dataset.id}/comments/${cid}`,{id:cid,authorId:currentUser.id,text,ts:Date.now(),replies:{}});
+      logActivity('comment','Left a comment');
+      if(text.split(/\s+/).filter(Boolean).length > 5) await awardPoints(currentUser.id, 3, 'qualifying comment');
+      ta.value='';ta.style.height='';
+    }
     if(action==='toggle-reply'){document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.toggle('hidden');}
     if(action==='submit-reply'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const rid=uid();await fbSet(`posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}/replies/${rid}`,{id:rid,authorId:currentUser.id,text,ts:Date.now()});logActivity('reply','Replied to a comment');ta.value='';ta.style.height='';document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.add('hidden');}
     if(action==='delete-comment'){
@@ -1199,7 +1237,15 @@ function renderPendingPosts(){
   const pending=Object.values(allPosts).filter(p=>p.status==='pending').sort((a,b)=>a.ts-b.ts);
   if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No posts awaiting approval.<\/p><\/div>`;return;}
   container.innerHTML=pending.map(p=>{const author=getAuthor(p.authorId);return `<div class="mod-card"><div class="mod-card-header">${avHTML(author.name,36)}<div><div class="mod-name">${esc(author.name)}<\/div><div class="mod-registered">${timeAgo(p.ts)}<\/div><\/div><\/div><p style="font-size:14px;color:var(--dark);line-height:1.7;margin-bottom:12px;white-space:pre-wrap">${esc(p.text)}<\/p>${p.imageUrl?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:220px;object-fit:cover;"/>`:''}${p.tag?`<span class="post-tag" style="display:inline-block;margin-bottom:12px">#${esc(p.tag)}<\/span>`:''}<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn btn-approve btn-sm" data-action="approve-post" data-id="${p.id}">Approve<\/button><button class="btn btn-reject btn-sm" data-action="reject-post" data-id="${p.id}">Reject<\/button><\/div><\/div>`;}).join('');
-  container.querySelectorAll('[data-action]').forEach(btn=>{btn.onclick=async()=>{await fbUpdate(`posts/${btn.dataset.id}`,{status:btn.dataset.action==='approve-post'?'approved':'rejected'});renderModDashboard();};});
+  container.querySelectorAll('[data-action]').forEach(btn=>{btn.onclick=async()=>{
+    const status = btn.dataset.action==='approve-post'?'approved':'rejected';
+    await fbUpdate(`posts/${btn.dataset.id}`,{status});
+    if(status==='approved'){
+      const post = allPosts[btn.dataset.id];
+      if(post) await awardPoints(post.authorId, 10, 'post approved');
+    }
+    renderModDashboard();
+  };});
 }
 
 function renderPasswordResets(){
@@ -1273,6 +1319,7 @@ function renderAllMembers(){
         ${(u.labels&&u.labels.length)?`<div class="member-labels-row">${labelBadgesHTML(u.labels)}<\/div>`:''}
       <\/div>
       ${u.title?`<span class="title-badge">${esc(u.title)}<\/span>`:''}
+      ${(u.points&&u.points>0)?`<span style="font-size:11px;color:var(--gold);font-family:'DM Sans',sans-serif;white-space:nowrap;">🏆 ${u.points}<\/span>`:''}
       <span class="status-badge status-${u.role==='moderator'?'moderator':u.status}">${u.role==='moderator'?'Moderator':u.status}<\/span>
       ${u.status==='approved'&&u.role!=='admin'?`
         <button class="btn btn-sm ${u.role==='moderator'?'btn-reject':'btn-approve'}" data-action="toggle-mod" data-key="${sanKey(u.email)}" data-current-role="${u.role}">${u.role==='moderator'?'Remove Mod':'Make Mod'}<\/button>
@@ -1384,6 +1431,15 @@ function startPublicListeners(){
     allUsers=snap.exists()?snap.val():{};
     updateMemberCount();
     if(currentUser&&canMod(currentUser)) updateModBadge();
+    // Refresh current user points in topbar
+    if(currentUser){
+      const key = Object.keys(allUsers).find(k=>allUsers[k].id===currentUser.id);
+      if(key){
+        currentUser.points = allUsers[key].points||0;
+        const ptsEl = document.getElementById('topbar-points');
+        if(ptsEl) ptsEl.textContent = currentUser.points > 0 ? '🏆 '+currentUser.points+' pts' : '';
+      }
+    }
   });
   onValue(ref(db,'passwordResets'),snap=>{
     allResets=snap.exists()?snap.val():{};
