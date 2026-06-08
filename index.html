@@ -542,6 +542,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
         <button class="tab-btn" data-tab="pending-posts">Posts <span class="badge-count hidden" id="tab-posts-count"></span></button>
         <button class="tab-btn" data-tab="password-resets">Passwords <span class="badge-count hidden" id="tab-resets-count"></span></button>
         <button class="tab-btn" data-tab="all-members">All Members</button>
+        <button class="tab-btn" data-tab="activity">Activity</button>
       </div>
     </div>
     <div class="mod-content">
@@ -549,6 +550,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <div id="tab-pending-posts" class="hidden"></div>
       <div id="tab-password-resets" class="hidden"></div>
       <div id="tab-all-members" class="hidden"></div>
+      <div id="tab-activity" class="hidden"></div>
     </div>
   </div>
 </div>
@@ -633,6 +635,7 @@ let currentUser  = null;
 let allUsers     = {};
 let allPosts     = {};
 let allResets    = {};
+let allActivity  = {};
 let activeFilter = "all";
 let labelsTarget = null;
 
@@ -661,6 +664,17 @@ const fbGet    = async p => { const s=await get(ref(db,p)); return s.exists()?s.
 const fbSet    = async (p,v) => set(ref(db,p),v);
 const fbUpdate = async (p,v) => update(ref(db,p),v);
 const fbRemove = async p => remove(ref(db,p));
+
+async function logActivity(type, detail){
+  if(!currentUser) return;
+  const id = uid();
+  await fbSet('activity/'+id, {
+    id, type, detail,
+    userId: currentUser.id,
+    userName: currentUser.name,
+    ts: Date.now()
+  });
+}
 
 // Inline confirm — replaces confirm() which is blocked in mobile iframes
 function inlineConfirm(title, msg){
@@ -755,81 +769,29 @@ function updateMemberCount() {
   if(mm) mm.textContent = approved;
 }
 
-const PRESENCE_BASE = 111; // Starting visitor count offset
-
-async function boot() {
-  // Always show the app screen for guests immediately
-  hideEl('loading-screen');
-  hideEl('auth-screen');
-  showEl('app-screen');
-  showEl('feed-view');
-  showGuestUI();
-
-  // Start public listeners — will call renderFeed when data arrives
-  startPublicListeners();
-
-  // Start presence tracking
-  startPresence();
-
-  // Check for existing session
-  const email=loadSession();
-  if(email){
-    const users=await fbGet('users');
-    if(users){
-      allUsers=users;
-      const u=users[sanKey(email)];
-      if(u&&u.status==='approved'){
-        if(!u.role) u.role='member';
-        await signInUser(u);
-        return;
-      }
-    }
-  }
-}
-
-function showGuestUI(){
-  showEl('guest-btns'); hideEl('member-btns');
-  showEl('guest-join-prompt'); hideEl('composer');
-  // Disable reactions and comments for guests — renderFeed handles this via currentUser check
-}
-
-function startPublicListeners(){
-  onValue(ref(db,'posts'),snap=>{
-    allPosts=snap.exists()?snap.val():{};
-    renderFeed();
-    if(currentUser&&canMod(currentUser)) updateModBadge();
-  });
-  onValue(ref(db,'users'),snap=>{
-    allUsers=snap.exists()?snap.val():{};
-    updateMemberCount();
-    if(currentUser&&canMod(currentUser)) updateModBadge();
-  });
-  onValue(ref(db,'passwordResets'),snap=>{
-    allResets=snap.exists()?snap.val():{};
-    if(currentUser&&canMod(currentUser)) updateModBadge();
-  });
-}
+const PRESENCE_BASE = 644;
+const PRESENCE_TTL  = 5 * 60 * 1000;
 
 function startPresence(){
-  // Use a stable key per browser tab stored in sessionStorage
   let presenceKey = null;
   try { presenceKey = sessionStorage.getItem('dwc_presence_key'); } catch{}
   if(!presenceKey){
     presenceKey = uid();
     try { sessionStorage.setItem('dwc_presence_key', presenceKey); } catch{}
   }
-  const presenceRef = ref(db, `presence/${presenceKey}`);
-  set(presenceRef, { t: Date.now() });
+  const presenceRef = ref(db, 'presence/'+presenceKey);
+  const writePresence = () => set(presenceRef, { t: Date.now() });
+  writePresence();
   onDisconnect(presenceRef).remove();
-
-  // Watch total presence count
+  setInterval(writePresence, 2 * 60 * 1000);
   onValue(ref(db,'presence'), snap=>{
-    const live = snap.exists() ? Object.keys(snap.val()).length : 1;
+    const now = Date.now();
+    const nodes = snap.exists() ? Object.values(snap.val()) : [];
+    const live = nodes.filter(n => n && (now - (n.t||0)) < PRESENCE_TTL).length || 1;
     const total = PRESENCE_BASE - 1 + live;
     const el = document.getElementById('topbar-member-count');
     const members = parseInt(el?.getAttribute('data-members')||'0');
-    if(el) el.textContent = '· ' + total + ' viewer' + (total===1?'':'s') + ' · ' + members + ' member' + (members===1?'':'s');
-    // Mobile stats bar
+    if(el) el.textContent = '\u00b7 ' + total + ' viewer' + (total===1?'':'s') + ' \u00b7 ' + members + ' member' + (members===1?'':'s');
     const mv = document.getElementById('mobile-viewers');
     const mm = document.getElementById('mobile-members');
     if(mv) mv.textContent = total;
@@ -1015,6 +977,7 @@ composerSubmit.onclick=async()=>{
   composerSubmit.disabled=true;composerSubmit.textContent='Posting…';
   const post={id:uid(),authorId:currentUser.id,text,imageUrl:getVal('composer-img'),tag:getVal('composer-tag').replace(/^#/,''),ts:Date.now(),status:'pending',reactions:{},comments:{}};
   await fbSet(`posts/${post.id}`,post);
+  logActivity('post', 'Submitted a post for moderation');
   composerText.value='';setVal('composer-img','');setVal('composer-tag','');
   composerSubmit.textContent='Share';composerText.style.height='';hideEl('composer-extras');
 };
@@ -1053,20 +1016,24 @@ function renderFilterBar(tags){
   bar.querySelectorAll('.filter-tag').forEach(btn=>{btn.onclick=()=>{activeFilter=btn.dataset.tag;renderFeed();};});
 }
 
+function getReactorNames(post, key){
+  const ids = post.reactions&&post.reactions[key]?Object.values(post.reactions[key]):[];
+  return ids.map(id=>{ const u=Object.values(allUsers).find(u=>u.id===id); return u?u.name:'Someone'; });
+}
+
 function renderReactions(post){
   if(!currentUser){
-    // Guest: show counts read-only, no interaction
     return REACTIONS.map(r=>{
-      const counts=post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[];
-      return counts.length>0
-        ? `<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid var(--muted);font-size:13px;color:var(--ghost);"><span style="font-size:16px;">${r.emoji}</span><span>${counts.length}</span></span>`
-        : '';
+      const names = getReactorNames(post, r.key);
+      if(!names.length) return '';
+      return '<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid var(--muted);font-size:13px;color:var(--ghost);" title="'+esc(names.join(\', \'))+'"><span style=\"font-size:16px;\">'+r.emoji+'</span><span>'+names.length+'</span></span>';
     }).join('');
   }
   return REACTIONS.map(r=>{
-    const counts=post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[];
-    const reacted=counts.includes(currentUser.id);
-    return `<button class="reaction-btn${reacted?` reacted-${r.key}`:''}" data-action="react" data-post-id="${post.id}" data-reaction="${r.key}" title="${r.label}"><span class="emoji">${r.emoji}</span>${counts.length>0?`<span>${counts.length}</span>`:''}</button>`;
+    const names = getReactorNames(post, r.key);
+    const reacted = names.some((_,i)=>{ const ids=post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[]; return ids.includes(currentUser.id); });
+    const title = names.length ? r.label+': '+names.join(', ') : r.label;
+    return '<button class="reaction-btn'+(reacted?' reacted-'+r.key:'')+'" data-action="react" data-post-id="'+post.id+'" data-reaction="'+r.key+'" title="'+esc(title)+'"><span class=\"emoji\">'+r.emoji+'</span>'+(names.length?'<span>'+names.length+'</span>':'')+'</button>';
   }).join('');
 }
 
@@ -1158,7 +1125,7 @@ function setupPostEvents(){
       }
       // If they clicked a different reaction (not removing their current one), set it
       const hadThis = currentReactions&&currentReactions[newKey]&&currentReactions[newKey][currentUser.id];
-      if(!hadThis) await fbSet(reactionBase+'/'+newKey+'/'+currentUser.id, currentUser.id);
+      if(!hadThis){ await fbSet(reactionBase+'/'+newKey+'/'+currentUser.id, currentUser.id); const r=REACTIONS.find(x=>x.key===newKey); logActivity('reaction','Reacted with '+r.emoji+' '+r.label); }
     }
     if(action==='delete-post'){
       const ok = await inlineConfirm('Delete post', 'This will permanently remove this post.');
@@ -1166,9 +1133,9 @@ function setupPostEvents(){
       await fbRemove('posts/'+btn.dataset.id);
     }
     if(action==='toggle-comments'){document.getElementById(`comments-${btn.dataset.id}`)?.classList.toggle('hidden');}
-    if(action==='submit-comment'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const cid=uid();await fbSet(`posts/${btn.dataset.id}/comments/${cid}`,{id:cid,authorId:currentUser.id,text,ts:Date.now(),replies:{}});ta.value='';ta.style.height='';}
+    if(action==='submit-comment'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const cid=uid();await fbSet(`posts/${btn.dataset.id}/comments/${cid}`,{id:cid,authorId:currentUser.id,text,ts:Date.now(),replies:{}});logActivity('comment','Left a comment');ta.value='';ta.style.height='';}
     if(action==='toggle-reply'){document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.toggle('hidden');}
-    if(action==='submit-reply'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const rid=uid();await fbSet(`posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}/replies/${rid}`,{id:rid,authorId:currentUser.id,text,ts:Date.now()});ta.value='';ta.style.height='';document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.add('hidden');}
+    if(action==='submit-reply'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const rid=uid();await fbSet(`posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}/replies/${rid}`,{id:rid,authorId:currentUser.id,text,ts:Date.now()});logActivity('reply','Replied to a comment');ta.value='';ta.style.height='';document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.add('hidden');}
     if(action==='delete-comment'){
       const ok = await inlineConfirm('Delete comment', 'This will permanently remove this comment.');
       if(!ok) return;
@@ -1194,7 +1161,7 @@ function openMod(){
 }
 document.getElementById('mod-back').onclick=()=>{hideEl('mod-view');showEl('feed-view');document.getElementById('topbar-section').textContent='Community';};
 
-function renderModDashboard(){renderPendingUsers();renderPendingPosts();renderPasswordResets();renderAllMembers();updateTabCounts();}
+function renderModDashboard(){renderPendingUsers();renderPendingPosts();renderPasswordResets();renderAllMembers();renderActivity();updateTabCounts();}
 
 function updateTabCounts(){
   const pu=Object.values(allUsers).filter(u=>u.status==='pending').length;
@@ -1219,7 +1186,7 @@ function renderPendingUsers(){
         <button class="btn btn-reject btn-sm" data-action="reject-user" data-key="${sanKey(u.email)}">Reject</button>
       </div>
     </div>`).join('');
-  container.querySelectorAll('[data-action]').forEach(btn=>{btn.onclick=async()=>{const key=btn.dataset.key;if(btn.dataset.action==='approve-user'){const title=document.getElementById(`title-${key}`)?.value.trim();if(!title){alert('Please assign a title before approving.');return;}await fbUpdate(`users/${key}`,{status:'approved',title});}else{await fbUpdate(`users/${key}`,{status:'rejected'});}renderModDashboard();};});
+  container.querySelectorAll('[data-action]').forEach(btn=>{btn.onclick=async()=>{const key=btn.dataset.key;if(btn.dataset.action==='approve-user'){const title=document.getElementById(`title-${key}`)?.value.trim();if(!title){alert('Please assign a title before approving.');return;}await fbUpdate(`users/${key}`,{status:'approved',title});const uData=await fbGet('users/'+key);const aid=uid();await fbSet('activity/'+aid,{id:aid,type:'joined',detail:'Joined the community',userId:key,userName:uData?.name||'Member',ts:Date.now()});}else{await fbUpdate(`users/${key}`,{status:'rejected'});}renderModDashboard();};});
 }
 
 function renderPendingPosts(){
@@ -1266,6 +1233,25 @@ function renderPasswordResets(){
       renderModDashboard();
     };
   });
+}
+
+const ACTIVITY_ICONS = { post:'📝', comment:'💬', reply:'↩️', reaction:'', approved:'✅', joined:'👋' };
+
+function renderActivity(){
+  const container = document.getElementById('tab-activity');
+  const items = Object.values(allActivity).sort((a,b)=>b.ts-a.ts).slice(0,100);
+  if(items.length===0){ container.innerHTML=`<div class="empty-state"><p>No activity yet.</p></div>`; return; }
+  container.innerHTML = `<div style="background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;">
+    ${items.map((a,i,arr)=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:${i<arr.length-1?'1px solid var(--muted)':'none'}">
+      ${avHTML(a.userName||'?', 32)}
+      <div style="flex:1;">
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:14px;">${esc(a.userName)}</span>
+        <span style="font-size:13px;color:var(--mid);"> ${esc(a.detail)}</span>
+      </div>
+      <span style="font-size:11px;color:var(--ghost);white-space:nowrap;">${timeAgo(a.ts)}</span>
+    </div>`).join('')}
+  </div>`;
 }
 
 function renderAllMembers(){
@@ -1350,6 +1336,8 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
     document.getElementById('tab-pending-posts').classList.toggle('hidden',tab!=='pending-posts');
     document.getElementById('tab-password-resets').classList.toggle('hidden',tab!=='password-resets');
     document.getElementById('tab-all-members').classList.toggle('hidden',tab!=='all-members');
+    document.getElementById('tab-activity').classList.toggle('hidden',tab!=='activity');
+    if(tab==='activity') renderActivity();
   };
 });
 
