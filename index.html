@@ -1040,6 +1040,7 @@ function renderAllMembers(){
         <button class="btn btn-sm ${u.role==='moderator'?'btn-reject':'btn-approve'}" data-action="toggle-mod" data-key="${sanKey(u.email)}" data-current-role="${u.role}">${u.role==='moderator'?'Remove Mod':'Make Mod'}</button>
         <button class="btn btn-sm btn-admin" data-action="make-admin" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}">Make Admin</button>
         <button class="btn btn-sm btn-ghost" data-action="edit-labels" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-labels="${esc(JSON.stringify(u.labels||[]))}">Labels</button>
+        <button class="btn btn-sm btn-reject" data-action="remove-member" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-id="${esc(u.id)}">Remove</button>
       `:''}
     </div>`).join('')}
   </div>`;
@@ -1057,6 +1058,18 @@ function renderAllMembers(){
       }
       if(btn.dataset.action==='edit-labels'){
         openLabelsModal(key,btn.dataset.name,JSON.parse(btn.dataset.labels||'[]'));
+      }
+      if(btn.dataset.action==='remove-member'){
+        if(!confirm(`Remove ${btn.dataset.name} from the community?\n\nThis will delete their account. Their posts will also be removed.`))return;
+        // Remove all their posts
+        const userId=btn.dataset.id;
+        const postsToRemove=Object.values(allPosts).filter(p=>p.authorId===userId);
+        for(const p of postsToRemove){ await fbRemove(`posts/${p.id}`); }
+        // Remove their password reset request if any
+        await fbRemove(`passwordResets/${key}`);
+        // Remove user record
+        await fbRemove(`users/${key}`);
+        renderModDashboard();
       }
     };
   });
