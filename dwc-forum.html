@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Forum · DWC</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --plum:    #5c2d4e;
+    --plumdk:  #3d1e34;
+    --plumlt:  #7a4060;
+    --gold:    #b8965a;
+    --goldlt:  #d4aa6a;
+    --cream:   #faf7f3;
+    --soft:    #f0e8df;
+    --muted:   #e0d5cb;
+    --dark:    #1a0e16;
+    --mid:     #6b5460;
+    --ghost:   #9e8490;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── Loading ── */
+  #loading-screen {
+    position: fixed; inset: 0;
+    background: var(--plumdk);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.4s;
+  }
+  #loading-screen span {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold); font-size: 22px; letter-spacing: 0.1em;
+  }
+
+  /* ── Auth ── */
+  #auth-screen {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 60% 0%, #7a3060 0%, var(--plumdk) 45%, #1a0e16 100%);
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+  .auth-card {
+    background: var(--cream); border-radius: 16px; padding: 40px 36px;
+    max-width: 400px; width: 100%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(184,150,90,0.15);
+  }
+  .auth-card h1 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--plum); font-size: 34px; font-weight: 700;
+    text-align: center; margin-bottom: 6px;
+  }
+  .auth-tagline {
+    font-size: 10px; letter-spacing: 0.22em; color: var(--gold);
+    text-align: center; text-transform: uppercase; margin-bottom: 28px;
+  }
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block; font-size: 11px; color: var(--mid);
+    margin-bottom: 5px; letter-spacing: 0.06em;
+  }
+  .field input {
+    width: 100%; border: 1px solid var(--muted); border-radius: 8px;
+    padding: 10px 13px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    background: var(--soft); color: var(--dark); outline: none;
+    transition: border-color 0.2s;
+  }
+  .field input:focus { border-color: var(--plum); }
+  .field-error { font-size: 11px; color: #c0392b; margin-top: 4px; }
+
+  .btn {
+    border: none; border-radius: 8px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    font-size: 14px; padding: 10px 22px; transition: all 0.18s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary { background: var(--plum); color: #fff; }
+  .btn-primary:hover { background: var(--plumlt); }
+  .btn-primary:disabled { opacity: 0.5; cursor: default; }
+  .btn-ghost { background: transparent; color: var(--mid); border: 1px solid var(--muted); }
+  .btn-ghost:hover { border-color: var(--plum); color: var(--plum); }
+  .btn-gold { background: var(--gold); color: #fff; }
+  .btn-approve { background: #e8f5ee; color: #2e7d52; border: 1px solid #b0d9bf; }
+  .btn-approve:hover { background: #d0edd8; }
+  .btn-reject { background: #fdf0ef; color: #c0392b; border: 1px solid #f0c0bc; }
+  .btn-reject:hover { background: #fce0de; }
+  .btn-sm { font-size: 12px; padding: 5px 13px; }
+  .btn-full { width: 100%; justify-content: center; }
+  .btn-link {
+    border: none; background: none; cursor: pointer;
+    color: var(--gold); font-size: 13px; font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .divider {
+    display: flex; align-items: center; gap: 10px; margin: 20px 0;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--muted);
+  }
+  .divider span { font-size: 11px; color: var(--ghost); letter-spacing: 0.08em; }
+
+  .auth-switch { text-align: center; font-size: 13px; color: var(--ghost); }
+
+  /* ── Top Bar ── */
+  #topbar {
+    background: var(--plumdk); padding: 0 20px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+  .topbar-title {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--cream); font-size: 22px; font-weight: 700; letter-spacing: 0.02em;
+  }
+  .topbar-sub { color: var(--gold); font-size: 10px; letter-spacing: 0.15em; opacity: 0.7; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .topbar-user { line-height: 1.25; }
+  .topbar-user .name { font-size: 12px; color: var(--cream); }
+  .topbar-user .title { font-size: 10px; color: var(--gold); }
+  .mod-btn {
+    border: 1px solid rgba(184,150,90,0.4); background: none; color: var(--goldlt);
+    border-radius: 20px; padding: 4px 13px; cursor: pointer;
+    font-size: 12px; font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .mod-btn:hover { background: rgba(184,150,90,0.1); }
+  .badge-count {
+    background: var(--gold); color: #fff; border-radius: 20px;
+    padding: 0 6px; font-size: 10px; line-height: 17px;
+  }
+  .signout-btn {
+    border: none; background: none; color: var(--ghost); cursor: pointer;
+    font-size: 11px; font-family: 'DM Sans', sans-serif;
+  }
+  .signout-btn:hover { color: var(--goldlt); }
+
+  /* ── Avatar ── */
+  .avatar {
+    border-radius: 50%; display: inline-flex; align-items: center;
+    justify-content: center; font-family: 'Cormorant Garamond', serif;
+    font-weight: 700; color: #fff; flex-shrink: 0;
+    box-shadow: 0 0 0 2px var(--cream), 0 0 0 3px var(--muted);
+  }
+
+  /* ── Filter bar ── */
+  #filter-bar {
+    background: #fff; border-bottom: 1px solid var(--muted);
+    padding: 0 20px; display: flex; gap: 6px;
+    overflow-x: auto; align-items: center; height: 44px;
+  }
+  .filter-tag {
+    border-radius: 20px; padding: 3px 13px; cursor: pointer;
+    font-size: 11.5px; white-space: nowrap;
+    font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+    border: 1px solid var(--muted); background: none; color: var(--ghost);
+  }
+  .filter-tag.active { background: var(--plum); color: #fff; border-color: var(--plum); }
+
+  /* ── Main ── */
+  #main { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+
+  /* ── Composer ── */
+  #composer {
+    background: #fff; border-radius: 12px; padding: 18px 20px;
+    border: 1px solid var(--muted); margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(92,45,78,0.05);
+  }
+  .composer-row { display: flex; gap: 10px; }
+  .composer-row textarea {
+    flex: 1; resize: none; border: 1px solid var(--muted); border-radius: 10px;
+    padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    background: var(--soft); color: var(--dark); outline: none;
+    line-height: 1.65; transition: border-color 0.2s; overflow: hidden;
+  }
+  .composer-row textarea:focus { border-color: var(--plum); }
+  .composer-extras {
+    margin-top: 12px; padding-left: 50px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .composer-extras-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .composer-extras input {
+    border: 1px solid var(--muted); border-radius: 8px; padding: 7px 11px;
+    font-family: 'DM Sans', sans-serif; font-size: 12px;
+    background: var(--soft); color: var(--dark); outline: none;
+  }
+  .composer-extras input:focus { border-color: var(--plum); }
+  .composer-actions {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  }
+  .composer-hint { font-size: 11px; color: var(--ghost); }
+
+  /* ── Pending notice ── */
+  .pending-notice {
+    background: #fff8ee; border: 1px solid rgba(184,150,90,0.35);
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 16px;
+    font-size: 13px; color: var(--mid);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── Post card ── */
+  .post-card {
+    background: #fff; border-radius: 12px; padding: 20px 22px;
+    border: 1px solid var(--muted); margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(92,45,78,0.05);
+    animation: fadeUp 0.3s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .post-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 14px;
+  }
+  .post-author { display: flex; gap: 10px; align-items: center; }
+  .post-author-name {
+    font-family: 'Cormorant Garamond', serif; font-weight: 700;
+    color: var(--plum); font-size: 16px;
+  }
+  .post-author-title { font-size: 11px; color: var(--gold); }
+  .post-time { font-size: 11px; color: var(--ghost); }
+  .post-body {
+    font-size: 15px; line-height: 1.75; color: var(--dark);
+    white-space: pre-wrap; margin-bottom: 14px;
+  }
+  .post-image {
+    border-radius: 8px; overflow: hidden; margin-bottom: 14px;
+    border: 1px solid var(--muted);
+  }
+  .post-image img { width: 100%; display: block; max-height: 420px; object-fit: cover; }
+  .post-tag {
+    display: inline-block; background: var(--soft); color: var(--gold);
+    border: 1px solid rgba(184,150,90,0.3); border-radius: 20px;
+    padding: 1px 10px; font-size: 10.5px; margin-bottom: 12px;
+  }
+  .post-actions {
+    display: flex; gap: 16px; align-items: center;
+    border-top: 1px solid var(--muted); padding-top: 10px;
+  }
+  .like-btn {
+    border: none; background: none; cursor: pointer; padding: 4px 0;
+    display: flex; align-items: center; gap: 5px; color: var(--ghost);
+    font-size: 13px; font-family: 'DM Sans', sans-serif; transition: color 0.15s;
+  }
+  .like-btn.liked { color: var(--plum); }
+  .like-btn .heart { font-size: 16px; display: inline-block; transition: transform 0.15s; }
+  .like-btn.liked .heart { transform: scale(1.2); }
+  .comment-toggle {
+    border: none; background: none; cursor: pointer; font-size: 13px;
+    color: var(--ghost); padding: 4px 0; font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .comment-toggle:hover { color: var(--plum); }
+  .delete-btn {
+    border: none; background: none; cursor: pointer; color: var(--muted);
+    font-size: 16px; padding: 4px; line-height: 1; margin-left: auto;
+  }
+  .delete-btn:hover { color: #c0392b; }
+
+  /* ── Comments ── */
+  .comments-section { margin-top: 14px; border-top: 1px solid var(--muted); padding-top: 14px; }
+  .comment-item { margin-top: 10px; display: flex; gap: 8px; }
+  .comment-item.reply { margin-left: 34px; }
+  .comment-body {
+    flex: 1; background: var(--soft); border-radius: 10px; padding: 8px 12px;
+  }
+  .comment-body.reply-body { border-left: 2px solid var(--gold); }
+  .comment-meta {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;
+  }
+  .comment-author {
+    font-family: 'Cormorant Garamond', serif; font-weight: 700;
+    color: var(--plum); font-size: 13px;
+  }
+  .comment-text { font-size: 13px; color: var(--dark); line-height: 1.55; }
+  .comment-actions { display: flex; gap: 10px; margin-top: 3px; padding-left: 4px; }
+  .reply-btn {
+    border: none; background: none; cursor: pointer; font-size: 12px;
+    color: var(--ghost); padding: 4px 0; font-family: 'DM Sans', sans-serif;
+  }
+  .reply-btn:hover { color: var(--plum); }
+  .comment-input-row {
+    display: flex; gap: 8px; align-items: flex-start; margin-top: 10px;
+  }
+  .comment-input-row textarea {
+    flex: 1; resize: none; border: 1px solid var(--muted); border-radius: 20px;
+    padding: 8px 14px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    background: var(--soft); color: var(--dark); outline: none;
+    line-height: 1.5; overflow: hidden; min-height: 36px;
+  }
+  .comment-input-row textarea:focus { border-color: var(--plum); }
+  .comment-submit {
+    background: var(--plum); color: #fff; border: none; border-radius: 20px;
+    padding: 7px 16px; cursor: pointer; font-size: 12px;
+    font-family: 'DM Sans', sans-serif; flex-shrink: 0;
+  }
+  .comment-submit:hover { background: var(--plumlt); }
+
+  /* ── Empty state ── */
+  .empty-state { text-align: center; padding: 60px 20px; }
+  .empty-state .icon { font-size: 36px; margin-bottom: 12px; opacity: 0.3; }
+  .empty-state p {
+    font-family: 'Cormorant Garamond', serif; font-size: 17px;
+    color: var(--plum); opacity: 0.4;
+  }
+
+  /* ── Mod dashboard ── */
+  #mod-screen { min-height: 100vh; background: var(--cream); }
+  .mod-header { padding: 28px 16px 0; max-width: 760px; margin: 0 auto; }
+  .mod-header h2 {
+    font-family: 'Cormorant Garamond', serif; color: var(--plum);
+    font-size: 26px; margin-bottom: 4px;
+  }
+  .mod-header p { color: var(--ghost); font-size: 13px; }
+  .tab-bar {
+    display: flex; gap: 4px; margin: 20px 0;
+    background: #fff; border-radius: 10px; padding: 4px;
+    border: 1px solid var(--muted);
+  }
+  .tab-btn {
+    flex: 1; border: none; border-radius: 8px; padding: 8px 0;
+    background: none; color: var(--mid); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    transition: all 0.15s; display: flex; align-items: center;
+    justify-content: center; gap: 6px;
+  }
+  .tab-btn.active { background: var(--plum); color: #fff; }
+  .mod-card {
+    background: #fff; border-radius: 12px; padding: 18px 20px;
+    margin-bottom: 12px; border: 1px solid var(--muted);
+  }
+  .mod-card-header { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .mod-name {
+    font-family: 'Cormorant Garamond', serif; font-weight: 700;
+    color: var(--plum); font-size: 17px;
+  }
+  .mod-email { font-size: 12px; color: var(--ghost); }
+  .mod-registered { font-size: 11px; color: var(--ghost); margin-top: 2px; }
+  .title-row { display: flex; gap: 8px; align-items: center; }
+  .title-input {
+    flex: 1; border: 1px solid var(--muted); border-radius: 8px;
+    padding: 8px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    background: var(--soft); color: var(--dark); outline: none;
+  }
+  .title-input:focus { border-color: var(--plum); }
+  .member-row {
+    display: flex; align-items: center; gap: 12px; padding: 14px 18px;
+    border-bottom: 1px solid var(--muted);
+  }
+  .member-row:last-child { border-bottom: none; }
+  .member-info { flex: 1; }
+  .member-name {
+    font-family: 'Cormorant Garamond', serif; font-weight: 700;
+    color: var(--plum); font-size: 15px;
+  }
+  .member-email { font-size: 12px; color: var(--ghost); }
+  .status-badge {
+    display: inline-block; border-radius: 20px; padding: 1px 9px;
+    font-size: 10.5px; font-family: 'DM Sans', sans-serif; border: 1px solid;
+  }
+  .status-approved { color: #2e7d52; background: #e8f5ee; border-color: #b0d9bf; }
+  .status-pending  { color: var(--gold); background: #fff8ee; border-color: rgba(184,150,90,0.4); }
+  .status-rejected { color: #c0392b; background: #fdf0ef; border-color: #f0c0bc; }
+  .title-badge {
+    display: inline-block; background: #fff8ee; color: var(--gold);
+    border: 1px solid rgba(184,150,90,0.3); border-radius: 20px;
+    padding: 1px 9px; font-size: 10.5px; font-family: 'DM Sans', sans-serif;
+  }
+  .mod-content { max-width: 760px; margin: 0 auto; padding: 0 16px 40px; }
+
+  /* ── Pending screen ── */
+  #pending-screen {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 60% 0%, #7a3060 0%, var(--plumdk) 45%, #1a0e16 100%);
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+
+  /* ── Footer ── */
+  #footer { text-align: center; padding: 20px 0 32px; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
+
+  /* ── Hidden ── */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading-screen"><span>Loading…</span></div>
+
+<!-- Auth -->
+<div id="auth-screen" class="hidden">
+  <div class="auth-card">
+    <p class="auth-tagline">Strong Women · Strong Voices</p>
+    <h1>The Forum</h1>
+
+    <!-- Login form -->
+    <div id="login-form">
+      <div class="field">
+        <label>EMAIL</label>
+        <input type="email" id="login-email" placeholder="you@example.com" />
+        <div class="field-error hidden" id="login-email-err"></div>
+      </div>
+      <div class="field">
+        <label>PASSWORD</label>
+        <input type="password" id="login-password" placeholder="••••••••" />
+        <div class="field-error hidden" id="login-pass-err"></div>
+      </div>
+      <button class="btn btn-primary btn-full" id="login-btn">Sign In</button>
+      <div class="divider"><span>OR</span></div>
+      <p class="auth-switch">New here? <button class="btn-link" id="go-register">Request access</button></p>
+    </div>
+
+    <!-- Register form -->
+    <div id="register-form" class="hidden">
+      <div class="field">
+        <label>FULL NAME</label>
+        <input type="text" id="reg-name" placeholder="Your name" />
+        <div class="field-error hidden" id="reg-name-err"></div>
+      </div>
+      <div class="field">
+        <label>EMAIL</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" />
+        <div class="field-error hidden" id="reg-email-err"></div>
+      </div>
+      <div class="field">
+        <label>PASSWORD</label>
+        <input type="password" id="reg-password" placeholder="Min. 6 characters" />
+        <div class="field-error hidden" id="reg-pass-err"></div>
+      </div>
+      <div class="field">
+        <label>CONFIRM PASSWORD</label>
+        <input type="password" id="reg-confirm" placeholder="••••••••" />
+        <div class="field-error hidden" id="reg-confirm-err"></div>
+      </div>
+      <button class="btn btn-primary btn-full" id="register-btn">Create Account</button>
+      <div class="divider"><span>OR</span></div>
+      <p class="auth-switch">Already have an account? <button class="btn-link" id="go-login">Sign in</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- Pending approval screen -->
+<div id="pending-screen" class="hidden">
+  <div class="auth-card" style="text-align:center; padding: 40px 36px;">
+    <div style="font-size:36px; margin-bottom:12px;">✦</div>
+    <h2 style="font-family:'Cormorant Garamond',serif; color:var(--plum); font-size:26px; margin-bottom:10px;">Application Received</h2>
+    <p style="color:var(--mid); font-size:14px; line-height:1.7;">
+      Your account is awaiting approval.<br/>You'll be able to sign in once reviewed.
+    </p>
+    <button class="btn btn-ghost" style="margin-top:24px;" id="pending-back">Back to Sign In</button>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app-screen" class="hidden">
+
+  <!-- Top bar -->
+  <div id="topbar">
+    <div class="topbar-left">
+      <span class="topbar-title" id="topbar-title">The Forum</span>
+      <span class="topbar-sub" id="topbar-sub">STRONG VOICES</span>
+    </div>
+    <div class="topbar-right">
+      <button class="mod-btn hidden" id="mod-btn">
+        Moderation <span class="badge-count hidden" id="mod-count"></span>
+      </button>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="avatar" id="topbar-avatar" style="width:30px;height:30px;font-size:11px;"></div>
+        <div class="topbar-user">
+          <div class="name" id="topbar-name"></div>
+          <div class="title" id="topbar-title-tag"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div id="filter-bar" class="hidden"></div>
+
+  <!-- Feed -->
+  <div id="feed-view">
+    <div id="main">
+      <!-- Composer -->
+      <div id="composer">
+        <div class="composer-row">
+          <div class="avatar" id="composer-avatar" style="width:40px;height:40px;font-size:15px; margin-top:2px;"></div>
+          <textarea id="composer-text" rows="2" placeholder="What's on your mind?"></textarea>
+        </div>
+        <div class="composer-extras hidden" id="composer-extras">
+          <div class="composer-extras-row">
+            <input type="url" id="composer-img" placeholder="Image URL (optional)" style="flex:1; min-width:160px;" />
+            <input type="text" id="composer-tag" placeholder="#tag" style="width:110px;" />
+          </div>
+          <div class="composer-actions">
+            <span class="composer-hint">Posts go to moderation before appearing in the feed.</span>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-ghost btn-sm" id="composer-cancel">Cancel</button>
+              <button class="btn btn-primary btn-sm" id="composer-submit" disabled>Share</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending notice -->
+      <div class="pending-notice hidden" id="pending-posts-notice">
+        <span>⏳</span> <span id="pending-posts-text"></span>
+      </div>
+
+      <!-- Posts feed -->
+      <div id="posts-container"></div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+      <button class="signout-btn" id="signout-btn">Sign out</button>
+    </div>
+  </div>
+
+  <!-- Mod dashboard -->
+  <div id="mod-view" class="hidden">
+    <div class="mod-header">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+        <button class="btn btn-ghost btn-sm" id="mod-back">← Back to Feed</button>
+      </div>
+      <h2>Moderation</h2>
+      <p>Review accounts and posts before they go live.</p>
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="pending-users">
+          Members <span class="badge-count hidden" id="tab-users-count"></span>
+        </button>
+        <button class="tab-btn" data-tab="pending-posts">
+          Posts <span class="badge-count hidden" id="tab-posts-count"></span>
+        </button>
+        <button class="tab-btn" data-tab="all-members">All Members</button>
+      </div>
+    </div>
+    <div class="mod-content">
+      <div id="tab-pending-users"></div>
+      <div id="tab-pending-posts" class="hidden"></div>
+      <div id="tab-all-members" class="hidden"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, push,
+         update, remove, onValue, off }           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ─────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────
+const ADMIN_EMAIL = "lecamillesocmed@gmail.com";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyCVyfftndug8Wr1A_GU2zvlSnEKG_4-LTM",
+  authDomain:        "dwc-community.firebaseapp.com",
+  databaseURL:       "https://dwc-community-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:         "dwc-community",
+  storageBucket:     "dwc-community.firebasestorage.app",
+  messagingSenderId: "165245825127",
+  appId:             "1:165245825127:web:30f7fd704d587a9b88a4c2"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+// ─────────────────────────────────────
+// STATE
+// ─────────────────────────────────────
+let currentUser = null;
+let allUsers    = {};
+let allPosts    = {};
+let activeFilter = "all";
+let postsListener = null;
+let usersListener = null;
+
+// ─────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────
+function uid()        { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function hashPw(str)  { let h=5381; for(let i=0;i<str.length;i++) h=((h<<5)+h)^str.charCodeAt(i); return (h>>>0).toString(36); }
+function esc(str)     { const d=document.createElement('div'); d.textContent=str||''; return d.innerHTML; }
+function timeAgo(ts)  {
+  const s = Math.floor((Date.now()-ts)/1000);
+  if(s<60)    return 'just now';
+  if(s<3600)  return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+function initials(name='') { return name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(); }
+const AV = ['#5c2d4e','#7a4060','#8b6914','#3d4e5c','#4e3d2d','#5c4e3d'];
+function avatarBg(name) { return AV[(name||' ').charCodeAt(0)%AV.length]; }
+function avatarHTML(name, size) {
+  return `<div class="avatar" style="width:${size}px;height:${size}px;font-size:${Math.floor(size*0.38)}px;background:${avatarBg(name)}">${esc(initials(name))}</div>`;
+}
+function showEl(id)  { document.getElementById(id)?.classList.remove('hidden'); }
+function hideEl(id)  { document.getElementById(id)?.classList.add('hidden'); }
+function getVal(id)  { return (document.getElementById(id)?.value||'').trim(); }
+function setVal(id,v){ const el=document.getElementById(id); if(el) el.value=v; }
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = msg; el.classList.remove('hidden');
+}
+function clearErr(id) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent=''; el.classList.add('hidden');
+}
+
+// Session (localStorage — just stores email, data lives in Firebase)
+function saveSession(email) { try { localStorage.setItem('dwcforum_session', email||''); } catch{} }
+function loadSession()      { try { return localStorage.getItem('dwcforum_session')||null; } catch{ return null; } }
+
+// ─────────────────────────────────────
+// FIREBASE HELPERS
+// ─────────────────────────────────────
+async function fbGet(path)       { const s = await get(ref(db,path)); return s.exists()?s.val():null; }
+async function fbSet(path, val)  { await set(ref(db,path), val); }
+async function fbUpdate(path,val){ await update(ref(db,path), val); }
+async function fbRemove(path)    { await remove(ref(db,path)); }
+
+// ─────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────
+async function boot() {
+  const email = loadSession();
+  if(email) {
+    const users = await fbGet('users');
+    if(users && users[sanitizeKey(email)]) {
+      const u = users[sanitizeKey(email)];
+      if(u.status==='approved') {
+        allUsers = users;
+        await signInUser(u);
+        return;
+      }
+    }
+  }
+  hideEl('loading-screen');
+  showEl('auth-screen');
+}
+
+function sanitizeKey(email) {
+  return email.toLowerCase().replace(/\./g,'_dot_').replace(/@/g,'_at_');
+}
+
+// ─────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────
+document.getElementById('go-register').onclick = () => {
+  hideEl('login-form'); showEl('register-form');
+};
+document.getElementById('go-login').onclick = () => {
+  hideEl('register-form'); showEl('login-form');
+};
+document.getElementById('pending-back').onclick = () => {
+  hideEl('pending-screen'); showEl('auth-screen');
+};
+
+// Login
+document.getElementById('login-btn').onclick = async () => {
+  ['login-email-err','login-pass-err'].forEach(clearErr);
+  const email = getVal('login-email');
+  const pw    = getVal('login-password');
+  if(!email.includes('@'))  { showErr('login-email-err','Enter a valid email.'); return; }
+  if(pw.length<6)           { showErr('login-pass-err','Password must be at least 6 characters.'); return; }
+
+  const btn = document.getElementById('login-btn');
+  btn.disabled=true; btn.textContent='Signing in…';
+
+  const users = await fbGet('users');
+  const key   = sanitizeKey(email);
+  const u     = users?.[key];
+
+  if(!u)                   { showErr('login-email-err','No account found.'); btn.disabled=false; btn.textContent='Sign In'; return; }
+  if(u.password!==hashPw(pw)) { showErr('login-pass-err','Incorrect password.'); btn.disabled=false; btn.textContent='Sign In'; return; }
+  if(u.status==='pending') { hideEl('auth-screen'); showEl('pending-screen'); btn.disabled=false; btn.textContent='Sign In'; return; }
+  if(u.status==='rejected'){ showErr('login-email-err','Your account was not approved.'); btn.disabled=false; btn.textContent='Sign In'; return; }
+
+  allUsers = users;
+  await signInUser(u);
+};
+
+// Register
+document.getElementById('register-btn').onclick = async () => {
+  ['reg-name-err','reg-email-err','reg-pass-err','reg-confirm-err'].forEach(clearErr);
+  const name    = getVal('reg-name');
+  const email   = getVal('reg-email');
+  const pw      = getVal('reg-password');
+  const confirm = getVal('reg-confirm');
+  let ok = true;
+  if(!name)              { showErr('reg-name-err','Name is required.'); ok=false; }
+  if(!email.includes('@')){ showErr('reg-email-err','Enter a valid email.'); ok=false; }
+  if(pw.length<6)        { showErr('reg-pass-err','Password must be at least 6 characters.'); ok=false; }
+  if(pw!==confirm)       { showErr('reg-confirm-err','Passwords do not match.'); ok=false; }
+  if(!ok) return;
+
+  const btn = document.getElementById('register-btn');
+  btn.disabled=true; btn.textContent='Creating account…';
+
+  const key   = sanitizeKey(email);
+  const users = await fbGet('users') || {};
+  if(users[key]) { showErr('reg-email-err','An account with this email already exists.'); btn.disabled=false; btn.textContent='Create Account'; return; }
+
+  const isAdmin = email.toLowerCase()===ADMIN_EMAIL.toLowerCase();
+  const newUser = {
+    id: uid(), name, email: email.toLowerCase(),
+    password: hashPw(pw),
+    title: isAdmin ? 'Administrator' : '',
+    status: isAdmin ? 'approved' : 'pending',
+    role: isAdmin ? 'admin' : 'member',
+    joinedAt: Date.now()
+  };
+  await fbSet(`users/${key}`, newUser);
+
+  if(isAdmin) {
+    allUsers = { ...users, [key]: newUser };
+    await signInUser(newUser);
+  } else {
+    btn.disabled=false; btn.textContent='Create Account';
+    hideEl('auth-screen'); showEl('pending-screen');
+  }
+};
+
+// Enter key support
+['login-email','login-password'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('login-btn').click(); });
+});
+['reg-name','reg-email','reg-password','reg-confirm'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('register-btn').click(); });
+});
+
+// ─────────────────────────────────────
+// SIGN IN / OUT
+// ─────────────────────────────────────
+async function signInUser(user) {
+  currentUser = user;
+  saveSession(user.email);
+
+  // Topbar
+  const avEl = document.getElementById('topbar-avatar');
+  avEl.textContent = initials(user.name);
+  avEl.style.background = avatarBg(user.name);
+  document.getElementById('topbar-name').textContent = user.name;
+  document.getElementById('topbar-title-tag').textContent = user.title||'';
+
+  if(user.role==='admin') {
+    showEl('mod-btn');
+    document.getElementById('mod-btn').onclick = openMod;
+  }
+
+  // Composer avatar
+  const ca = document.getElementById('composer-avatar');
+  ca.textContent = initials(user.name);
+  ca.style.background = avatarBg(user.name);
+  document.getElementById('composer-text').placeholder = `What's on your mind, ${user.name.split(' ')[0]}?`;
+
+  hideEl('loading-screen');
+  hideEl('auth-screen');
+  hideEl('pending-screen');
+  showEl('app-screen');
+  showEl('feed-view');
+  hideEl('mod-view');
+
+  startListeners();
+}
+
+document.getElementById('signout-btn').onclick = () => {
+  stopListeners();
+  currentUser = null;
+  allPosts    = {};
+  allUsers    = {};
+  saveSession('');
+  setVal('login-email',''); setVal('login-password','');
+  hideEl('app-screen');
+  showEl('auth-screen');
+  hideEl('register-form'); showEl('login-form');
+};
+
+// ─────────────────────────────────────
+// REAL-TIME LISTENERS
+// ─────────────────────────────────────
+function startListeners() {
+  // Posts
+  const postsRef = ref(db,'posts');
+  postsListener = onValue(postsRef, snap => {
+    allPosts = snap.exists() ? snap.val() : {};
+    renderFeed();
+    if(currentUser?.role==='admin') updateModBadge();
+  });
+  // Users
+  const usersRef = ref(db,'users');
+  usersListener = onValue(usersRef, snap => {
+    allUsers = snap.exists() ? snap.val() : {};
+    if(currentUser?.role==='admin') updateModBadge();
+  });
+}
+
+function stopListeners() {
+  if(postsListener) { off(ref(db,'posts')); postsListener=null; }
+  if(usersListener) { off(ref(db,'users')); usersListener=null; }
+}
+
+// ─────────────────────────────────────
+// COMPOSER
+// ─────────────────────────────────────
+const composerText = document.getElementById('composer-text');
+const composerExtras = document.getElementById('composer-extras');
+const composerSubmit = document.getElementById('composer-submit');
+
+composerText.addEventListener('focus', () => showEl('composer-extras'));
+composerText.addEventListener('input', () => {
+  composerText.style.height='auto';
+  composerText.style.height=composerText.scrollHeight+'px';
+  composerSubmit.disabled = !composerText.value.trim();
+  showEl('composer-extras');
+});
+
+document.getElementById('composer-cancel').onclick = () => {
+  composerText.value='';
+  setVal('composer-img',''); setVal('composer-tag','');
+  composerSubmit.disabled=true;
+  hideEl('composer-extras');
+  composerText.style.height='';
+};
+
+composerSubmit.onclick = async () => {
+  const text = composerText.value.trim();
+  if(!text) return;
+  composerSubmit.disabled=true; composerSubmit.textContent='Posting…';
+
+  const post = {
+    id: uid(), authorId: currentUser.id,
+    text, imageUrl: getVal('composer-img'),
+    tag: getVal('composer-tag').replace(/^#/,''),
+    ts: Date.now(), status: 'pending',
+    likes: {}, comments: {}
+  };
+  await fbSet(`posts/${post.id}`, post);
+
+  composerText.value='';
+  setVal('composer-img',''); setVal('composer-tag','');
+  composerSubmit.textContent='Share';
+  composerText.style.height='';
+  hideEl('composer-extras');
+};
+
+// ─────────────────────────────────────
+// FEED RENDER
+// ─────────────────────────────────────
+function renderFeed() {
+  const container = document.getElementById('posts-container');
+  const approved  = Object.values(allPosts)
+    .filter(p => p.status==='approved')
+    .sort((a,b) => b.ts-a.ts);
+
+  // Tags
+  const allTags = [...new Set(approved.map(p=>p.tag).filter(Boolean))];
+  renderFilterBar(allTags);
+
+  // Pending notice
+  const myPending = Object.values(allPosts).filter(p => p.authorId===currentUser.id && p.status==='pending');
+  if(myPending.length>0) {
+    showEl('pending-posts-notice');
+    document.getElementById('pending-posts-text').textContent =
+      myPending.length===1 ? 'You have 1 post awaiting moderation.' : `You have ${myPending.length} posts awaiting moderation.`;
+  } else {
+    hideEl('pending-posts-notice');
+  }
+
+  // Filter
+  const filtered = activeFilter==='all' ? approved : approved.filter(p=>p.tag===activeFilter);
+
+  if(filtered.length===0) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">✦</div><p>Nothing here yet. Be the first to share.</p></div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(p => renderPost(p)).join('');
+  bindPostEvents(container);
+}
+
+function renderFilterBar(tags) {
+  const bar = document.getElementById('filter-bar');
+  if(tags.length===0) { hideEl('filter-bar'); return; }
+  showEl('filter-bar');
+  bar.innerHTML = ['all',...tags].map(t =>
+    `<button class="filter-tag${activeFilter===t?' active':''}" data-tag="${esc(t)}">#${esc(t)}</button>`
+  ).join('');
+  bar.querySelectorAll('.filter-tag').forEach(btn => {
+    btn.onclick = () => { activeFilter=btn.dataset.tag; renderFeed(); };
+  });
+}
+
+function getAuthor(authorId) {
+  return Object.values(allUsers).find(u=>u.id===authorId) || { name:'Member', title:'' };
+}
+
+function renderPost(p) {
+  const author = getAuthor(p.authorId);
+  const likes  = p.likes ? Object.values(p.likes) : [];
+  const liked  = likes.includes(currentUser.id);
+  const comments = p.comments ? Object.values(p.comments).sort((a,b)=>a.ts-b.ts) : [];
+  const commentCount = comments.reduce((n,c)=>n+1+(c.replies?Object.values(c.replies).length:0),0);
+  const canDelete = p.authorId===currentUser.id || currentUser.role==='admin';
+
+  return `
+  <article class="post-card" data-id="${p.id}">
+    <div class="post-header">
+      <div class="post-author">
+        ${avatarHTML(author.name,42)}
+        <div>
+          <div class="post-author-name">${esc(author.name)}</div>
+          ${author.title?`<div class="post-author-title">${esc(author.title)}</div>`:''}
+          <div class="post-time">${timeAgo(p.ts)}</div>
+        </div>
+      </div>
+      ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}" title="Delete">✕</button>`:''}
+    </div>
+    <div class="post-body">${esc(p.text)}</div>
+    ${p.imageUrl?`<div class="post-image"><img src="${esc(p.imageUrl)}" loading="lazy" /></div>`:''}
+    ${p.tag?`<span class="post-tag">#${esc(p.tag)}</span>`:''}
+    <div class="post-actions">
+      <button class="like-btn${liked?' liked':''}" data-action="like-post" data-id="${p.id}">
+        <span class="heart">${liked?'♥':'♡'}</span> ${likes.length>0?likes.length:''}
+      </button>
+      <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">
+        💬 ${commentCount>0?commentCount:''} Comment
+      </button>
+    </div>
+    <div class="comments-section hidden" id="comments-${p.id}">
+      ${comments.map(c=>renderComment(c,p.id,false)).join('')}
+      <div class="comment-input-row" style="margin-top:${comments.length>0?'10px':'0'}">
+        <textarea placeholder="Add a comment…" rows="1" data-action="comment-input" data-id="${p.id}"></textarea>
+        <button class="comment-submit" data-action="submit-comment" data-id="${p.id}">Post</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function renderComment(c, postId, isReply) {
+  const author  = getAuthor(c.authorId);
+  const likes   = c.likes ? Object.values(c.likes) : [];
+  const liked   = likes.includes(currentUser.id);
+  const replies = c.replies ? Object.values(c.replies).sort((a,b)=>a.ts-b.ts) : [];
+  const canDel  = c.authorId===currentUser.id || currentUser.role==='admin';
+
+  return `
+  <div class="comment-item${isReply?' reply':''}" data-comment-id="${c.id}">
+    ${avatarHTML(author.name, 28)}
+    <div style="flex:1">
+      <div class="comment-body${isReply?' reply-body':''}">
+        <div class="comment-meta">
+          <span class="comment-author">${esc(author.name)}</span>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span style="font-size:10px;color:var(--ghost)">${timeAgo(c.ts)}</span>
+            ${canDel?`<button class="delete-btn" style="font-size:11px;" data-action="delete-comment" data-post-id="${postId}" data-comment-id="${c.id}">✕</button>`:''}
+          </div>
+        </div>
+        <div class="comment-text">${esc(c.text)}</div>
+      </div>
+      <div class="comment-actions">
+        <button class="like-btn${liked?' liked':''}" data-action="like-comment" data-post-id="${postId}" data-comment-id="${c.id}">
+          <span class="heart">${liked?'♥':'♡'}</span> ${likes.length>0?likes.length:''}
+        </button>
+        ${!isReply?`<button class="reply-btn" data-action="toggle-reply" data-post-id="${postId}" data-comment-id="${c.id}">Reply</button>`:''}
+      </div>
+      ${!isReply?`<div class="reply-form hidden" id="reply-form-${c.id}">
+        <div class="comment-input-row">
+          <textarea placeholder="Reply…" rows="1" data-action="reply-input"></textarea>
+          <button class="comment-submit" data-action="submit-reply" data-post-id="${postId}" data-comment-id="${c.id}">Post</button>
+        </div>
+      </div>`:''}
+      ${replies.map(r=>renderComment(r,postId,true)).join('')}
+    </div>
+  </div>`;
+}
+
+function bindPostEvents(container) {
+  container.addEventListener('click', async e => {
+    const btn = e.target.closest('[data-action]');
+    if(!btn) return;
+    const action = btn.dataset.action;
+
+    if(action==='delete-post') {
+      if(!confirm('Delete this post?')) return;
+      await fbRemove(`posts/${btn.dataset.id}`);
+    }
+
+    if(action==='like-post') {
+      const pid   = btn.dataset.id;
+      const path  = `posts/${pid}/likes/${currentUser.id}`;
+      const has   = await fbGet(path);
+      has ? await fbRemove(path) : await fbSet(path, currentUser.id);
+    }
+
+    if(action==='toggle-comments') {
+      const sec = document.getElementById(`comments-${btn.dataset.id}`);
+      sec?.classList.toggle('hidden');
+      btn.textContent = sec?.classList.contains('hidden')
+        ? `💬 Comment`
+        : `💬 Hide`;
+    }
+
+    if(action==='submit-comment') {
+      const row  = btn.closest('.comment-input-row');
+      const ta   = row.querySelector('textarea');
+      const text = ta.value.trim();
+      if(!text) return;
+      const cid = uid();
+      await fbSet(`posts/${btn.dataset.id}/comments/${cid}`, {
+        id: cid, authorId: currentUser.id, text, ts: Date.now(), likes: {}, replies: {}
+      });
+      ta.value=''; ta.style.height='';
+    }
+
+    if(action==='toggle-reply') {
+      const form = document.getElementById(`reply-form-${btn.dataset.commentId}`);
+      form?.classList.toggle('hidden');
+    }
+
+    if(action==='submit-reply') {
+      const row  = btn.closest('.comment-input-row');
+      const ta   = row.querySelector('textarea');
+      const text = ta.value.trim();
+      if(!text) return;
+      const rid = uid();
+      await fbSet(`posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}/replies/${rid}`, {
+        id: rid, authorId: currentUser.id, text, ts: Date.now(), likes: {}
+      });
+      ta.value=''; ta.style.height='';
+      document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.add('hidden');
+    }
+
+    if(action==='like-comment') {
+      const path = `posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}/likes/${currentUser.id}`;
+      const has  = await fbGet(path);
+      has ? await fbRemove(path) : await fbSet(path, currentUser.id);
+    }
+
+    if(action==='delete-comment') {
+      if(!confirm('Delete this comment?')) return;
+      await fbRemove(`posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}`);
+    }
+  });
+
+  // Auto-grow textareas
+  container.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => {
+      ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px';
+    });
+    ta.addEventListener('keydown', e => {
+      if(e.key==='Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const action = ta.dataset.action;
+        if(action==='comment-input') {
+          const submitBtn = ta.closest('.comment-input-row')?.querySelector('[data-action="submit-comment"]');
+          submitBtn?.click();
+        }
+        if(action==='reply-input') {
+          const submitBtn = ta.closest('.comment-input-row')?.querySelector('[data-action="submit-reply"]');
+          submitBtn?.click();
+        }
+      }
+    });
+  });
+}
+
+// ─────────────────────────────────────
+// MOD BADGE
+// ─────────────────────────────────────
+function updateModBadge() {
+  const pendingUsers = Object.values(allUsers).filter(u=>u.status==='pending').length;
+  const pendingPosts = Object.values(allPosts).filter(p=>p.status==='pending').length;
+  const total = pendingUsers + pendingPosts;
+  const badge = document.getElementById('mod-count');
+  if(total>0) { badge.textContent=total; showEl('mod-count'); }
+  else { hideEl('mod-count'); }
+}
+
+// ─────────────────────────────────────
+// MOD DASHBOARD
+// ─────────────────────────────────────
+function openMod() {
+  hideEl('feed-view');
+  showEl('mod-view');
+  document.getElementById('topbar-sub').textContent='MODERATION';
+  renderModDashboard();
+}
+
+document.getElementById('mod-back').onclick = () => {
+  hideEl('mod-view'); showEl('feed-view');
+  document.getElementById('topbar-sub').textContent='STRONG VOICES';
+};
+
+function renderModDashboard() {
+  renderPendingUsers();
+  renderPendingPosts();
+  renderAllMembers();
+  updateTabCounts();
+}
+
+function updateTabCounts() {
+  const pu = Object.values(allUsers).filter(u=>u.status==='pending').length;
+  const pp = Object.values(allPosts).filter(p=>p.status==='pending').length;
+  const uc = document.getElementById('tab-users-count');
+  const pc = document.getElementById('tab-posts-count');
+  if(pu>0){ uc.textContent=pu; showEl('tab-users-count'); } else hideEl('tab-users-count');
+  if(pp>0){ pc.textContent=pp; showEl('tab-posts-count'); } else hideEl('tab-posts-count');
+}
+
+function renderPendingUsers() {
+  const container = document.getElementById('tab-pending-users');
+  const pending   = Object.values(allUsers).filter(u=>u.status==='pending');
+  if(pending.length===0) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">✓</div><p>No pending account requests.</p></div>`;
+    return;
+  }
+  container.innerHTML = pending.map(u => `
+    <div class="mod-card">
+      <div class="mod-card-header">
+        ${avatarHTML(u.name,44)}
+        <div>
+          <div class="mod-name">${esc(u.name)}</div>
+          <div class="mod-email">${esc(u.email)}</div>
+          <div class="mod-registered">Registered ${timeAgo(u.joinedAt)}</div>
+        </div>
+      </div>
+      <div class="title-row">
+        <input class="title-input" type="text" placeholder="Assign a title (e.g. Editor, Coach, Writer…)" id="title-${sanitizeKey(u.email)}" />
+        <button class="btn btn-approve btn-sm" data-action="approve-user" data-key="${sanitizeKey(u.email)}">Approve</button>
+        <button class="btn btn-reject btn-sm"  data-action="reject-user"  data-key="${sanitizeKey(u.email)}">Reject</button>
+      </div>
+    </div>`).join('');
+
+  container.querySelectorAll('[data-action]').forEach(btn => {
+    btn.onclick = async () => {
+      const key = btn.dataset.key;
+      if(btn.dataset.action==='approve-user') {
+        const title = document.getElementById(`title-${key}`)?.value.trim();
+        if(!title) { alert('Please assign a title before approving.'); return; }
+        await fbUpdate(`users/${key}`, { status:'approved', title });
+      } else {
+        await fbUpdate(`users/${key}`, { status:'rejected' });
+      }
+      renderModDashboard();
+    };
+  });
+}
+
+function renderPendingPosts() {
+  const container = document.getElementById('tab-pending-posts');
+  const pending   = Object.values(allPosts).filter(p=>p.status==='pending').sort((a,b)=>a.ts-b.ts);
+  if(pending.length===0) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">✓</div><p>No posts awaiting approval.</p></div>`;
+    return;
+  }
+  container.innerHTML = pending.map(p => {
+    const author = getAuthor(p.authorId);
+    return `
+    <div class="mod-card">
+      <div class="mod-card-header">
+        ${avatarHTML(author.name,36)}
+        <div>
+          <div class="mod-name">${esc(author.name)}</div>
+          <div class="mod-registered">${timeAgo(p.ts)}</div>
+        </div>
+      </div>
+      <p style="font-size:14px;color:var(--dark);line-height:1.7;margin-bottom:12px;white-space:pre-wrap">${esc(p.text)}</p>
+      ${p.imageUrl?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:220px;object-fit:cover;" />`:''}
+      ${p.tag?`<span class="post-tag" style="margin-bottom:12px;display:inline-block">#${esc(p.tag)}</span>`:''}
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn btn-approve btn-sm" data-action="approve-post" data-id="${p.id}">Approve</button>
+        <button class="btn btn-reject btn-sm"  data-action="reject-post"  data-id="${p.id}">Reject</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  container.querySelectorAll('[data-action]').forEach(btn => {
+    btn.onclick = async () => {
+      const status = btn.dataset.action==='approve-post' ? 'approved' : 'rejected';
+      await fbUpdate(`posts/${btn.dataset.id}`, { status });
+      renderModDashboard();
+    };
+  });
+}
+
+function renderAllMembers() {
+  const container = document.getElementById('tab-all-members');
+  const members   = Object.values(allUsers)
+    .filter(u => u.email!==ADMIN_EMAIL.toLowerCase())
+    .sort((a,b)=>a.name.localeCompare(b.name));
+  if(members.length===0) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">✦</div><p>No members yet.</p></div>`;
+    return;
+  }
+  container.innerHTML = `<div style="background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;">
+    ${members.map(u=>`
+    <div class="member-row">
+      ${avatarHTML(u.name,36)}
+      <div class="member-info">
+        <div class="member-name">${esc(u.name)}</div>
+        <div class="member-email">${esc(u.email)}</div>
+      </div>
+      ${u.title?`<span class="title-badge">${esc(u.title)}</span>`:''}
+      <span class="status-badge status-${u.status}">${u.status}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.getElementById('tab-pending-users').classList.toggle('hidden', tab!=='pending-users');
+    document.getElementById('tab-pending-posts').classList.toggle('hidden', tab!=='pending-posts');
+    document.getElementById('tab-all-members').classList.toggle('hidden',   tab!=='all-members');
+  };
+});
+
+// ─────────────────────────────────────
+// KICK OFF
+// ─────────────────────────────────────
+boot();
+</script>
+</body>
+</html>
