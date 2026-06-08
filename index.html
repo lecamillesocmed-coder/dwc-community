@@ -120,6 +120,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .post-body{font-size:15px;line-height:1.75;color:var(--dark);white-space:pre-wrap;margin-bottom:14px;}
 .post-image{border-radius:8px;overflow:hidden;margin-bottom:14px;border:1px solid var(--muted);}
 .post-image img{width:100%;display:block;max-height:420px;object-fit:cover;}
+.post-embed{border-radius:8px;overflow:hidden;margin-bottom:14px;border:1px solid var(--muted);}
+.post-embed iframe{width:100%;display:block;border:none;}
+.post-embed-spotify{border-radius:8px;overflow:hidden;margin-bottom:14px;}
 .post-tag{display:inline-block;background:var(--soft);color:var(--gold);border:1px solid rgba(184,150,90,.3);border-radius:20px;padding:1px 10px;font-size:10.5px;margin-bottom:12px;}
 .post-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--muted);padding-top:10px;}
 .reaction-btn{border:1px solid transparent;background:none;cursor:pointer;padding:4px 9px;display:flex;align-items:center;gap:4px;color:var(--ghost);font-size:13px;font-family:'DM Sans',sans-serif;transition:all .15s;border-radius:20px;}
@@ -346,6 +349,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   <div id="feed-view">
     <!-- Mobile house rules (hidden on desktop) -->
   <div id="mobile-rules">
+    <!-- Stats bar -->
+    <div id="mobile-stats" style="display:flex;justify-content:center;gap:24px;padding:10px 16px 8px;background:var(--cream);">
+      <div style="text-align:center;">
+        <div style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:20px;" id="mobile-viewers">—</div>
+        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);font-family:'DM Sans',sans-serif;">Viewers</div>
+      </div>
+      <div style="width:1px;background:var(--muted);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:20px;" id="mobile-members">—</div>
+        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);font-family:'DM Sans',sans-serif;">Members</div>
+      </div>
+    </div>
     <button class="mobile-rules-toggle" id="mobile-rules-toggle">
       <span>House Rules</span>
       <span class="chevron">▼</span>
@@ -380,11 +395,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
           </div>
           <div class="composer-extras hidden" id="composer-extras">
             <div class="composer-extras-row">
-              <input type="url" id="composer-img" placeholder="Image URL — must end in .jpg, .png, .webp (Imgur works well)" style="flex:1;min-width:160px;"/>
+              <input type="url" id="composer-img" placeholder="Image URL (optional — .jpg, .png, .webp)" style="flex:1;min-width:160px;"/>
               <input type="text" id="composer-tag" placeholder="#tag" style="width:110px;"/>
             </div>
             <div class="composer-actions">
-              <span class="composer-hint">Posts go to moderation before appearing.</span>
+              <span class="composer-hint" id="composer-hint">Posts go to moderation before appearing. YouTube &amp; Spotify links embed automatically.</span>
               <div style="display:flex;gap:8px;">
                 <button class="btn btn-ghost btn-sm" id="composer-cancel">Cancel</button>
                 <button class="btn btn-primary btn-sm" id="composer-submit" disabled>Share</button>
@@ -642,6 +657,45 @@ function getAutoImage(text){
   return match ? match[0] : null;
 }
 
+function getYouTubeId(text){
+  const patterns = [
+    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/
+  ];
+  for(const p of patterns){ const m = text.match(p); if(m) return m[1]; }
+  return null;
+}
+
+function getSpotifyEmbed(text){
+  const m = text.match(/https?:\/\/open\.spotify\.com\/(track|album|playlist|episode|show)\/([a-zA-Z0-9]+)/);
+  if(!m) return null;
+  return 'https://open.spotify.com/embed/' + m[1] + '/' + m[2];
+}
+
+function renderMediaEmbed(post){
+  const text = post.text || '';
+  const imageUrl = post.imageUrl || getAutoImage(text);
+  // YouTube
+  const ytId = getYouTubeId(text);
+  if(ytId){
+    return '<div class="post-embed"><iframe src="https://www.youtube.com/embed/' + ytId + '" height="315" allowfullscreen loading="lazy"></iframe></div>';
+  }
+  // Spotify
+  const spotifyUrl = getSpotifyEmbed(text);
+  if(spotifyUrl){
+    const isEpisodeOrShow = spotifyUrl.includes('/episode/') || spotifyUrl.includes('/show/');
+    const h = isEpisodeOrShow ? '152' : '80';
+    return '<div class="post-embed-spotify"><iframe src="' + spotifyUrl + '" width="100%" height="' + h + '" frameborder="0" allowtransparency="true" allow="encrypted-media" loading="lazy" style="border-radius:12px;"></iframe></div>';
+  }
+  // Direct image
+  if(imageUrl){
+    return '<div class="post-image"><img src="' + esc(imageUrl) + '" loading="lazy" onerror="this.closest(\'.post-image\').style.display=\'none\'"/></div>';
+  }
+  return '';
+}
+
 function linkify(text){
   const escaped = esc(text);
   const urlPattern = /https?:\/\/[^\s<>"]+/g;
@@ -663,6 +717,8 @@ function updateMemberCount() {
   const approved = Object.values(allUsers).filter(u=>u.status==='approved').length;
   const el = document.getElementById('topbar-member-count');
   if(el) el.setAttribute('data-members', approved);
+  const mm = document.getElementById('mobile-members');
+  if(mm) mm.textContent = approved;
 }
 
 const PRESENCE_BASE = 111; // Starting visitor count offset
@@ -735,12 +791,15 @@ function startPresence(){
   // Watch total presence count
   onValue(ref(db,'presence'), snap=>{
     const live = snap.exists() ? Object.keys(snap.val()).length : 1;
-    const total = PRESENCE_BASE - 1 + live; // -1 so base 111 means 111 when 1 person is viewing
+    const total = PRESENCE_BASE - 1 + live;
     const el = document.getElementById('topbar-member-count');
-    if(el){
-      const members = parseInt(el.getAttribute('data-members')||'0');
-      el.textContent = `· ${total} online · ${members} member${members===1?'':'s'}`;
-    }
+    const members = parseInt(el?.getAttribute('data-members')||'0');
+    if(el) el.textContent = '· ' + total + ' viewer' + (total===1?'':'s') + ' · ' + members + ' member' + (members===1?'':'s');
+    // Mobile stats bar
+    const mv = document.getElementById('mobile-viewers');
+    const mm = document.getElementById('mobile-members');
+    if(mv) mv.textContent = total;
+    if(mm) mm.textContent = members;
   });
 }
 
@@ -881,7 +940,28 @@ const composerExtras=document.getElementById('composer-extras');
 const composerSubmit=document.getElementById('composer-submit');
 
 composerText.addEventListener('focus',()=>showEl('composer-extras'));
-composerText.addEventListener('input',()=>{composerText.style.height='auto';composerText.style.height=composerText.scrollHeight+'px';composerSubmit.disabled=!composerText.value.trim();showEl('composer-extras');});
+composerText.addEventListener('input',()=>{
+  composerText.style.height='auto';
+  composerText.style.height=composerText.scrollHeight+'px';
+  composerSubmit.disabled=!composerText.value.trim();
+  showEl('composer-extras');
+  // Smart hint — nudge image if link detected but not YouTube/Spotify/direct image
+  const val = composerText.value;
+  const hint = document.getElementById('composer-hint');
+  const hasLink = /https?:\/\/[^\s]+/.test(val);
+  const hasYT = getYouTubeId(val);
+  const hasSpotify = getSpotifyEmbed(val);
+  const hasImg = getAutoImage(val);
+  if(hint){
+    if(hasLink && !hasYT && !hasSpotify && !hasImg){
+      hint.style.color = 'var(--gold)';
+      hint.textContent = 'Sharing a link? Add an image URL above so it looks great in the feed.';
+    } else {
+      hint.style.color = '';
+      hint.textContent = 'Posts go to moderation before appearing. YouTube & Spotify links embed automatically.';
+    }
+  }
+});
 document.getElementById('composer-cancel').onclick=()=>{composerText.value='';setVal('composer-img','');setVal('composer-tag','');composerSubmit.disabled=true;hideEl('composer-extras');composerText.style.height='';};
 
 composerSubmit.onclick=async()=>{
@@ -977,7 +1057,7 @@ function renderPost(p){
       ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}">✕</button>`:''}
     </div>
     <div class="post-body">${linkify(p.text)}</div>
-    ${(p.imageUrl||getAutoImage(p.text))?`<div class="post-image"><img src="${esc(p.imageUrl||getAutoImage(p.text))}" loading="lazy" onerror="this.closest('.post-image').style.display='none'"/></div>`:''}
+    ${renderMediaEmbed(p)}
     ${p.tag?`<span class="post-tag">#${esc(p.tag)}</span>`:''}
     <div class="post-actions">
       ${renderReactions(p)}
