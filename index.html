@@ -1023,19 +1023,24 @@ function getReactorNames(post, key){
 
 function renderReactions(post){
   if(!currentUser){
-    return REACTIONS.map(r=>{
+    return REACTIONS.map(function(r){
       const names = getReactorNames(post, r.key);
       if(!names.length) return '';
-      return '<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid var(--muted);font-size:13px;color:var(--ghost);" title="'+esc(names.join(\', \'))+'"><span style=\"font-size:16px;\">'+r.emoji+'</span><span>'+names.length+'</span></span>';
+      const titleStr = esc(names.join(', '));
+      return '<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid var(--muted);font-size:13px;color:var(--ghost);" title="'+titleStr+'">'
+        +'<span style="font-size:16px;">'+r.emoji+'</span><span>'+names.length+'</span></span>';
     }).join('');
   }
-  return REACTIONS.map(r=>{
+  return REACTIONS.map(function(r){
     const names = getReactorNames(post, r.key);
-    const reacted = names.some((_,i)=>{ const ids=post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[]; return ids.includes(currentUser.id); });
-    const title = names.length ? r.label+': '+names.join(', ') : r.label;
-    return '<button class="reaction-btn'+(reacted?' reacted-'+r.key:'')+'" data-action="react" data-post-id="'+post.id+'" data-reaction="'+r.key+'" title="'+esc(title)+'"><span class=\"emoji\">'+r.emoji+'</span>'+(names.length?'<span>'+names.length+'</span>':'')+'</button>';
+    const ids = post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[];
+    const reacted = currentUser && ids.includes(currentUser.id);
+    const titleStr = esc(names.length ? r.label+': '+names.join(', ') : r.label);
+    return '<button class="reaction-btn'+(reacted?' reacted-'+r.key:'')+'" data-action="react" data-post-id="'+post.id+'" data-reaction="'+r.key+'" title="'+titleStr+'">'
+      +'<span class="emoji">'+r.emoji+'</span>'+(names.length?'<span>'+names.length+'</span>':'')+'</button>';
   }).join('');
 }
+
 
 function renderPost(p){
   const author=getAuthor(p.authorId);
