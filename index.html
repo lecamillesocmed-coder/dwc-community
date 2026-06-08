@@ -46,12 +46,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .auth-switch{text-align:center;font-size:13px;color:var(--ghost);}
 
 /* Topbar */
-#topbar{background:var(--plumdk);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3);}
-.topbar-left{display:flex;align-items:center;gap:10px;}
-.topbar-brand{font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:20px;letter-spacing:.1em;text-transform:uppercase;}
-.topbar-sep{color:var(--gold);opacity:.4;font-size:14px;}
-.topbar-section{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--goldlt);font-size:15px;letter-spacing:.04em;opacity:.9;}
-.topbar-member-count{font-size:11px;color:rgba(250,247,243,.45);font-family:'DM Sans',sans-serif;letter-spacing:.04em;margin-left:4px;}
+#topbar{background:var(--plumdk);padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-brand{font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:22px;letter-spacing:.1em;text-transform:uppercase;}
+.topbar-sep{color:var(--gold);opacity:.4;font-size:16px;}
+.topbar-section{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--goldlt);font-size:18px;letter-spacing:.04em;opacity:.9;}
+.topbar-member-count{font-size:12px;color:rgba(250,247,243,.45);font-family:'DM Sans',sans-serif;letter-spacing:.04em;margin-left:2px;}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .topbar-user .name{font-size:12px;color:var(--cream);}
 .topbar-user .utitle{font-size:10px;color:var(--gold);}
@@ -147,15 +147,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 /* Sidebar */
 #sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;}
 .sidebar-card{background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;box-shadow:0 2px 12px rgba(92,45,78,.05);}
-.sidebar-card-header{background:var(--plum);padding:11px 16px;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--cream);font-size:11px;letter-spacing:.12em;text-transform:uppercase;}
+.sidebar-card-header{background:var(--plum);padding:13px 18px;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--cream);font-size:13px;letter-spacing:.1em;text-transform:uppercase;}
 .sidebar-card-body{padding:14px 16px;}
 
 /* Rules card */
-.rule-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
+.rule-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
 .rule-item:last-child{border-bottom:none;padding-bottom:0;}
-.rule-emoji{font-size:17px;flex-shrink:0;margin-top:1px;}
-.rule-text{font-size:13px;color:var(--dark);line-height:1.55;}
-.rule-text strong{color:var(--plum);font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;display:block;margin-bottom:2px;}
+.rule-emoji{font-size:19px;flex-shrink:0;margin-top:2px;}
+.rule-text{font-size:14px;color:#1a0e16;line-height:1.6;}
+.rule-text strong{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--plum);display:block;margin-bottom:2px;font-style:normal;}
 
 /* Cover card */
 .cover-feature img{width:100%;border-radius:8px;display:block;border:1px solid var(--muted);}
@@ -226,6 +226,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 #pending-screen{min-height:100vh;background:radial-gradient(ellipse at 60% 0%,#7a3060 0%,var(--plumdk) 45%,#1a0e16 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
 #footer{text-align:center;padding:20px 0 32px;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--muted);border-radius:4px;}
+/* Avatar modal */
+.avatar-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;}
+.avatar-modal-box{background:var(--cream);border-radius:16px;padding:28px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.avatar-modal-title{font-family:'Cormorant Garamond',serif;color:var(--plum);font-size:20px;font-weight:700;margin-bottom:6px;}
+.avatar-modal-sub{font-size:13px;color:var(--ghost);margin-bottom:18px;line-height:1.5;}
+.avatar-preview-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.avatar-preview-img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--muted);background:var(--soft);}
+.avatar-url-input{width:100%;border:1px solid var(--muted);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--soft);color:var(--dark);outline:none;}
+.avatar-url-input:focus{border-color:var(--plum);}
+
 .hidden{display:none!important;}
 </style>
 </head>
@@ -293,14 +303,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
     <div class="topbar-left">
       <span class="topbar-brand">DWC</span>
       <span class="topbar-sep">|</span>
-      <span class="topbar-section" id="topbar-section">COMMUNITY</span>
+      <span class="topbar-section" id="topbar-section">Community</span>
       <span class="topbar-member-count" id="topbar-member-count"></span>
     </div>
     <div class="topbar-right">
       <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
       <div style="display:flex;align-items:center;gap:8px;">
-        <div class="avatar" id="topbar-avatar" style="width:30px;height:30px;font-size:11px;"></div>
+        <div class="avatar" id="topbar-avatar" style="width:30px;height:30px;font-size:11px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
         <div class="topbar-user"><div class="name" id="topbar-name"></div><div class="utitle" id="topbar-title-tag"></div></div>
+        <button class="signout-btn" id="signout-btn" style="margin-left:4px;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:11px;color:rgba(250,247,243,0.6);">Sign out</button>
       </div>
     </div>
   </div>
@@ -341,12 +352,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
         <div class="sidebar-card">
           <div class="sidebar-card-header">House Rules</div>
           <div class="sidebar-card-body" style="padding:10px 16px;">
-            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">🫶</span><div class="rule-text"><strong>Be kind, always</strong>Disagreements are fine. Unkindness isn't. This is a safe space for real women.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">🗓️</span><div class="rule-text"><strong>One post per day</strong>Quality over quantity. You get one post every 24 hours — make it count.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">💬</span><div class="rule-text"><strong>Share freely</strong>Personal updates, insights, conversations — always welcome, always free.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">☕</span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://www.buymeacoffee.com" target="_blank" style="color:var(--gold);">buy us a coffee</a> first.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">🚫</span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">✦</span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">🫶</span><div class="rule-text"><strong>Be kind, always</strong>Disagreements are fine. Unkindness isn't. This is a safe space for women.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">🗓️</span><div class="rule-text"><strong>One post per day</strong>Quality over quantity. You get one post every 24 hours — make it count.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">💬</span><div class="rule-text"><strong>Share freely</strong>Personal updates, insights, conversations — always welcome, always free.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);">☕</span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://buy.stripe.com/28EeVdcG5cHLeE4dkA5Rm08" target="_blank" style="color:var(--gold);">buy us a coffee</a> first. One time only.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);">🚫</span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);font-size:22px;line-height:1;">✦</span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
           </div>
         </div>
 
@@ -452,7 +463,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 
       </aside>
     </div>
-    <div id="footer"><button class="signout-btn" id="signout-btn">Sign out</button></div>
   </div>
 
   <!-- Mod view -->
@@ -485,6 +495,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
     <div style="display:flex;gap:8px;margin-top:20px;justify-content:flex-end;">
       <button class="btn btn-ghost btn-sm" id="labels-cancel">Cancel</button>
       <button class="btn btn-primary btn-sm" id="labels-save">Save Labels</button>
+    </div>
+  </div>
+</div>
+
+<!-- Avatar modal -->
+<div class="avatar-modal-overlay hidden" id="avatar-modal">
+  <div class="avatar-modal-box">
+    <div class="avatar-modal-title">Your Profile Photo</div>
+    <p class="avatar-modal-sub">Paste a link to a photo — from your social media profile, website, or anywhere online. Right-click any image and choose "Copy image address".</p>
+    <div class="avatar-preview-row">
+      <div id="avatar-modal-preview" style="width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid var(--muted);flex-shrink:0;"></div>
+      <div style="flex:1;font-size:12px;color:var(--ghost);line-height:1.5;">Your photo will appear next to your name on all posts and comments.</div>
+    </div>
+    <input type="url" class="avatar-url-input" id="avatar-url-input" placeholder="https://example.com/your-photo.jpg" />
+    <p style="font-size:11px;color:var(--ghost);margin-top:6px;">Leave blank to use your initials instead.</p>
+    <div style="display:flex;gap:8px;margin-top:18px;justify-content:flex-end;">
+      <button class="btn btn-ghost btn-sm" id="avatar-cancel">Cancel</button>
+      <button class="btn btn-primary btn-sm" id="avatar-save">Save Photo</button>
     </div>
   </div>
 </div>
@@ -536,7 +564,9 @@ const timeAgo  = ts => { const s=Math.floor((Date.now()-ts)/1000); if(s<60) retu
 const initials = n => (n||'').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
 const AV       = ['#5c2d4e','#7a4060','#8b6914','#3d4e5c','#4e3d2d','#5c4e3d'];
 const avBg     = n => AV[(n||' ').charCodeAt(0)%AV.length];
-const avHTML   = (n,sz) => `<div class="avatar" style="width:${sz}px;height:${sz}px;font-size:${Math.floor(sz*.38)}px;background:${avBg(n)}">${esc(initials(n))}</div>`;
+const avHTML   = (n,sz,photo) => photo
+  ? `<div class="avatar" style="width:${sz}px;height:${sz}px;overflow:hidden;padding:0;"><img src="${esc(photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.parentElement.innerHTML='${esc(initials(n))}'"/></div>`
+  : `<div class="avatar" style="width:${sz}px;height:${sz}px;font-size:${Math.floor(sz*.38)}px;background:${avBg(n)}">${esc(initials(n))}</div>`;
 const showEl   = id => document.getElementById(id)?.classList.remove('hidden');
 const hideEl   = id => document.getElementById(id)?.classList.add('hidden');
 const getVal   = id => (document.getElementById(id)?.value||'').trim();
@@ -634,7 +664,10 @@ document.getElementById('register-btn').onclick=async()=>{
 
 async function signInUser(user){
   currentUser=user;saveSession(user.email);
-  const av=document.getElementById('topbar-avatar');av.textContent=initials(user.name);av.style.background=avBg(user.name);
+  // Topbar avatar
+  const av=document.getElementById('topbar-avatar');
+  if(user.photo){ av.style.background='none'; av.style.padding='0'; av.style.overflow='hidden'; av.innerHTML=`<img src="${esc(user.photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.parentElement.style.background=avBg('${esc(user.name)}');this.parentElement.textContent='${esc(initials(user.name))}'"/>`; }
+  else { av.textContent=initials(user.name); av.style.background=avBg(user.name); }
   document.getElementById('topbar-name').textContent=user.name;
   document.getElementById('topbar-title-tag').textContent=user.title||'';
   if(canMod(user)){showEl('mod-btn');document.getElementById('mod-btn').onclick=openMod;}
@@ -652,7 +685,34 @@ document.getElementById('signout-btn').onclick=()=>{
   hideEl('app-screen');showEl('auth-screen');hideEl('register-form');showEl('login-form');
 };
 
-function startListeners(){
+// ── Avatar modal ──────────────────────────────────────────────
+function openAvatarModal(){
+  const input=document.getElementById('avatar-url-input');
+  input.value=currentUser.photo||'';
+  const preview=document.getElementById('avatar-modal-preview');
+  if(currentUser.photo){ preview.innerHTML=`<img src="${esc(currentUser.photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`; }
+  else { preview.innerHTML=`<div class="avatar" style="width:56px;height:56px;font-size:21px;background:${avBg(currentUser.name)};display:flex;align-items:center;justify-content:center;">${esc(initials(currentUser.name))}</div>`; }
+  document.getElementById('avatar-modal').classList.remove('hidden');
+}
+window.openAvatarModal = openAvatarModal;
+document.getElementById('avatar-cancel').onclick=()=>{ document.getElementById('avatar-modal').classList.add('hidden'); };
+document.getElementById('avatar-url-input').addEventListener('input', ()=>{
+  const url=document.getElementById('avatar-url-input').value.trim();
+  const preview=document.getElementById('avatar-modal-preview');
+  if(url){ preview.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ghost);>Invalid</div>'">`; }
+  else { preview.innerHTML=`<div class="avatar" style="width:56px;height:56px;font-size:21px;background:${avBg(currentUser.name)}">${esc(initials(currentUser.name))}</div>`; }
+});
+document.getElementById('avatar-save').onclick=async()=>{
+  const url=document.getElementById('avatar-url-input').value.trim();
+  const key=sanKey(currentUser.email);
+  await fbUpdate(`users/${key}`,{photo:url});
+  currentUser={...currentUser,photo:url};
+  // Update topbar avatar
+  const av=document.getElementById('topbar-avatar');
+  if(url){ av.style.background='none';av.style.padding='0';av.style.overflow='hidden'; av.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>`; }
+  else { av.innerHTML=''; av.textContent=initials(currentUser.name); av.style.background=avBg(currentUser.name); }
+  document.getElementById('avatar-modal').classList.add('hidden');
+};
   onValue(ref(db,'posts'),snap=>{allPosts=snap.exists()?snap.val():{};renderFeed();if(canMod(currentUser))updateModBadge();});
   onValue(ref(db,'users'),snap=>{allUsers=snap.exists()?snap.val():{};updateMemberCount();if(canMod(currentUser))updateModBadge();});
   onValue(ref(db,'passwordResets'),snap=>{allResets=snap.exists()?snap.val():{};if(canMod(currentUser))updateModBadge();});
@@ -687,7 +747,7 @@ composerSubmit.onclick=async()=>{
 };
 
 // ── Feed ──────────────────────────────────────────────────────
-const getAuthor = id => Object.values(allUsers).find(u=>u.id===id)||{name:'Member',title:'',labels:[]};
+const getAuthor = id => Object.values(allUsers).find(u=>u.id===id)||{name:'Member',title:'',labels:[],photo:''};
 
 function renderFeed(){
   const container=document.getElementById('posts-container');
@@ -729,7 +789,7 @@ function renderPost(p){
   <article class="post-card" data-id="${p.id}">
     <div class="post-header">
       <div class="post-author">
-        ${avHTML(author.name,42)}
+        ${avHTML(author.name,42,author.photo)}
         <div>
           <div class="post-author-name">${esc(author.name)}</div>
           ${author.title?`<div class="post-author-title">${esc(author.title)}</div>`:''}
@@ -762,7 +822,7 @@ function renderComment(c,postId,isReply){
   const canDel=c.authorId===currentUser.id||canMod(currentUser);
   return `
   <div class="comment-item${isReply?' reply':''}" data-comment-id="${c.id}">
-    ${avHTML(author.name,28)}
+    ${avHTML(author.name,28,author.photo)}
     <div style="flex:1">
       <div class="comment-body${isReply?' reply-body':''}">
         <div class="comment-meta">
@@ -826,8 +886,8 @@ function updateModBadge(){
 }
 
 // ── Mod dashboard ────────────────────────────────────────────
-function openMod(){hideEl('feed-view');showEl('mod-view');document.getElementById('topbar-section').textContent='MODERATION';renderModDashboard();}
-document.getElementById('mod-back').onclick=()=>{hideEl('mod-view');showEl('feed-view');document.getElementById('topbar-section').textContent='COMMUNITY';};
+function openMod(){hideEl('feed-view');showEl('mod-view');document.getElementById('topbar-section').textContent='Moderation';renderModDashboard();}
+document.getElementById('mod-back').onclick=()=>{hideEl('mod-view');showEl('feed-view');document.getElementById('topbar-section').textContent='Community';};
 
 function renderModDashboard(){renderPendingUsers();renderPendingPosts();renderPasswordResets();renderAllMembers();updateTabCounts();}
 
