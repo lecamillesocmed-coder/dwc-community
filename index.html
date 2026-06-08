@@ -583,6 +583,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   </div>
 </div>
 
+<!-- Inline confirm modal (replaces confirm() which is blocked in iframes on mobile) -->
+<div class="modal-overlay hidden" id="confirm-modal">
+  <div class="modal-box" style="max-width:320px;">
+    <div class="modal-title" id="confirm-modal-title" style="font-size:17px;margin-bottom:10px;"></div>
+    <p id="confirm-modal-msg" style="font-size:13px;color:var(--mid);margin-bottom:20px;line-height:1.5;"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn btn-ghost btn-sm" id="confirm-no">Cancel</button>
+      <button class="btn btn-reject btn-sm" id="confirm-yes">Confirm</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp }               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get,
@@ -650,6 +662,20 @@ const fbSet    = async (p,v) => set(ref(db,p),v);
 const fbUpdate = async (p,v) => update(ref(db,p),v);
 const fbRemove = async p => remove(ref(db,p));
 
+// Inline confirm — replaces confirm() which is blocked in mobile iframes
+function inlineConfirm(title, msg){
+  return new Promise(resolve => {
+    document.getElementById('confirm-modal-title').textContent = title;
+    document.getElementById('confirm-modal-msg').textContent = msg;
+    showEl('confirm-modal');
+    const yes = document.getElementById('confirm-yes');
+    const no  = document.getElementById('confirm-no');
+    const cleanup = () => { hideEl('confirm-modal'); yes.onclick=null; no.onclick=null; };
+    yes.onclick = () => { cleanup(); resolve(true); };
+    no.onclick  = () => { cleanup(); resolve(false); };
+  });
+}
+
 // Auto-detect URLs in text and convert to clickable links
 function getAutoImage(text){
   const imgPattern = /https?:\/\/[^\s]+\.(?:jpg|jpeg|png|webp|gif)(\?[^\s]*)?/i;
@@ -680,14 +706,22 @@ function renderMediaEmbed(post){
   // YouTube
   const ytId = getYouTubeId(text);
   if(ytId){
-    return '<div class="post-embed"><iframe src="https://www.youtube.com/embed/' + ytId + '" height="315" allowfullscreen loading="lazy"></iframe></div>';
+    return '<div class="post-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin-bottom:14px;">'
+      + '<iframe src="https://www.youtube-nocookie.com/embed/' + ytId + '" '
+      + 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" '
+      + 'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" '
+      + 'allowfullscreen loading="lazy"></iframe></div>';
   }
   // Spotify
   const spotifyUrl = getSpotifyEmbed(text);
   if(spotifyUrl){
     const isEpisodeOrShow = spotifyUrl.includes('/episode/') || spotifyUrl.includes('/show/');
     const h = isEpisodeOrShow ? '152' : '80';
-    return '<div class="post-embed-spotify"><iframe src="' + spotifyUrl + '" width="100%" height="' + h + '" frameborder="0" allowtransparency="true" allow="encrypted-media" loading="lazy" style="border-radius:12px;"></iframe></div>';
+    return '<div style="margin-bottom:14px;border-radius:12px;overflow:hidden;">'
+      + '<iframe src="' + spotifyUrl + '" width="100%" height="' + h + '" '
+      + 'frameborder="0" allowtransparency="true" '
+      + 'allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" '
+      + 'loading="lazy" style="border-radius:12px;display:block;"></iframe></div>';
   }
   // Direct image
   if(imageUrl){
@@ -1104,26 +1138,35 @@ function bindPostEvents(container){
     if(action==='react'){
       if(!currentUser) return;
       const postId=btn.dataset.postId;const newKey=btn.dataset.reaction;
-      // Remove any existing reaction by this user across all types
-      const post=allPosts[postId];
-      if(post&&post.reactions){
-        for(const rKey of Object.keys(post.reactions)){
-          if(post.reactions[rKey]&&post.reactions[rKey][currentUser.id]){
-            await fbRemove(`posts/${postId}/reactions/${rKey}/${currentUser.id}`);
+      const reactionBase = 'posts/'+postId+'/reactions';
+      // Check current state fresh from Firebase
+      const currentReactions = await fbGet(reactionBase);
+      // Remove any existing reaction by this user
+      if(currentReactions){
+        for(const rKey of Object.keys(currentReactions)){
+          if(currentReactions[rKey]&&currentReactions[rKey][currentUser.id]){
+            await fbRemove(reactionBase+'/'+rKey+'/'+currentUser.id);
           }
         }
       }
-      // If clicking a different reaction (or no prior reaction), set the new one
-      const hadThis=post&&post.reactions&&post.reactions[newKey]&&post.reactions[newKey][currentUser.id];
-      if(!hadThis) await fbSet(`posts/${postId}/reactions/${newKey}/${currentUser.id}`,currentUser.id);
+      // If they clicked a different reaction (not removing their current one), set it
+      const hadThis = currentReactions&&currentReactions[newKey]&&currentReactions[newKey][currentUser.id];
+      if(!hadThis) await fbSet(reactionBase+'/'+newKey+'/'+currentUser.id, currentUser.id);
     }
-    if(action==='delete-post'){if(!confirm('Delete this post?'))return;await fbRemove(`posts/${btn.dataset.id}`);}
+    if(action==='delete-post'){
+      const ok = await inlineConfirm('Delete post', 'This will permanently remove this post.');
+      if(!ok) return;
+      await fbRemove('posts/'+btn.dataset.id);
+    }
     if(action==='toggle-comments'){document.getElementById(`comments-${btn.dataset.id}`)?.classList.toggle('hidden');}
     if(action==='submit-comment'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const cid=uid();await fbSet(`posts/${btn.dataset.id}/comments/${cid}`,{id:cid,authorId:currentUser.id,text,ts:Date.now(),replies:{}});ta.value='';ta.style.height='';}
     if(action==='toggle-reply'){document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.toggle('hidden');}
     if(action==='submit-reply'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const rid=uid();await fbSet(`posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}/replies/${rid}`,{id:rid,authorId:currentUser.id,text,ts:Date.now()});ta.value='';ta.style.height='';document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.add('hidden');}
-    if(action==='delete-comment'){if(!confirm('Delete this comment?'))return;await fbRemove(`posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}`);}
-  });
+    if(action==='delete-comment'){
+      const ok = await inlineConfirm('Delete comment', 'This will permanently remove this comment.');
+      if(!ok) return;
+      await fbRemove('posts/'+btn.dataset.postId+'/comments/'+btn.dataset.commentId);
+    }  });
   container.querySelectorAll('textarea').forEach(ta=>{
     ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';});
     ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const a=ta.dataset.action;if(a==='comment-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-comment"]')?.click();if(a==='reply-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-reply"]')?.click();}});
@@ -1253,21 +1296,20 @@ function renderAllMembers(){
         await fbUpdate(`users/${key}`,{role:newRole});renderModDashboard();
       }
       if(btn.dataset.action==='make-admin'){
-        if(!confirm(`Make ${btn.dataset.name} an admin? This gives them full access.`))return;
+        const ok = await inlineConfirm('Make Admin', 'Give ' + btn.dataset.name + ' full admin access?');
+        if(!ok) return;
         await fbUpdate(`users/${key}`,{role:'admin'});renderModDashboard();
       }
       if(btn.dataset.action==='edit-labels'){
         openLabelsModal(key,btn.dataset.name,JSON.parse(btn.dataset.labels||'[]'));
       }
       if(btn.dataset.action==='remove-member'){
-        if(!confirm(`Remove ${btn.dataset.name} from the community?\n\nThis will delete their account. Their posts will also be removed.`))return;
-        // Remove all their posts
+        const ok = await inlineConfirm('Remove Member', 'Remove ' + btn.dataset.name + '? This deletes their account and all their posts.');
+        if(!ok) return;
         const userId=btn.dataset.id;
         const postsToRemove=Object.values(allPosts).filter(p=>p.authorId===userId);
         for(const p of postsToRemove){ await fbRemove(`posts/${p.id}`); }
-        // Remove their password reset request if any
         await fbRemove(`passwordResets/${key}`);
-        // Remove user record
         await fbRemove(`users/${key}`);
         renderModDashboard();
       }
