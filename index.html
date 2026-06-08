@@ -326,8 +326,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <span class="topbar-member-count" id="topbar-member-count"></span>
     </div>
     <div class="topbar-right">
-      <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <!-- Guest buttons -->
+      <div id="guest-btns" style="display:flex;gap:8px;">
+        <button class="mod-btn" id="guest-signin-btn" style="color:var(--cream);border-color:rgba(255,255,255,0.3);">Sign In</button>
+        <button class="mod-btn" id="guest-join-btn" style="background:var(--gold);color:#fff;border-color:var(--gold);">Join</button>
+      </div>
+      <!-- Member buttons -->
+      <div id="member-btns" class="hidden" style="display:flex;align-items:center;gap:8px;">
+        <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
         <div class="avatar" id="topbar-avatar" style="width:30px;height:30px;font-size:11px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
         <div class="topbar-user"><div class="name" id="topbar-name"></div><div class="utitle" id="topbar-title-tag"></div></div>
         <button class="signout-btn" id="signout-btn" style="margin-left:4px;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:11px;color:rgba(250,247,243,0.6);">Sign out</button>
@@ -357,6 +363,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   <div id="feed-layout">
       <!-- Feed main -->
       <div id="feed-main">
+        <!-- Guest join prompt -->
+        <div id="guest-join-prompt" class="hidden" style="background:#fff;border-radius:12px;padding:18px 20px;border:1px solid var(--muted);margin-bottom:20px;box-shadow:0 2px 12px rgba(92,45,78,.05);text-align:center;">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--plum);margin-bottom:6px;font-weight:600;">Want to join the conversation?</p>
+          <p style="font-size:13px;color:var(--ghost);margin-bottom:14px;">Post, react, and comment as a member of DWC Community.</p>
+          <div style="display:flex;gap:10px;justify-content:center;">
+            <button class="btn btn-ghost btn-sm" id="prompt-signin">Sign In</button>
+            <button class="btn btn-primary btn-sm" id="prompt-join">Request Access</button>
+          </div>
+        </div>
+
         <div id="composer">
           <div class="composer-row">
             <div class="avatar" id="composer-avatar" style="width:40px;height:40px;font-size:15px;margin-top:2px;"></div>
@@ -364,7 +380,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
           </div>
           <div class="composer-extras hidden" id="composer-extras">
             <div class="composer-extras-row">
-              <input type="url" id="composer-img" placeholder="Image URL (optional)" style="flex:1;min-width:160px;"/>
+              <input type="url" id="composer-img" placeholder="Image URL — must end in .jpg, .png, .webp (Imgur works well)" style="flex:1;min-width:160px;"/>
               <input type="text" id="composer-tag" placeholder="#tag" style="width:110px;"/>
             </div>
             <div class="composer-actions">
@@ -555,7 +571,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 <script type="module">
 import { initializeApp }               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get,
-         update, remove, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+         update, remove, onValue, off,
+         push, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const ADMIN_EMAIL = "lecamillesocmed@gmail.com";
 const REACTIONS   = [
@@ -629,10 +646,25 @@ function labelBadgesHTML(labels) {
 function updateMemberCount() {
   const approved = Object.values(allUsers).filter(u=>u.status==='approved').length;
   const el = document.getElementById('topbar-member-count');
-  if(el) el.textContent = approved > 0 ? `· ${approved} member${approved===1?'':'s'}` : '';
+  if(el) el.setAttribute('data-members', approved);
 }
 
+const PRESENCE_BASE = 111; // Starting visitor count offset
+
 async function boot() {
+  // Always show the app screen for guests
+  hideEl('loading-screen');
+  hideEl('auth-screen');
+  showEl('app-screen');
+  showEl('feed-view');
+
+  // Start public listeners (posts, users for member count)
+  startPublicListeners();
+
+  // Start presence tracking
+  startPresence();
+
+  // Check for existing session
   const email=loadSession();
   if(email){
     const users=await fbGet('users');
@@ -646,8 +678,57 @@ async function boot() {
       }
     }
   }
-  hideEl('loading-screen'); showEl('auth-screen');
+
+  // Show guest state
+  showGuestUI();
 }
+
+function showGuestUI(){
+  showEl('guest-btns'); hideEl('member-btns');
+  showEl('guest-join-prompt'); hideEl('composer');
+  // Disable reactions and comments for guests — renderFeed handles this via currentUser check
+}
+
+function startPublicListeners(){
+  onValue(ref(db,'posts'),snap=>{
+    allPosts=snap.exists()?snap.val():{};
+    renderFeed();
+    if(currentUser&&canMod(currentUser)) updateModBadge();
+  });
+  onValue(ref(db,'users'),snap=>{
+    allUsers=snap.exists()?snap.val():{};
+    updateMemberCount();
+    if(currentUser&&canMod(currentUser)) updateModBadge();
+  });
+  onValue(ref(db,'passwordResets'),snap=>{
+    allResets=snap.exists()?snap.val():{};
+    if(currentUser&&canMod(currentUser)) updateModBadge();
+  });
+}
+
+function startPresence(){
+  // Each visitor gets a unique presence node; on disconnect it's removed
+  const presenceRef = push(ref(db,'presence'));
+  set(presenceRef, { t: Date.now() });
+  onDisconnect(presenceRef).remove();
+
+  // Watch total presence count
+  onValue(ref(db,'presence'), snap=>{
+    const live = snap.exists() ? Object.keys(snap.val()).length : 0;
+    const total = PRESENCE_BASE + live;
+    const el = document.getElementById('topbar-member-count');
+    if(el){
+      const members = parseInt(el.getAttribute('data-members')||'0');
+      el.textContent = `· ${total} viewing · ${members} member${members===1?'':'s'}`;
+    }
+  });
+}
+
+// Guest sign-in / join buttons
+document.getElementById('guest-signin-btn').onclick = ()=>{ hideEl('app-screen'); showEl('auth-screen'); hideEl('register-form'); showEl('login-form'); };
+document.getElementById('guest-join-btn').onclick   = ()=>{ hideEl('app-screen'); showEl('auth-screen'); hideEl('login-form'); showEl('register-form'); };
+document.getElementById('prompt-signin').onclick    = ()=>{ hideEl('app-screen'); showEl('auth-screen'); hideEl('register-form'); showEl('login-form'); };
+document.getElementById('prompt-join').onclick      = ()=>{ hideEl('app-screen'); showEl('auth-screen'); hideEl('login-form'); showEl('register-form'); };
 
 // ── Auth ──────────────────────────────────────────────────────
 document.getElementById('go-forgot').onclick=()=>{hideEl('login-form');showEl('forgot-form');};
@@ -709,6 +790,10 @@ document.getElementById('register-btn').onclick=async()=>{
 
 async function signInUser(user){
   currentUser=user;saveSession(user.email);
+  // Switch UI from guest to member
+  hideEl('guest-btns'); showEl('member-btns');
+  hideEl('guest-join-prompt'); showEl('composer');
+  hideEl('auth-screen'); showEl('app-screen'); showEl('feed-view'); hideEl('mod-view');
   // Topbar avatar
   const av=document.getElementById('topbar-avatar');
   if(user.photo){ av.style.background='none'; av.style.padding='0'; av.style.overflow='hidden'; av.innerHTML=`<img src="${esc(user.photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.parentElement.style.background=avBg('${esc(user.name)}');this.parentElement.textContent='${esc(initials(user.name))}'"/>`; }
@@ -718,16 +803,18 @@ async function signInUser(user){
   if(canMod(user)){showEl('mod-btn');document.getElementById('mod-btn').onclick=openMod;}
   const ca=document.getElementById('composer-avatar');ca.textContent=initials(user.name);ca.style.background=avBg(user.name);
   document.getElementById('composer-text').placeholder=`What's on your mind, ${user.name.split(' ')[0]}?`;
-  hideEl('loading-screen');hideEl('auth-screen');hideEl('pending-screen');
-  showEl('app-screen');showEl('feed-view');hideEl('mod-view');
-  startListeners();
+  hideEl('loading-screen');
+  renderFeed();
 }
 
 document.getElementById('signout-btn').onclick=()=>{
-  off(ref(db,'posts'));off(ref(db,'users'));off(ref(db,'passwordResets'));
-  currentUser=null;allPosts={};allUsers={};saveSession('');
-  setVal('login-email','');setVal('login-password','');
-  hideEl('app-screen');showEl('auth-screen');hideEl('register-form');showEl('login-form');
+  currentUser=null; saveSession('');
+  setVal('login-email',''); setVal('login-password','');
+  hideEl('member-btns'); showEl('guest-btns');
+  hideEl('composer'); showEl('guest-join-prompt');
+  hideEl('mod-btn'); hideEl('mod-view'); showEl('feed-view');
+  document.getElementById('topbar-section').textContent='Community';
+  renderFeed();
 };
 
 // ── Avatar modal ──────────────────────────────────────────────
@@ -767,11 +854,6 @@ document.getElementById('avatar-save').onclick=async()=>{
   document.getElementById('avatar-modal').classList.add('hidden');
 };
 
-function startListeners(){
-  onValue(ref(db,'posts'),snap=>{allPosts=snap.exists()?snap.val():{};renderFeed();if(canMod(currentUser))updateModBadge();});
-  onValue(ref(db,'users'),snap=>{allUsers=snap.exists()?snap.val():{};updateMemberCount();if(canMod(currentUser))updateModBadge();});
-  onValue(ref(db,'passwordResets'),snap=>{allResets=snap.exists()?snap.val():{};if(canMod(currentUser))updateModBadge();});
-}
 
 // ── Composer ──────────────────────────────────────────────────
 const composerText=document.getElementById('composer-text');
@@ -827,6 +909,15 @@ function renderFilterBar(tags){
 }
 
 function renderReactions(post){
+  if(!currentUser){
+    // Guest: show counts read-only, no interaction
+    return REACTIONS.map(r=>{
+      const counts=post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[];
+      return counts.length>0
+        ? `<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid var(--muted);font-size:13px;color:var(--ghost);"><span style="font-size:16px;">${r.emoji}</span><span>${counts.length}</span></span>`
+        : '';
+    }).join('');
+  }
   return REACTIONS.map(r=>{
     const counts=post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[];
     const reacted=counts.includes(currentUser.id);
@@ -838,8 +929,14 @@ function renderPost(p){
   const author=getAuthor(p.authorId);
   const comments=p.comments?Object.values(p.comments).sort((a,b)=>a.ts-b.ts):[];
   const commentCount=comments.reduce((n,c)=>n+1+(c.replies?Object.values(c.replies).length:0),0);
-  const canDelete=p.authorId===currentUser.id||canMod(currentUser);
+  const canDelete=currentUser&&(p.authorId===currentUser.id||canMod(currentUser));
   const authorLabels=labelBadgesHTML(author.labels||[]);
+  const commentInputHTML = currentUser
+    ? `<div class="comment-input-row" style="margin-top:${comments.length>0?'10px':'0'}">
+        <textarea placeholder="Add a comment…" rows="1" data-action="comment-input" data-id="${p.id}"></textarea>
+        <button class="comment-submit" data-action="submit-comment" data-id="${p.id}">Post</button>
+      </div>`
+    : `<p style="font-size:12px;color:var(--ghost);text-align:center;padding:10px 0;"><button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');" style="font-size:12px;">Sign in</button> or <button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');document.getElementById('register-form').classList.remove('hidden');" style="font-size:12px;">join</button> to comment.</p>`;
   return `
   <article class="post-card" data-id="${p.id}">
     <div class="post-header">
@@ -859,14 +956,11 @@ function renderPost(p){
     ${p.tag?`<span class="post-tag">#${esc(p.tag)}</span>`:''}
     <div class="post-actions">
       ${renderReactions(p)}
-      <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">💬 ${commentCount>0?commentCount+' ':''}Comment</button>
+      <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">💬 ${commentCount>0?commentCount+' ':''}Comment${commentCount!==1?'s':''}</button>
     </div>
     <div class="comments-section hidden" id="comments-${p.id}">
       ${comments.map(c=>renderComment(c,p.id,false)).join('')}
-      <div class="comment-input-row" style="margin-top:${comments.length>0?'10px':'0'}">
-        <textarea placeholder="Add a comment…" rows="1" data-action="comment-input" data-id="${p.id}"></textarea>
-        <button class="comment-submit" data-action="submit-comment" data-id="${p.id}">Post</button>
-      </div>
+      ${commentInputHTML}
     </div>
   </article>`;
 }
