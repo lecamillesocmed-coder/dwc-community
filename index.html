@@ -1346,6 +1346,55 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
   };
 });
 
+async function boot() {
+  hideEl('loading-screen');
+  hideEl('auth-screen');
+  showEl('app-screen');
+  showEl('feed-view');
+  showGuestUI();
+  startPublicListeners();
+  startPresence();
+  const email = loadSession();
+  if(email){
+    const users = await fbGet('users');
+    if(users){
+      allUsers = users;
+      const u = users[sanKey(email)];
+      if(u && u.status === 'approved'){
+        if(!u.role) u.role = 'member';
+        await signInUser(u);
+        return;
+      }
+    }
+  }
+}
+
+function showGuestUI(){
+  showEl('guest-btns'); hideEl('member-btns');
+  showEl('guest-join-prompt'); hideEl('composer');
+}
+
+function startPublicListeners(){
+  onValue(ref(db,'posts'),snap=>{
+    allPosts=snap.exists()?snap.val():{};
+    renderFeed();
+    if(currentUser&&canMod(currentUser)) updateModBadge();
+  });
+  onValue(ref(db,'users'),snap=>{
+    allUsers=snap.exists()?snap.val():{};
+    updateMemberCount();
+    if(currentUser&&canMod(currentUser)) updateModBadge();
+  });
+  onValue(ref(db,'passwordResets'),snap=>{
+    allResets=snap.exists()?snap.val():{};
+    if(currentUser&&canMod(currentUser)) updateModBadge();
+  });
+  onValue(ref(db,'activity'),snap=>{
+    allActivity=snap.exists()?snap.val():{};
+  });
+}
+
+
 boot();
 </script>
 </body>
