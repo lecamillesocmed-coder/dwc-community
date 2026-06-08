@@ -584,8 +584,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 </div>
 
 <!-- Inline confirm modal (replaces confirm() which is blocked in iframes on mobile) -->
-<div class="modal-overlay hidden" id="confirm-modal">
-  <div class="modal-box" style="max-width:320px;">
+<div class="modal-overlay hidden" id="confirm-modal" onclick="event.stopPropagation()">
+  <div class="modal-box" style="max-width:320px;" onclick="event.stopPropagation()">
     <div class="modal-title" id="confirm-modal-title" style="font-size:17px;margin-bottom:10px;"></div>
     <p id="confirm-modal-msg" style="font-size:13px;color:var(--mid);margin-bottom:20px;line-height:1.5;"></p>
     <div style="display:flex;gap:8px;justify-content:flex-end;">
@@ -969,6 +969,8 @@ document.getElementById('avatar-save').onclick=async()=>{
 
 
 // ── Composer ──────────────────────────────────────────────────
+// Set up permanent post event listener once
+setupPostEvents();
 const composerText=document.getElementById('composer-text');
 const composerExtras=document.getElementById('composer-extras');
 const composerSubmit=document.getElementById('composer-submit');
@@ -1036,7 +1038,11 @@ function renderFeed(){
   const filtered=activeFilter==='all'?approved:approved.filter(p=>p.tag===activeFilter);
   if(filtered.length===0){container.innerHTML=`<div class="empty-state"><p>Nothing here yet. Be the first to share.</p></div>`;return;}
   container.innerHTML=filtered.map(renderPost).join('');
-  bindPostEvents(container);
+  // Auto-grow textareas in newly rendered posts
+  container.querySelectorAll('textarea').forEach(ta=>{
+    ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';});
+    ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const a=ta.dataset.action;if(a==='comment-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-comment"]')?.click();if(a==='reply-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-reply"]')?.click();}});
+  });
 }
 
 function renderFilterBar(tags){
@@ -1131,7 +1137,8 @@ function renderComment(c,postId,isReply){
   </div>`;
 }
 
-function bindPostEvents(container){
+function setupPostEvents(){
+  const container = document.getElementById('posts-container');
   container.addEventListener('click',async e=>{
     const btn=e.target.closest('[data-action]');if(!btn)return;
     const action=btn.dataset.action;
@@ -1166,10 +1173,7 @@ function bindPostEvents(container){
       const ok = await inlineConfirm('Delete comment', 'This will permanently remove this comment.');
       if(!ok) return;
       await fbRemove('posts/'+btn.dataset.postId+'/comments/'+btn.dataset.commentId);
-    }  });
-  container.querySelectorAll('textarea').forEach(ta=>{
-    ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';});
-    ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const a=ta.dataset.action;if(a==='comment-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-comment"]')?.click();if(a==='reply-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-reply"]')?.click();}});
+    }
   });
 }
 
