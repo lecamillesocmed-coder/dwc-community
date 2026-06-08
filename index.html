@@ -713,6 +713,8 @@ document.getElementById('avatar-save').onclick=async()=>{
   else { av.innerHTML=''; av.textContent=initials(currentUser.name); av.style.background=avBg(currentUser.name); }
   document.getElementById('avatar-modal').classList.add('hidden');
 };
+
+function startListeners(){
   onValue(ref(db,'posts'),snap=>{allPosts=snap.exists()?snap.val():{};renderFeed();if(canMod(currentUser))updateModBadge();});
   onValue(ref(db,'users'),snap=>{allUsers=snap.exists()?snap.val():{};updateMemberCount();if(canMod(currentUser))updateModBadge();});
   onValue(ref(db,'passwordResets'),snap=>{allResets=snap.exists()?snap.val():{};if(canMod(currentUser))updateModBadge();});
