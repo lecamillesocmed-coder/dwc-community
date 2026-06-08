@@ -1093,6 +1093,7 @@ function renderPost(p){
     <div class="post-actions">
       ${renderReactions(p)}
       <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">💬 ${commentCount>0?commentCount+' ':''}Comment${commentCount!==1?'s':''}<\/button>
+      <button class="comment-toggle" data-action="share-post" data-id="${p.id}" style="margin-left:0;" title="Copy link">🔗 Share<\/button>
     <\/div>
     <div class="comments-section hidden" id="comments-${p.id}">
       ${comments.map(c=>renderComment(c,p.id,false)).join('')}
@@ -1168,6 +1169,17 @@ function setupPostEvents(){
       await fbRemove('posts/'+btn.dataset.id);
     }
     if(action==='toggle-comments'){document.getElementById(`comments-${btn.dataset.id}`)?.classList.toggle('hidden');}
+    if(action==='share-post'){
+      const url = window.location.href.split('#')[0] + '#post-' + btn.dataset.id;
+      navigator.clipboard.writeText(url).then(()=>{
+        const orig = btn.textContent;
+        btn.textContent = '✓ Copied';
+        btn.style.color = 'var(--plum)';
+        setTimeout(()=>{ btn.textContent = orig; btn.style.color = ''; }, 2000);
+      }).catch(()=>{
+        prompt('Copy this link:', url);
+      });
+    }
     if(action==='submit-comment'){
       const ta=btn.closest('.comment-input-row')?.querySelector('textarea');
       const text=ta?.value.trim();if(!text)return;
