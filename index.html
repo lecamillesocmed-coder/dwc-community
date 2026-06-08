@@ -637,16 +637,21 @@ const fbRemove = async p => remove(ref(db,p));
 
 // Auto-detect URLs in text and convert to clickable links
 function getAutoImage(text){
-  const match = text.match(/(https?:\/\/[^\s]+\.(?:jpg|jpeg|png|webp|gif)(\?[^\s]*)?)/i);
-  return match ? match[1] : null;
+  const imgPattern = /https?:\/\/[^\s]+\.(?:jpg|jpeg|png|webp|gif)(\?[^\s]*)?/i;
+  const match = text.match(imgPattern);
+  return match ? match[0] : null;
 }
 
+function linkify(text){
   const escaped = esc(text);
-  return escaped.replace(/(https?:\/\/[^\s<>"]+)/g, url => {
-    const display = url.length > 50 ? url.slice(0,50)+'…' : url;
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">${display}</a>`;
+  const urlPattern = /https?:\/\/[^\s<>"]+/g;
+  return escaped.replace(urlPattern, function(url){
+    const display = url.length > 50 ? url.slice(0,50)+'\u2026' : url;
+    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">' + display + '</a>';
   });
 }
+
+function labelBadgesHTML(labels) {
   if(!labels||!labels.length) return '';
   return labels.map(k=>{
     const l=MEMBER_LABELS.find(x=>x.key===k);
@@ -663,13 +668,14 @@ function updateMemberCount() {
 const PRESENCE_BASE = 111; // Starting visitor count offset
 
 async function boot() {
-  // Always show the app screen for guests
+  // Always show the app screen for guests immediately
   hideEl('loading-screen');
   hideEl('auth-screen');
   showEl('app-screen');
   showEl('feed-view');
+  showGuestUI();
 
-  // Start public listeners (posts, users for member count)
+  // Start public listeners — will call renderFeed when data arrives
   startPublicListeners();
 
   // Start presence tracking
@@ -689,9 +695,6 @@ async function boot() {
       }
     }
   }
-
-  // Show guest state
-  showGuestUI();
 }
 
 function showGuestUI(){
@@ -1019,6 +1022,7 @@ function bindPostEvents(container){
     const btn=e.target.closest('[data-action]');if(!btn)return;
     const action=btn.dataset.action;
     if(action==='react'){
+      if(!currentUser) return;
       const postId=btn.dataset.postId;const newKey=btn.dataset.reaction;
       // Remove any existing reaction by this user across all types
       const post=allPosts[postId];
