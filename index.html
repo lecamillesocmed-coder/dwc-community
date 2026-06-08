@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>DWC Community</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -17,7 +17,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 
 /* Loading */
 #loading-screen{position:fixed;inset:0;background:var(--plumdk);display:flex;align-items:center;justify-content:center;z-index:9999;}
-#loading-screen span{font-family:'Libre Bodoni',serif;color:var(--gold);font-size:22px;letter-spacing:.1em;}
+#loading-screen span{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:26px;letter-spacing:.08em;font-weight:400;}
 
 /* Auth */
 #auth-screen{min-height:100vh;background:radial-gradient(ellipse at 60% 0%,#7a3060 0%,var(--plumdk) 45%,#1a0e16 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
@@ -26,7 +26,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .dwc-name{font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:52px;line-height:1;letter-spacing:.14em;text-transform:uppercase;}
 .dwc-sub{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-top:4px;}
 .dwc-rule{width:100%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:10px 0 6px;}
-.auth-community-label{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--mid);text-align:center;margin-bottom:24px;font-style:italic;letter-spacing:.04em;}
+.auth-community-label{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--mid);text-align:center;margin-bottom:24px;font-style:italic;font-weight:600;letter-spacing:.06em;}
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:11px;color:var(--mid);margin-bottom:5px;letter-spacing:.06em;}
 .field input{width:100%;border:1px solid var(--muted);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--soft);color:var(--dark);outline:none;transition:border-color .2s;}
@@ -50,8 +50,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .topbar-left{display:flex;align-items:center;gap:10px;}
 .topbar-brand{font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:20px;letter-spacing:.1em;text-transform:uppercase;}
 .topbar-sep{color:var(--gold);opacity:.4;font-size:14px;}
-.topbar-section{color:var(--gold);font-size:10px;letter-spacing:.15em;opacity:.8;font-family:'DM Sans',sans-serif;}
-.topbar-member-count{font-size:10px;color:rgba(250,247,243,.45);font-family:'DM Sans',sans-serif;letter-spacing:.04em;margin-left:4px;}
+.topbar-section{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--goldlt);font-size:15px;letter-spacing:.04em;opacity:.9;}
+.topbar-member-count{font-size:11px;color:rgba(250,247,243,.45);font-family:'DM Sans',sans-serif;letter-spacing:.04em;margin-left:4px;}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .topbar-user .name{font-size:12px;color:var(--cream);}
 .topbar-user .utitle{font-size:10px;color:var(--gold);}
@@ -147,42 +147,42 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 /* Sidebar */
 #sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;}
 .sidebar-card{background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;box-shadow:0 2px 12px rgba(92,45,78,.05);}
-.sidebar-card-header{background:var(--plum);padding:10px 16px;font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+.sidebar-card-header{background:var(--plum);padding:11px 16px;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--cream);font-size:11px;letter-spacing:.12em;text-transform:uppercase;}
 .sidebar-card-body{padding:14px 16px;}
 
 /* Rules card */
-.rule-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
+.rule-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
 .rule-item:last-child{border-bottom:none;padding-bottom:0;}
-.rule-emoji{font-size:16px;flex-shrink:0;margin-top:1px;}
-.rule-text{font-size:12px;color:var(--dark);line-height:1.5;}
-.rule-text strong{color:var(--plum);font-family:'Cormorant Garamond',serif;font-size:13px;display:block;margin-bottom:1px;}
+.rule-emoji{font-size:17px;flex-shrink:0;margin-top:1px;}
+.rule-text{font-size:13px;color:var(--dark);line-height:1.55;}
+.rule-text strong{color:var(--plum);font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;display:block;margin-bottom:2px;}
 
 /* Cover card */
 .cover-feature img{width:100%;border-radius:8px;display:block;border:1px solid var(--muted);}
-.cover-caption{font-size:12px;color:var(--mid);margin:8px 0 4px;line-height:1.5;font-style:italic;}
-.cover-link{font-size:11px;color:var(--gold);text-decoration:none;font-family:'DM Sans',sans-serif;}
+.cover-caption{font-size:13px;color:var(--mid);margin:9px 0 5px;line-height:1.55;font-style:italic;font-family:'Cormorant Garamond',serif;}
+.cover-link{font-size:12px;color:var(--gold);text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:500;}
 .cover-link:hover{text-decoration:underline;}
 
 /* Brands */
-.brand-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--muted);align-items:center;}
+.brand-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--muted);align-items:center;}
 .brand-item:last-child{border-bottom:none;padding-bottom:0;}
-.brand-img{width:40px;height:40px;border-radius:6px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
+.brand-img{width:42px;height:42px;border-radius:6px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
 .brand-info{flex:1;min-width:0;}
-.brand-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.brand-cat{font-size:10px;color:var(--ghost);}
-.brand-link{font-size:10px;color:var(--gold);text-decoration:none;}
+.brand-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.brand-cat{font-size:11px;color:var(--ghost);margin-bottom:2px;}
+.brand-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
 .brand-link:hover{text-decoration:underline;}
 
 /* Podcasts */
-.pod-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
+.pod-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
 .pod-item:last-child{border-bottom:none;padding-bottom:0;}
-.pod-img{width:38px;height:38px;border-radius:6px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
+.pod-img{width:40px;height:40px;border-radius:6px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
 .pod-info{flex:1;min-width:0;}
-.pod-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:13px;line-height:1.3;}
-.pod-host{font-size:10px;color:var(--ghost);margin-bottom:2px;}
-.pod-link{font-size:10px;color:var(--gold);text-decoration:none;}
+.pod-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:15px;line-height:1.3;}
+.pod-host{font-size:11px;color:var(--ghost);margin-bottom:3px;}
+.pod-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
 .pod-link:hover{text-decoration:underline;}
-.sidebar-more{display:block;text-align:center;font-size:11px;color:var(--gold);text-decoration:none;margin-top:10px;font-family:'DM Sans',sans-serif;}
+.sidebar-more{display:block;text-align:center;font-size:12px;color:var(--gold);text-decoration:none;margin-top:10px;font-family:'DM Sans',sans-serif;font-weight:500;}
 .sidebar-more:hover{text-decoration:underline;}
 
 /* Mod */
@@ -238,7 +238,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   <div class="auth-card">
     <div class="dwc-masthead">
       <div class="dwc-name">DWC</div>
-      <div class="dwc-sub">Defiant Women's Collective</div>
+      <div class="dwc-sub">Strong Women, Strong Voices</div>
     </div>
     <div class="dwc-rule"></div>
     <div class="auth-community-label">Community</div>
@@ -279,7 +279,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 <!-- Pending -->
 <div id="pending-screen" class="hidden">
   <div class="auth-card" style="text-align:center;padding:40px 36px;">
-    <div class="dwc-masthead" style="margin-bottom:16px;"><div class="dwc-name">DWC</div><div class="dwc-sub">Defiant Women's Collective</div></div>
+    <div class="dwc-masthead" style="margin-bottom:16px;"><div class="dwc-name">DWC</div><div class="dwc-sub">Strong Women, Strong Voices</div></div>
     <div class="dwc-rule"></div>
     <h2 style="font-family:'Cormorant Garamond',serif;color:var(--plum);font-size:24px;margin:16px 0 10px;">Application Received</h2>
     <p style="color:var(--mid);font-size:14px;line-height:1.7;">Your account is awaiting approval.<br/>You'll be able to sign in once reviewed.</p>
@@ -341,12 +341,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
         <div class="sidebar-card">
           <div class="sidebar-card-header">House Rules</div>
           <div class="sidebar-card-body" style="padding:10px 16px;">
-            <div class="rule-item"><span class="rule-emoji">💛</span><div class="rule-text"><strong>Be kind, always</strong>Disagreements are fine. Unkindness isn't. This is a safe space for real women.</div></div>
-            <div class="rule-item"><span class="rule-emoji">📅</span><div class="rule-text"><strong>One post per day</strong>Quality over quantity. You get one post every 24 hours — make it count.</div></div>
-            <div class="rule-item"><span class="rule-emoji">🎉</span><div class="rule-text"><strong>Share freely</strong>Personal updates, insights, conversations — always welcome, always free.</div></div>
-            <div class="rule-item"><span class="rule-emoji">☕</span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://www.buymeacoffee.com" target="_blank" style="color:var(--gold);">buy us a coffee</a> first.</div></div>
-            <div class="rule-item"><span class="rule-emoji">🚫</span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
-            <div class="rule-item"><span class="rule-emoji">✨</span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">🫶</span><div class="rule-text"><strong>Be kind, always</strong>Disagreements are fine. Unkindness isn't. This is a safe space for real women.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">🗓️</span><div class="rule-text"><strong>One post per day</strong>Quality over quantity. You get one post every 24 hours — make it count.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">💬</span><div class="rule-text"><strong>Share freely</strong>Personal updates, insights, conversations — always welcome, always free.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">☕</span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://www.buymeacoffee.com" target="_blank" style="color:var(--gold);">buy us a coffee</a> first.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">🚫</span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
+            <div class="rule-item"><span class="rule-emoji" style="color:#7a4060;">✦</span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
           </div>
         </div>
 
