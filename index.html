@@ -327,6 +327,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <span class="topbar-sep">|</span>
       <span class="topbar-section" id="topbar-section">Community</span>
       <span class="topbar-member-count" id="topbar-member-count"></span>
+      <button id="search-toggle" style="border:none;background:none;color:var(--goldlt);cursor:pointer;font-size:16px;padding:4px 6px;opacity:0.8;" title="Search">🔍</button>
     </div>
     <div class="topbar-right">
       <!-- Guest buttons -->
@@ -345,6 +346,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   </div>
 
   <div id="filter-bar" class="hidden"></div>
+
+  <!-- Search bar -->
+  <div id="search-bar" style="background:#fff;border-bottom:1px solid var(--muted);padding:10px 20px;display:none;">
+    <div style="max-width:640px;margin:0 auto;position:relative;">
+      <input type="text" id="search-input" placeholder="Search posts and members…"
+        style="width:100%;border:1px solid var(--muted);border-radius:24px;padding:9px 40px 9px 16px;
+        font-family:'DM Sans',sans-serif;font-size:14px;background:var(--soft);color:var(--dark);outline:none;" />
+      <button id="search-clear" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+        border:none;background:none;cursor:pointer;color:var(--ghost);font-size:16px;display:none;">✕</button>
+    </div>
+  </div>
+
+  <!-- Search results panel -->
+  <div id="search-results" class="hidden" style="max-width:640px;margin:0 auto;padding:16px 16px 0;"></div>
 
   <div id="feed-view">
     <!-- Mobile house rules (hidden on desktop) -->
@@ -399,7 +414,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
           </div>
           <div class="composer-extras hidden" id="composer-extras">
             <div class="composer-extras-row">
-              <input type="url" id="composer-img" placeholder="Image URL (optional — .jpg, .png, .webp)" style="flex:1;min-width:160px;"/>
+              <div style="display:flex;align-items:center;gap:8px;flex:1;">
+                <button type="button" id="upload-btn" class="btn btn-ghost btn-sm" style="white-space:nowrap;flex-shrink:0;">📷 Upload Photo</button>
+                <input type="file" id="upload-input" accept="image/*" style="display:none;"/>
+                <div id="upload-status" style="font-size:12px;color:var(--ghost);flex:1;"></div>
+                <input type="hidden" id="composer-img"/>
+              </div>
               <input type="text" id="composer-tag" placeholder="#tag" style="width:110px;"/>
             </div>
             <div class="composer-actions">
@@ -785,7 +805,7 @@ function updateMemberCount() {
 }
 
 const PRESENCE_BASE = 644;
-const PRESENCE_TTL  = 5 * 60 * 1000;
+const PRESENCE_TTL  = 4 * 60 * 1000;
 
 function startPresence(){
   let presenceKey = null;
@@ -948,9 +968,123 @@ document.getElementById('avatar-save').onclick=async()=>{
 };
 
 
-// ── Composer ──────────────────────────────────────────────────
-// Set up permanent post event listener once
-setupPostEvents();
+// ── Search ────────────────────────────────────────────────────
+const searchBar     = document.getElementById('search-bar');
+const searchInput   = document.getElementById('search-input');
+const searchClear   = document.getElementById('search-clear');
+const searchResults = document.getElementById('search-results');
+const searchToggle  = document.getElementById('search-toggle');
+
+searchToggle.onclick = () => {
+  const open = searchBar.style.display === 'block';
+  searchBar.style.display = open ? 'none' : 'block';
+  if(!open){ searchInput.focus(); }
+  else { searchInput.value=''; searchClear.style.display='none'; hideEl('search-results'); }
+};
+
+searchClear.onclick = () => {
+  searchInput.value=''; searchClear.style.display='none';
+  hideEl('search-results'); searchInput.focus();
+};
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  searchClear.style.display = q ? 'block' : 'none';
+  if(!q){ hideEl('search-results'); return; }
+  showEl('search-results');
+  runSearch(q);
+});
+
+searchInput.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ searchToggle.click(); }
+});
+
+function runSearch(q){
+  const approvedPosts = Object.values(allPosts).filter(p=>p.status==='approved');
+  const matchedPosts = approvedPosts.filter(p=>{
+    const author = getAuthor(p.authorId);
+    return p.text.toLowerCase().includes(q)
+      || (author.name&&author.name.toLowerCase().includes(q))
+      || (p.tag&&p.tag.toLowerCase().includes(q));
+  }).sort((a,b)=>b.ts-a.ts).slice(0,5);
+
+  const matchedMembers = Object.values(allUsers).filter(u=>
+    u.status==='approved' &&
+    ((u.name&&u.name.toLowerCase().includes(q)) || (u.title&&u.title.toLowerCase().includes(q)))
+  ).slice(0,4);
+
+  if(!matchedPosts.length && !matchedMembers.length){
+    searchResults.innerHTML = '<div style="background:#fff;border-radius:12px;padding:20px;border:1px solid var(--muted);text-align:center;margin-bottom:16px;"><p style="font-family:\'Cormorant Garamond\',serif;color:var(--plum);opacity:0.5;font-size:16px;">No results found.</p><\/div>';
+    return;
+  }
+
+  let html = '<div style="background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;margin-bottom:16px;box-shadow:0 2px 12px rgba(92,45,78,.05);">';
+
+  if(matchedMembers.length){
+    html += '<div style="padding:10px 16px;border-bottom:1px solid var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ghost);font-family:\'DM Sans\',sans-serif;font-weight:600;">Members<\/div>';
+    matchedMembers.forEach(u => {
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--muted);">'
+        + avHTML(u.name, 34, u.photo)
+        + '<div><div style="font-family:\'Cormorant Garamond\',serif;font-weight:700;color:var(--plum);font-size:15px;">'+esc(u.name)+'<\/div>'
+        + (u.title?'<div style="font-size:11px;color:var(--gold);">'+esc(u.title)+'<\/div>':'')
+        + '<\/div><\/div>';
+    });
+  }
+
+  if(matchedPosts.length){
+    html += '<div style="padding:10px 16px;border-bottom:1px solid var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ghost);font-family:\'DM Sans\',sans-serif;font-weight:600;">Posts<\/div>';
+    matchedPosts.forEach(p => {
+      const author = getAuthor(p.authorId);
+      const preview = p.text.length > 100 ? p.text.slice(0,100)+'\u2026' : p.text;
+      html += '<div style="padding:12px 16px;border-bottom:1px solid var(--muted);cursor:pointer;" onclick="document.getElementById(\'posts-container\').querySelectorAll(\'[data-id]\').forEach(el=>{if(el.dataset.id===\''+p.id+'\')el.scrollIntoView({behavior:\'smooth\'})});searchBar.style.display=\'none\';searchInput.value=\'\';hideEl(searchResults);">'
+        + '<div style="font-family:\'Cormorant Garamond\',serif;font-weight:700;color:var(--plum);font-size:14px;">'+esc(author.name)+'<span style="font-weight:400;color:var(--ghost);font-size:12px;margin-left:6px;">'+timeAgo(p.ts)+'<\/span><\/div>'
+        + '<div style="font-size:13px;color:var(--dark);line-height:1.5;margin-top:2px;">'+esc(preview)+'<\/div>'
+        + '<\/div>';
+    });
+  }
+
+  html += '<\/div>';
+  searchResults.innerHTML = html;
+}
+
+// ── Cloudinary config ──────────────────────────────────────────
+const CLOUDINARY_CLOUD  = 'dpoiukzbh';
+const CLOUDINARY_PRESET = 'ml_default';
+
+async function uploadToCloudinary(file){
+  const status = document.getElementById('upload-status');
+  status.textContent = 'Uploading…';
+  status.style.color = 'var(--gold)';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+  formData.append('folder', 'dwc-community');
+  try {
+    const res = await fetch('https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD+'/image/upload', {
+      method: 'POST', body: formData
+    });
+    const data = await res.json();
+    if(data.secure_url){
+      document.getElementById('composer-img').value = data.secure_url;
+      status.textContent = '✓ Photo ready';
+      status.style.color = '#2e7d52';
+      const btn = document.getElementById('upload-btn');
+      btn.textContent = '📷 Change Photo';
+    } else {
+      status.textContent = 'Upload failed — try again.';
+      status.style.color = '#c0392b';
+    }
+  } catch {
+    status.textContent = 'Upload failed — check connection.';
+    status.style.color = '#c0392b';
+  }
+}
+
+document.getElementById('upload-btn').onclick = () => document.getElementById('upload-input').click();
+document.getElementById('upload-input').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if(file) uploadToCloudinary(file);
+});
 const composerText=document.getElementById('composer-text');
 const composerExtras=document.getElementById('composer-extras');
 const composerSubmit=document.getElementById('composer-submit');
@@ -978,7 +1112,17 @@ composerText.addEventListener('input',()=>{
     }
   }
 });
-document.getElementById('composer-cancel').onclick=()=>{composerText.value='';setVal('composer-img','');setVal('composer-tag','');composerSubmit.disabled=true;hideEl('composer-extras');composerText.style.height='';};
+document.getElementById('composer-cancel').onclick=()=>{
+  composerText.value='';
+  setVal('composer-tag','');
+  document.getElementById('composer-img').value='';
+  document.getElementById('upload-status').textContent='';
+  document.getElementById('upload-input').value='';
+  document.getElementById('upload-btn').textContent='📷 Upload Photo';
+  composerSubmit.disabled=true;
+  hideEl('composer-extras');
+  composerText.style.height='';
+};
 
 composerSubmit.onclick=async()=>{
   const text=composerText.value.trim();if(!text)return;
@@ -993,10 +1137,15 @@ composerSubmit.onclick=async()=>{
     }
   }
   composerSubmit.disabled=true;composerSubmit.textContent='Posting…';
-  const post={id:uid(),authorId:currentUser.id,text,imageUrl:getVal('composer-img'),tag:getVal('composer-tag').replace(/^#/,''),ts:Date.now(),status:'pending',reactions:{},comments:{}};
+  const post={id:uid(),authorId:currentUser.id,text,imageUrl:document.getElementById('composer-img')?.value.trim()||'',tag:getVal('composer-tag').replace(/^#/,''),ts:Date.now(),status:'pending',reactions:{},comments:{}};
   await fbSet(`posts/${post.id}`,post);
   logActivity('post', 'Submitted a post for moderation');
-  composerText.value='';setVal('composer-img','');setVal('composer-tag','');
+  composerText.value='';
+  setVal('composer-tag','');
+  document.getElementById('composer-img').value='';
+  document.getElementById('upload-status').textContent='';
+  document.getElementById('upload-input').value='';
+  document.getElementById('upload-btn').textContent='📷 Upload Photo';
   composerSubmit.textContent='Share';composerText.style.height='';hideEl('composer-extras');
 };
 
@@ -1328,6 +1477,7 @@ function renderAllMembers(){
       <div class="member-info">
         <div class="member-name">${esc(u.name)}<\/div>
         <div class="member-email">${esc(u.email)}<\/div>
+        <div style="font-size:11px;color:var(--ghost);">Joined ${u.joinedAt ? new Date(u.joinedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '—'}<\/div>
         ${(u.labels&&u.labels.length)?`<div class="member-labels-row">${labelBadgesHTML(u.labels)}<\/div>`:''}
       <\/div>
       ${u.title?`<span class="title-badge">${esc(u.title)}<\/span>`:''}
