@@ -156,6 +156,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 /* Post card */
 .post-card{background:#fff;border-radius:12px;padding:20px 22px;border:1px solid var(--muted);margin-bottom:16px;box-shadow:0 2px 12px rgba(92,45,78,.05);animation:fadeUp .3s ease both;}
 .post-card.highlighted{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,150,90,0.2);animation:fadeUp .3s ease both;}
+.post-card.pinned{border-color:var(--plum);border-width:2px;}
+.pin-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--plum);font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;opacity:0.7;}
+.pin-btn{border:none;background:none;cursor:pointer;font-size:12px;color:var(--ghost);padding:4px 6px;font-family:'DM Sans',sans-serif;transition:color .15s;}
+.pin-btn:hover{color:var(--plum);}
+.pin-btn.active{color:var(--plum);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .post-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
 .post-author{display:flex;gap:10px;align-items:flex-start;}
@@ -381,14 +386,34 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
         <button class="mod-btn" id="guest-signin-btn" style="color:var(--cream);border-color:rgba(255,255,255,0.3);">Sign In</button>
         <button class="mod-btn" id="guest-join-btn" style="background:var(--gold);color:#fff;border-color:var(--gold);">Join</button>
       </div>
-      <!-- Member buttons -->
+      <!-- Member buttons — mod only, sign out only -->
       <div id="member-btns" class="hidden" style="display:flex;align-items:center;gap:8px;">
         <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
-        <div class="avatar" id="topbar-avatar" style="width:30px;height:30px;font-size:11px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
-        <div class="topbar-user"><div class="name" id="topbar-name"></div><div class="utitle" id="topbar-title-tag"></div><div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;" id="topbar-points"></div></div>
-        <button class="signout-btn" id="signout-btn" style="margin-left:4px;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:11px;color:rgba(250,247,243,0.6);">Sign out</button>
+        <button class="signout-btn" id="signout-btn" style="border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:11px;color:rgba(250,247,243,0.6);">Sign out</button>
       </div>
     </div>
+  </div>
+
+  <!-- Stats bar — members left, profile right -->
+  <div id="stats-bar" style="background:var(--plumdk);border-top:1px solid rgba(255,255,255,0.06);padding:8px 20px;display:flex;justify-content:space-between;align-items:center;">
+    <!-- Members count -->
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div>
+        <div style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:18px;line-height:1;" id="stats-members">—</div>
+        <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,243,.4);font-family:'DM Sans',sans-serif;margin-top:1px;">Members</div>
+      </div>
+    </div>
+    <!-- Profile info — hidden for guests -->
+    <div id="stats-profile" class="hidden" style="display:flex;align-items:center;gap:10px;">
+      <div style="text-align:right;">
+        <div style="font-size:12px;color:var(--cream);font-family:'DM Sans',sans-serif;" id="stats-name"></div>
+        <div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;" id="stats-title"></div>
+        <div style="font-size:10px;color:var(--goldlt);font-family:'DM Sans',sans-serif;" id="stats-points"></div>
+      </div>
+      <div class="avatar" id="stats-avatar" style="width:34px;height:34px;font-size:13px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
+    </div>
+    <!-- Guest join nudge -->
+    <div id="stats-guest" style="font-size:11px;color:rgba(250,247,243,.4);font-family:'DM Sans',sans-serif;font-style:italic;">Join the conversation →</div>
   </div>
 
   <div id="filter-bar" class="hidden"></div>
@@ -410,13 +435,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   <div id="feed-view">
     <!-- Mobile house rules (hidden on desktop) -->
   <div id="mobile-rules">
-    <!-- Stats bar -->
-    <div id="mobile-stats" style="display:flex;justify-content:center;padding:10px 16px 8px;background:var(--cream);">
-      <div style="text-align:center;">
-        <div style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:20px;" id="mobile-members">—</div>
-        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);font-family:'DM Sans',sans-serif;">Members</div>
-      </div>
-    </div>
     <button class="mobile-rules-toggle" id="mobile-rules-toggle">
       <span>House Rules</span>
       <span class="chevron">▼</span>
@@ -840,12 +858,9 @@ function labelBadgesHTML(labels) {
 function updateMemberCount() {
   const approved = Object.values(allUsers).filter(u=>u.status==='approved').length;
   const el = document.getElementById('topbar-member-count');
-  if(el){
-    el.setAttribute('data-members', approved);
-    el.textContent = approved > 0 ? '\u00b7 ' + approved + ' member' + (approved===1?'':'s') : '';
-  }
-  const mm = document.getElementById('mobile-members');
-  if(mm) mm.textContent = approved;
+  if(el){ el.setAttribute('data-members', approved); el.textContent=''; }
+  const sm = document.getElementById('stats-members');
+  if(sm) sm.textContent = approved || '—';
 }
 
 const PRESENCE_BASE = 644;
@@ -940,21 +955,29 @@ document.getElementById('register-btn').onclick=async()=>{
 
 async function signInUser(user){
   currentUser=user;saveSession(user.email);
-  // Switch UI from guest to member
   hideEl('guest-btns'); showEl('member-btns');
   hideEl('guest-join-prompt'); showEl('composer');
   hideEl('auth-screen'); showEl('app-screen'); showEl('feed-view'); hideEl('mod-view');
-  // Topbar avatar
+  // Stats bar — hide guest nudge, show profile
+  const statsGuest = document.getElementById('stats-guest');
+  const statsProfile = document.getElementById('stats-profile');
+  if(statsGuest) statsGuest.style.display='none';
+  if(statsProfile){ statsProfile.style.display='flex'; statsProfile.classList.remove('hidden'); }
+  // Stats avatar
+  const sa = document.getElementById('stats-avatar');
+  if(sa){
+    if(user.photo){ sa.style.background='none'; sa.style.padding='0'; sa.style.overflow='hidden'; sa.innerHTML='<img src="'+esc(user.photo)+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>'; }
+    else { sa.textContent=initials(user.name); sa.style.background=avBg(user.name); }
+  }
+  const sn = document.getElementById('stats-name'); if(sn) sn.textContent=user.name;
+  const st = document.getElementById('stats-title'); if(st) st.textContent=user.title||'';
+  const sp = document.getElementById('stats-points'); if(sp) sp.textContent=(user.points&&user.points>0)?'★ '+user.points+' pts':'';
+  // Keep hidden topbar-avatar for openAvatarModal target
   const av=document.getElementById('topbar-avatar');
-  if(user.photo){ av.style.background='none'; av.style.padding='0'; av.style.overflow='hidden'; av.innerHTML=`<img src="${esc(user.photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.parentElement.style.background=avBg('${esc(user.name)}');this.parentElement.textContent='${esc(initials(user.name))}'"/>`; }
-  else { av.textContent=initials(user.name); av.style.background=avBg(user.name); }
-  document.getElementById('topbar-name').textContent=user.name;
-  document.getElementById('topbar-title-tag').textContent=user.title||'';
-  const pts = user.points||0;
-  const ptsEl = document.getElementById('topbar-points');
-  if(ptsEl) ptsEl.textContent = pts > 0 ? '★ '+pts+' pts' : '';
+  if(av){ av.textContent=initials(user.name); av.style.background=avBg(user.name); }
   if(canMod(user)){showEl('mod-btn');document.getElementById('mod-btn').onclick=openMod;}
-  const ca=document.getElementById('composer-avatar');ca.textContent=initials(user.name);ca.style.background=avBg(user.name);
+  const ca=document.getElementById('composer-avatar');
+  if(ca){ ca.textContent=initials(user.name); ca.style.background=avBg(user.name); }
   document.getElementById('composer-text').placeholder=`What's on your mind, ${user.name.split(' ')[0]}?`;
   hideEl('loading-screen');
   renderFeed();
@@ -966,6 +989,11 @@ document.getElementById('signout-btn').onclick=()=>{
   hideEl('member-btns'); showEl('guest-btns');
   hideEl('composer'); showEl('guest-join-prompt');
   hideEl('mod-btn'); hideEl('mod-view'); showEl('feed-view');
+  // Reset stats bar
+  const statsGuest = document.getElementById('stats-guest');
+  const statsProfile = document.getElementById('stats-profile');
+  if(statsGuest) statsGuest.style.display='block';
+  if(statsProfile){ statsProfile.style.display='none'; statsProfile.classList.add('hidden'); }
   document.getElementById('topbar-section').textContent='Community';
   renderFeed();
 };
@@ -1000,10 +1028,18 @@ document.getElementById('avatar-save').onclick=async()=>{
   const key=sanKey(currentUser.email);
   await fbUpdate(`users/${key}`,{photo:url});
   currentUser={...currentUser,photo:url};
-  // Update topbar avatar
+  // Update stats avatar
+  const sa=document.getElementById('stats-avatar');
+  if(sa){
+    if(url){ sa.style.background='none';sa.style.padding='0';sa.style.overflow='hidden'; sa.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>`; }
+    else { sa.innerHTML=''; sa.textContent=initials(currentUser.name); sa.style.background=avBg(currentUser.name); }
+  }
+  // Keep topbar-avatar in sync
   const av=document.getElementById('topbar-avatar');
-  if(url){ av.style.background='none';av.style.padding='0';av.style.overflow='hidden'; av.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>`; }
-  else { av.innerHTML=''; av.textContent=initials(currentUser.name); av.style.background=avBg(currentUser.name); }
+  if(av){
+    if(url){ av.style.background='none';av.style.padding='0';av.style.overflow='hidden'; av.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>`; }
+    else { av.innerHTML=''; av.textContent=initials(currentUser.name); av.style.background=avBg(currentUser.name); }
+  }
   document.getElementById('avatar-modal').classList.add('hidden');
 };
 
@@ -1194,7 +1230,11 @@ const getAuthor = id => Object.values(allUsers).find(u=>u.id===id)||{name:'Membe
 
 function renderFeed(){
   const container=document.getElementById('posts-container');
-  const approved=Object.values(allPosts).filter(p=>p.status==='approved').sort((a,b)=>b.ts-a.ts);
+  const approved=Object.values(allPosts).filter(p=>p.status==='approved').sort((a,b)=>{
+    if(b.pinned&&!a.pinned) return 1;
+    if(a.pinned&&!b.pinned) return -1;
+    return b.ts-a.ts;
+  });
   const allTags=[...new Set(approved.map(p=>p.tag).filter(Boolean))];
   renderFilterBar(allTags);
   // Only show pending notice for signed-in members
@@ -1291,19 +1331,23 @@ function renderPost(p){
       <\/div>`
     : `<p style="font-size:12px;color:var(--ghost);text-align:center;padding:10px 0;"><button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');" style="font-size:12px;">Sign in<\/button> or <button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');document.getElementById('register-form').classList.remove('hidden');" style="font-size:12px;">join<\/button> to comment.<\/p>`;
   return `
-  <article class="post-card" data-id="${p.id}" id="post-${p.id}">
+  <article class="post-card${p.pinned?' pinned':''}" data-id="${p.id}" id="post-${p.id}">
+    ${p.pinned?`<div class="pin-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><\/svg> Pinned<\/div>`:''}
     <div class="post-header">
       <div class="post-author">
         ${avHTML(author.name,42,author.photo)}
         <div>
-          <div class="post-author-name">${esc(author.name)}</div>
+          <div class="post-author-name">${esc(author.name)}<\/div>
           ${author.title?`<div class="post-author-title">${esc(author.title)}<\/div>`:''}
           ${authorLabels?`<div class="post-author-labels">${authorLabels}<\/div>`:''}
           ${(author.points&&author.points>0)?`<div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;margin-top:1px;">★ ${author.points} pts<\/div>`:''}
           <div class="post-time">${timeAgo(p.ts)}<\/div>
         <\/div>
       <\/div>
-      ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}">✕<\/button>`:''}
+      <div style="display:flex;align-items:center;gap:4px;">
+        ${canMod(currentUser)?`<button class="pin-btn${p.pinned?' active':''}" data-action="pin-post" data-id="${p.id}" title="${p.pinned?'Unpin':'Pin post'}"><svg width="13" height="13" viewBox="0 0 24 24" fill="${p.pinned?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><\/svg><\/button>`:''}
+        ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}">✕<\/button>`:''}
+      <\/div>
     <\/div>
     <div class="post-body">${linkify(p.text)}<\/div>
     ${renderMediaEmbed(p)}
@@ -1387,6 +1431,21 @@ function setupPostEvents(){
       const ok = await inlineConfirm('Delete post', 'This will permanently remove this post.');
       if(!ok) return;
       await fbRemove('posts/'+btn.dataset.id);
+    }
+    if(action==='pin-post'){
+      if(!canMod(currentUser)) return;
+      const pid = btn.dataset.id;
+      const post = allPosts[pid];
+      if(!post) return;
+      const alreadyPinned = !!post.pinned;
+      if(!alreadyPinned){
+        const pinnedCount = Object.values(allPosts).filter(p=>p.pinned&&p.status==='approved').length;
+        if(pinnedCount >= 3){
+          await inlineConfirm('Pin limit reached', 'You already have 3 pinned posts. Unpin one first before pinning another.');
+          return;
+        }
+      }
+      await fbUpdate('posts/'+pid, {pinned: alreadyPinned ? null : true});
     }
     if(action==='toggle-comments'){document.getElementById(`comments-${btn.dataset.id}`)?.classList.toggle('hidden');}
     if(action==='view-post'){
@@ -1676,13 +1735,13 @@ function startPublicListeners(){
     allUsers=snap.exists()?snap.val():{};
     updateMemberCount();
     if(currentUser&&canMod(currentUser)) updateModBadge();
-    // Refresh current user points in topbar
+    // Refresh current user points in stats bar
     if(currentUser){
       const key = Object.keys(allUsers).find(k=>allUsers[k].id===currentUser.id);
       if(key){
         currentUser.points = allUsers[key].points||0;
-        const ptsEl = document.getElementById('topbar-points');
-        if(ptsEl) ptsEl.textContent = currentUser.points > 0 ? '★ '+currentUser.points+' pts' : '';
+        const sp = document.getElementById('stats-points');
+        if(sp) sp.textContent = currentUser.points > 0 ? '★ '+currentUser.points+' pts' : '';
       }
     }
   });
