@@ -3,7 +3,52 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DWC Community</title>
+<title>DWC Community by DWC Magazine</title>
+
+<!-- Primary SEO -->
+<meta name="description" content="DWC Community is where readers and contributors meet. Join Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso, Annette Densham and women from around the world. Share stories, connect, and celebrate each other. Part of DWC Magazine, published weekly in 106 countries." />
+<meta name="keywords" content="DWC Magazine, DWC Community, women's community, strong women, women's forum, Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso, Annette Densham, women contributors, women empowerment, women's magazine community, defiant women" />
+<meta name="author" content="DWC Magazine" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://community.dwcmagazine.com" />
+
+<!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="DWC Magazine" />
+<meta property="og:title" content="DWC Community by DWC Magazine" />
+<meta property="og:description" content="Where DWC readers and contributors meet. Join Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso, Annette Densham and strong women from around the world." />
+<meta property="og:url" content="https://community.dwcmagazine.com" />
+<meta property="og:image" content="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_76.png?v=1780415283" />
+<meta property="og:image:width" content="1080" />
+<meta property="og:image:height" content="1080" />
+<meta property="og:locale" content="en_GB" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="DWC Community by DWC Magazine" />
+<meta name="twitter:description" content="Where DWC readers and contributors meet. Join Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso, Annette Densham and strong women from around the world." />
+<meta name="twitter:image" content="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_76.png?v=1780415283" />
+<meta name="twitter:site" content="@dwcmagazine" />
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "DWC Community",
+  "url": "https://community.dwcmagazine.com",
+  "description": "Where DWC readers and contributors meet — including Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso and Annette Densham. Part of DWC Magazine, published weekly in 106 countries.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "DWC Magazine",
+    "url": "https://dwcmagazine.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_76.png?v=1780415283"
+    }
+  }
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -365,12 +410,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
     <!-- Mobile house rules (hidden on desktop) -->
   <div id="mobile-rules">
     <!-- Stats bar -->
-    <div id="mobile-stats" style="display:flex;justify-content:center;gap:24px;padding:10px 16px 8px;background:var(--cream);">
-      <div style="text-align:center;">
-        <div style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:20px;" id="mobile-viewers">—</div>
-        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);font-family:'DM Sans',sans-serif;">Viewers</div>
-      </div>
-      <div style="width:1px;background:var(--muted);"></div>
+    <div id="mobile-stats" style="display:flex;justify-content:center;padding:10px 16px 8px;background:var(--cream);">
       <div style="text-align:center;">
         <div style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:20px;" id="mobile-members">—</div>
         <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);font-family:'DM Sans',sans-serif;">Members</div>
@@ -799,7 +839,10 @@ function labelBadgesHTML(labels) {
 function updateMemberCount() {
   const approved = Object.values(allUsers).filter(u=>u.status==='approved').length;
   const el = document.getElementById('topbar-member-count');
-  if(el) el.setAttribute('data-members', approved);
+  if(el){
+    el.setAttribute('data-members', approved);
+    el.textContent = approved > 0 ? '\u00b7 ' + approved + ' member' + (approved===1?'':'s') : '';
+  }
   const mm = document.getElementById('mobile-members');
   if(mm) mm.textContent = approved;
 }
@@ -820,16 +863,12 @@ function startPresence(){
   onDisconnect(presenceRef).remove();
   setInterval(writePresence, 2 * 60 * 1000);
   onValue(ref(db,'presence'), snap=>{
-    const now = Date.now();
-    const nodes = snap.exists() ? Object.values(snap.val()) : [];
-    const live = nodes.filter(n => n && (now - (n.t||0)) < PRESENCE_TTL).length || 1;
-    const total = PRESENCE_BASE - 1 + live;
+    const live = snap.exists() ? Object.keys(snap.val()).length : 0;
+    const total = PRESENCE_BASE + live;
     const el = document.getElementById('topbar-member-count');
     const members = parseInt(el?.getAttribute('data-members')||'0');
-    if(el) el.textContent = '\u00b7 ' + total + ' viewer' + (total===1?'':'s') + ' \u00b7 ' + members + ' member' + (members===1?'':'s');
-    const mv = document.getElementById('mobile-viewers');
+    if(el) el.textContent = members > 0 ? '\u00b7 ' + members + ' member' + (members===1?'':'s') : '';
     const mm = document.getElementById('mobile-members');
-    if(mv) mv.textContent = total;
     if(mm) mm.textContent = members;
   });
 }
@@ -912,7 +951,7 @@ async function signInUser(user){
   document.getElementById('topbar-title-tag').textContent=user.title||'';
   const pts = user.points||0;
   const ptsEl = document.getElementById('topbar-points');
-  if(ptsEl) ptsEl.textContent = pts > 0 ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 21 12 21 16 21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 4H17V13a5 5 0 0 1-10 0V4z"/><path d="M7 9H4a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1h4"/><path d="M17 9h3a2 2 0 0 0 2-2V6a1 1 0 0 0-1-1h-4"/></svg> '+pts+' pts' : '';
+  if(ptsEl) ptsEl.textContent = pts > 0 ? '★ '+pts+' pts' : '';
   if(canMod(user)){showEl('mod-btn');document.getElementById('mod-btn').onclick=openMod;}
   const ca=document.getElementById('composer-avatar');ca.textContent=initials(user.name);ca.style.background=avBg(user.name);
   document.getElementById('composer-text').placeholder=`What's on your mind, ${user.name.split(' ')[0]}?`;
@@ -1168,6 +1207,19 @@ function renderFeed(){
   const filtered=activeFilter==='all'?approved:approved.filter(p=>p.tag===activeFilter);
   if(filtered.length===0){container.innerHTML=`<div class="empty-state"><p>Nothing here yet. Be the first to share.<\/p><\/div>`;return;}
   container.innerHTML=filtered.map(renderPost).join('');
+  // Track post views when posts become visible
+  if('IntersectionObserver' in window){
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const btn = entry.target.querySelector('[data-action="view-post"]');
+          if(btn) btn.click();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.5});
+    container.querySelectorAll('.post-card').forEach(card=>observer.observe(card));
+  }
   // Auto-grow textareas in newly rendered posts
   container.querySelectorAll('textarea').forEach(ta=>{
     ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';});
@@ -1230,7 +1282,7 @@ function renderPost(p){
           <div class="post-author-name">${esc(author.name)}</div>
           ${author.title?`<div class="post-author-title">${esc(author.title)}<\/div>`:''}
           ${authorLabels?`<div class="post-author-labels">${authorLabels}<\/div>`:''}
-          ${(author.points&&author.points>0)?`<div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;margin-top:1px;">🏆 ${author.points} pts<\/div>`:''}
+          ${(author.points&&author.points>0)?`<div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;margin-top:1px;">★ ${author.points} pts<\/div>`:''}
           <div class="post-time">${timeAgo(p.ts)}<\/div>
         <\/div>
       <\/div>
@@ -1243,6 +1295,8 @@ function renderPost(p){
       ${renderReactions(p)}
       <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">💬 ${commentCount>0?commentCount+' ':''}Comment${commentCount!==1?'s':''}<\/button>
       <button class="comment-toggle" data-action="share-post" data-id="${p.id}" style="margin-left:0;" title="Copy link">🔗 Share<\/button>
+      ${(p.views&&p.views>0)?`<span style="font-size:12px;color:var(--ghost);margin-left:auto;display:flex;align-items:center;gap:3px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><\/svg> ${p.views}<\/span>`:''}
+      <button style="display:none;" data-action="view-post" data-id="${p.id}"><\/button>
     <\/div>
     <div class="comments-section hidden" id="comments-${p.id}">
       ${comments.map(c=>renderComment(c,p.id,false)).join('')}
@@ -1318,6 +1372,18 @@ function setupPostEvents(){
       await fbRemove('posts/'+btn.dataset.id);
     }
     if(action==='toggle-comments'){document.getElementById(`comments-${btn.dataset.id}`)?.classList.toggle('hidden');}
+    if(action==='view-post'){
+      // Increment view count once per session per post
+      const pid = btn.dataset.id;
+      const sessionKey = 'dwc_viewed_'+pid;
+      try {
+        if(!sessionStorage.getItem(sessionKey)){
+          sessionStorage.setItem(sessionKey,'1');
+          const current = await fbGet('posts/'+pid+'/views') || 0;
+          await fbSet('posts/'+pid+'/views', current+1);
+        }
+      } catch{}
+    }
     if(action==='share-post'){
       const url = window.location.href.split('#')[0] + '#post-' + btn.dataset.id;
       navigator.clipboard.writeText(url).then(()=>{
@@ -1481,7 +1547,7 @@ function renderAllMembers(){
         ${(u.labels&&u.labels.length)?`<div class="member-labels-row">${labelBadgesHTML(u.labels)}<\/div>`:''}
       <\/div>
       ${u.title?`<span class="title-badge">${esc(u.title)}<\/span>`:''}
-      ${(u.points&&u.points>0)?`<span style="font-size:11px;color:var(--gold);font-family:'DM Sans',sans-serif;white-space:nowrap;">🏆 ${u.points}<\/span>`:''}
+      ${(u.points&&u.points>0)?`<span style="font-size:11px;color:var(--gold);font-family:'DM Sans',sans-serif;white-space:nowrap;">★ ${u.points}<\/span>`:''}
       <span class="status-badge status-${u.role==='moderator'?'moderator':u.status}">${u.role==='moderator'?'Moderator':u.status}<\/span>
       ${u.status==='approved'&&u.role!=='admin'?`
         <button class="btn btn-sm ${u.role==='moderator'?'btn-reject':'btn-approve'}" data-action="toggle-mod" data-key="${sanKey(u.email)}" data-current-role="${u.role}">${u.role==='moderator'?'Remove Mod':'Make Mod'}<\/button>
@@ -1599,7 +1665,7 @@ function startPublicListeners(){
       if(key){
         currentUser.points = allUsers[key].points||0;
         const ptsEl = document.getElementById('topbar-points');
-        if(ptsEl) ptsEl.textContent = currentUser.points > 0 ? '🏆 '+currentUser.points+' pts' : '';
+        if(ptsEl) ptsEl.textContent = currentUser.points > 0 ? '★ '+currentUser.points+' pts' : '';
       }
     }
   });
