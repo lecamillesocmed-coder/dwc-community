@@ -352,6 +352,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <div class="field"><label>EMAIL</label><input type="email" id="reg-email" placeholder="you@example.com"/><div class="field-error hidden" id="reg-email-err"></div></div>
       <div class="field"><label>PASSWORD</label><input type="password" id="reg-password" placeholder="Min. 6 characters"/><div class="field-error hidden" id="reg-pass-err"></div></div>
       <div class="field"><label>CONFIRM PASSWORD</label><input type="password" id="reg-confirm" placeholder="••••••••"/><div class="field-error hidden" id="reg-confirm-err"></div></div>
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;padding:12px;background:var(--soft);border-radius:8px;border:1px solid var(--muted);">
+        <input type="checkbox" id="reg-email-opt" style="margin-top:3px;width:16px;height:16px;accent-color:var(--plum);flex-shrink:0;cursor:pointer;" checked/>
+        <label for="reg-email-opt" style="font-size:13px;color:var(--mid);line-height:1.5;cursor:pointer;">Send me a daily nudge when there's something new in the community. No spam — just a gentle heads up.</label>
+      </div>
       <button class="btn btn-primary btn-full" id="register-btn">Create Account</button>
       <div class="divider"><span>OR</span></div>
       <p class="auth-switch">Already have an account? <button class="btn-link" id="go-login">Sign in</button></p>
@@ -374,7 +378,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 <div id="app-screen" class="hidden">
   <div id="topbar">
     <div class="topbar-left">
-      <span class="topbar-brand">DWC</span>
+      <a href="https://dwcmagazine.com" target="_blank" style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:22px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;" class="topbar-brand">DWC</a>
       <span class="topbar-sep">|</span>
       <span class="topbar-section" id="topbar-section">Community</span>
       <button id="search-toggle" style="border:none;background:none;color:var(--goldlt);cursor:pointer;font-size:16px;padding:4px 6px;opacity:0.8;" title="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
@@ -416,6 +420,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   </div>
 
   <div id="filter-bar" class="hidden"></div>
+
+  <!-- New posts nudge banner -->
+  <div id="new-posts-banner" class="hidden" style="background:linear-gradient(135deg,var(--plum),var(--plumlt));padding:10px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+    <span style="font-size:13px;color:var(--cream);font-family:'DM Sans',sans-serif;" id="new-posts-text"></span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button onclick="document.getElementById('new-posts-banner').classList.add('hidden');saveLastVisit();" style="border:1px solid rgba(255,255,255,0.3);background:none;color:var(--cream);border-radius:20px;padding:3px 12px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;">Dismiss</button>
+    </div>
+  </div>
 
   <!-- Search bar -->
   <div id="search-bar" style="background:#fff;border-bottom:1px solid var(--muted);padding:10px 20px;display:none;">
@@ -657,11 +669,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 <div class="avatar-modal-overlay hidden" id="avatar-modal">
   <div class="avatar-modal-box">
     <div class="avatar-modal-title">Your Profile Photo</div>
-    <p class="avatar-modal-sub">Paste a link to a photo — from your social media profile, website, or anywhere online. Right-click any image and choose "Copy image address".</p>
+    <p class="avatar-modal-sub">Upload a photo from your device or paste a direct image URL.</p>
     <div class="avatar-preview-row">
       <div id="avatar-modal-preview" style="width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid var(--muted);flex-shrink:0;"></div>
       <div style="flex:1;font-size:12px;color:var(--ghost);line-height:1.5;">Your photo will appear next to your name on all posts and comments.</div>
     </div>
+    <!-- Upload button -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <button type="button" id="avatar-upload-btn" class="btn btn-ghost btn-sm" style="flex-shrink:0;">📷 Upload Photo</button>
+      <input type="file" id="avatar-upload-input" accept="image/*" style="display:none;"/>
+      <span id="avatar-upload-status" style="font-size:12px;color:var(--ghost);"></span>
+    </div>
+    <p style="font-size:11px;color:var(--ghost);margin-bottom:6px;">Or paste an image URL:</p>
     <input type="url" class="avatar-url-input" id="avatar-url-input" placeholder="https://example.com/your-photo.jpg" />
     <p style="font-size:11px;color:var(--ghost);margin-top:6px;">Leave blank to use your initials instead.</p>
     <div style="display:flex;gap:8px;margin-top:18px;justify-content:flex-end;">
@@ -839,10 +858,12 @@ function renderMediaEmbed(post){
 
 function linkify(text){
   const escaped = esc(text);
-  const urlPattern = /https?:\/\/[^\s<>"]+/g;
+  // Match full URLs (with protocol) and bare domain URLs (e.g. dwcmagazine.com/...)
+  const urlPattern = /(https?:\/\/[^\s<>"]+|(?<![/@\w])(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s<>"]*)?(?=\s|$))/g;
   return escaped.replace(urlPattern, function(url){
+    const href = url.startsWith('http') ? url : 'https://' + url;
     const display = url.length > 50 ? url.slice(0,50)+'\u2026' : url;
-    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">' + display + '<\/a>';
+    return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">' + display + '<\/a>';
   });
 }
 
@@ -943,7 +964,8 @@ document.getElementById('register-btn').onclick=async()=>{
   const key=sanKey(email);const users=await fbGet('users')||{};
   if(users[key]){showErr('reg-email-err','An account with this email already exists.');btn.disabled=false;btn.textContent='Create Account';return;}
   const isAdmin=email.toLowerCase()===ADMIN_EMAIL.toLowerCase();
-  const newUser={id:uid(),name,email:email.toLowerCase(),password:hashPw(pw),title:isAdmin?'Administrator':'',status:isAdmin?'approved':'pending',role:isAdmin?'admin':'member',joinedAt:Date.now(),labels:[]};
+  const emailOptIn = document.getElementById('reg-email-opt')?.checked || false;
+  const newUser={id:uid(),name,email:email.toLowerCase(),password:hashPw(pw),title:isAdmin?'Administrator':'',status:isAdmin?'approved':'pending',role:isAdmin?'admin':'member',joinedAt:Date.now(),labels:[],emailUpdates:emailOptIn};
   await fbSet(`users/${key}`,newUser);
   if(isAdmin){allUsers={...users,[key]:newUser};await signInUser(newUser);}
   else{btn.disabled=false;btn.textContent='Create Account';hideEl('auth-screen');showEl('pending-screen');}
@@ -1007,6 +1029,38 @@ function openAvatarModal(){
   document.getElementById('avatar-modal').classList.remove('hidden');
 }
 window.openAvatarModal = openAvatarModal;
+
+// Avatar upload via Cloudinary
+document.getElementById('avatar-upload-btn').onclick = () => document.getElementById('avatar-upload-input').click();
+document.getElementById('avatar-upload-input').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const status = document.getElementById('avatar-upload-status');
+  status.textContent = 'Uploading…';
+  status.style.color = 'var(--gold)';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+  formData.append('folder', 'dwc-community/avatars');
+  try {
+    const res = await fetch('https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD+'/image/upload', { method:'POST', body:formData });
+    const data = await res.json();
+    if(data.secure_url){
+      document.getElementById('avatar-url-input').value = data.secure_url;
+      status.textContent = '✓ Photo ready';
+      status.style.color = '#2e7d52';
+      // Update preview
+      const preview = document.getElementById('avatar-modal-preview');
+      preview.innerHTML = '<img src="'+data.secure_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">';
+    } else {
+      status.textContent = 'Upload failed — try again.';
+      status.style.color = '#c0392b';
+    }
+  } catch {
+    status.textContent = 'Upload failed — check connection.';
+    status.style.color = '#c0392b';
+  }
+});
 
 // Mobile rules toggle
 document.getElementById('mobile-rules-toggle').addEventListener('click',()=>{
@@ -1267,10 +1321,36 @@ function renderFeed(){
   });
   // Check for shared post link
   checkHash();
+  // Show new posts banner
+  checkNewPosts();
+}
+
+function saveLastVisit(){
+  try{ localStorage.setItem('dwc_last_visit', Date.now()); }catch{}
+}
+
+function checkNewPosts(){
+  if(!currentUser) return;
+  let lastVisit = 0;
+  try{ lastVisit = parseInt(localStorage.getItem('dwc_last_visit')||'0'); }catch{}
+  if(!lastVisit){ saveLastVisit(); return; } // First visit — just save timestamp
+  const newPosts = Object.values(allPosts).filter(p=>
+    p.status==='approved' && p.ts > lastVisit && p.authorId !== currentUser.id
+  );
+  if(newPosts.length > 0){
+    const banner = document.getElementById('new-posts-banner');
+    const text = document.getElementById('new-posts-text');
+    if(banner && text){
+      text.textContent = newPosts.length === 1
+        ? '✦ 1 new post since your last visit'
+        : `✦ ${newPosts.length} new posts since your last visit`;
+      banner.classList.remove('hidden');
+    }
+  }
+  saveLastVisit();
 }
 
 function checkHash(){
-  const hash = window.location.hash;
   if(!hash || !hash.startsWith('#post-')) return;
   const postId = hash.replace('#post-','');
   const el = document.getElementById('post-'+postId);
@@ -1619,6 +1699,7 @@ function renderAllMembers(){
         <div class="member-name">${esc(u.name)}<\/div>
         <div class="member-email">${esc(u.email)}<\/div>
         <div style="font-size:11px;color:var(--ghost);">Joined ${u.joinedAt ? new Date(u.joinedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '—'}<\/div>
+        ${u.emailUpdates?'<div style="font-size:10px;color:#2e7d52;font-family:\'DM Sans\',sans-serif;">✓ Email updates<\/div>':''}
         ${(u.labels&&u.labels.length)?`<div class="member-labels-row">${labelBadgesHTML(u.labels)}<\/div>`:''}
       <\/div>
       ${u.title?`<span class="title-badge">${esc(u.title)}<\/span>`:''}
