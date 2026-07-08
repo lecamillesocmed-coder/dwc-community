@@ -49,7 +49,7 @@
   }
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -62,7 +62,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 
 /* Loading */
 #loading-screen{position:fixed;inset:0;background:var(--plumdk);display:flex;align-items:center;justify-content:center;z-index:9999;}
-#loading-screen span{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:26px;letter-spacing:.08em;font-weight:400;}
+#loading-screen span{font-family:'DM Sans',sans-serif;color:var(--gold);font-size:22px;letter-spacing:.08em;font-weight:500;}
 
 /* Auth */
 #auth-screen{min-height:100vh;background:radial-gradient(ellipse at 60% 0%,#7a3060 0%,var(--plumdk) 45%,#1a0e16 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
@@ -71,7 +71,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .dwc-name{font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:52px;line-height:1;letter-spacing:.14em;text-transform:uppercase;}
 .dwc-sub{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-top:4px;}
 .dwc-rule{width:100%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:10px 0 6px;}
-.auth-community-label{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--mid);text-align:center;margin-bottom:24px;font-style:italic;font-weight:600;letter-spacing:.06em;}
+.auth-community-label{font-family:'DM Sans',sans-serif;font-size:18px;color:var(--mid);text-align:center;margin-bottom:24px;font-weight:600;letter-spacing:.02em;}
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:11px;color:var(--mid);margin-bottom:5px;letter-spacing:.06em;}
 .field input{width:100%;border:1px solid var(--muted);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--soft);color:var(--dark);outline:none;transition:border-color .2s;}
@@ -95,7 +95,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .topbar-left{display:flex;align-items:center;gap:12px;}
 .topbar-brand{font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:22px;letter-spacing:.1em;text-transform:uppercase;}
 .topbar-sep{color:var(--gold);opacity:.4;font-size:16px;}
-.topbar-section{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--goldlt);font-size:18px;letter-spacing:.04em;opacity:.9;}
+.topbar-section{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--goldlt);font-size:15px;letter-spacing:.04em;opacity:.9;}
 .topbar-member-count{font-size:12px;color:rgba(250,247,243,.45);font-family:'DM Sans',sans-serif;letter-spacing:.04em;margin-left:2px;}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .topbar-user .name{font-size:12px;color:var(--cream);}
@@ -107,7 +107,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .signout-btn:hover{color:var(--goldlt);}
 
 /* Avatar */
-.avatar{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 0 0 2px var(--cream),0 0 0 3px var(--muted);}
+.avatar{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 0 0 2px var(--cream),0 0 0 3px var(--muted);}
 
 /* Member badges */
 .member-label{display:inline-block;border-radius:20px;padding:1px 8px;font-size:10px;font-family:'DM Sans',sans-serif;font-weight:500;margin:1px 2px;}
@@ -164,7 +164,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .post-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
 .post-author{display:flex;gap:10px;align-items:flex-start;}
-.post-author-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:16px;}
+.post-author-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:15px;}
 .post-author-title{font-size:11px;color:var(--gold);}
 .post-author-labels{display:flex;flex-wrap:wrap;gap:2px;margin-top:3px;}
 .post-time{font-size:11px;color:var(--ghost);}
@@ -195,7 +195,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .comment-body{flex:1;background:var(--soft);border-radius:10px;padding:8px 12px;}
 .comment-body.reply-body{border-left:2px solid var(--gold);}
 .comment-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
-.comment-author{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:13px;}
+.comment-author{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:13px;}
 .comment-text{font-size:13px;color:var(--dark);line-height:1.55;}
 .comment-actions{display:flex;gap:10px;margin-top:3px;padding-left:4px;}
 .reply-btn{border:none;background:none;cursor:pointer;font-size:12px;color:var(--ghost);padding:4px 0;font-family:'DM Sans',sans-serif;}
@@ -208,7 +208,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 
 /* Empty */
 .empty-state{text-align:center;padding:60px 20px;}
-.empty-state p{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--plum);opacity:.4;}
+.empty-state p{font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:var(--plum);opacity:.4;}
 
 /* Sidebar */
 #sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;}
@@ -221,11 +221,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .rule-item:last-child{border-bottom:none;padding-bottom:0;}
 .rule-emoji{width:22px;flex-shrink:0;margin-top:2px;display:flex;align-items:flex-start;justify-content:center;}
 .rule-text{font-size:14px;color:#1a0e16;line-height:1.6;}
-.rule-text strong{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--plum);display:block;margin-bottom:2px;font-style:normal;}
+.rule-text strong{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:var(--plum);display:block;margin-bottom:2px;}
 
 /* Cover card */
 .cover-feature img{width:100%;border-radius:8px;display:block;border:1px solid var(--muted);}
-.cover-caption{font-size:13px;color:var(--mid);margin:9px 0 5px;line-height:1.55;font-style:italic;font-family:'Cormorant Garamond',serif;}
+.cover-caption{font-size:13px;color:var(--mid);margin:9px 0 5px;line-height:1.55;font-family:'DM Sans',sans-serif;}
 .cover-link{font-size:12px;color:var(--gold);text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:500;}
 .cover-link:hover{text-decoration:underline;}
 
@@ -234,7 +234,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .brand-item:last-child{border-bottom:none;padding-bottom:0;}
 .brand-img{width:42px;height:42px;border-radius:6px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
 .brand-info{flex:1;min-width:0;}
-.brand-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.brand-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .brand-cat{font-size:11px;color:var(--ghost);margin-bottom:2px;}
 .brand-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
 .brand-link:hover{text-decoration:underline;}
@@ -244,12 +244,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .pod-item:last-child{border-bottom:none;padding-bottom:0;}
 .pod-img{width:40px;height:40px;border-radius:6px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
 .pod-info{flex:1;min-width:0;}
-.pod-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:15px;line-height:1.3;}
+.pod-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;line-height:1.3;}
 .pod-host{font-size:11px;color:var(--ghost);margin-bottom:3px;}
 .pod-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
 .pod-link:hover{text-decoration:underline;}
 .sidebar-more{display:block;text-align:center;font-size:12px;color:var(--gold);text-decoration:none;margin-top:10px;font-family:'DM Sans',sans-serif;font-weight:500;}
 .sidebar-more:hover{text-decoration:underline;}
+
+/* Cornerstone Partners */
+.partner-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
+.partner-item:last-child{border-bottom:none;padding-bottom:0;}
+.partner-photo{width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;}
+.partner-info{flex:1;min-width:0;}
+.partner-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;}
+.partner-role{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;font-weight:500;margin:2px 0 6px;display:block;}
+.partner-title{font-family:'DM Sans',sans-serif;font-weight:600;color:var(--dark);font-size:13px;line-height:1.4;text-decoration:none;display:block;margin-bottom:4px;}
+.partner-title:hover{color:var(--plum);}
+.partner-dek{font-size:12px;color:var(--mid);line-height:1.55;margin-bottom:6px;display:block;}
+.partner-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
+.partner-link:hover{text-decoration:underline;}
 
 /* Mod */
 #mod-view{min-height:100vh;background:var(--cream);}
@@ -261,7 +274,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .tab-btn.active{background:var(--plum);color:#fff;}
 .mod-card{background:#fff;border-radius:12px;padding:18px 20px;margin-bottom:12px;border:1px solid var(--muted);}
 .mod-card-header{display:flex;gap:12px;align-items:center;margin-bottom:14px;}
-.mod-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:17px;}
+.mod-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:15px;}
 .mod-email{font-size:12px;color:var(--ghost);}
 .mod-registered{font-size:11px;color:var(--ghost);margin-top:2px;}
 .title-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
@@ -270,7 +283,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .member-row{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--muted);flex-wrap:wrap;}
 .member-row:last-child{border-bottom:none;}
 .member-info{flex:1;min-width:120px;}
-.member-name{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:15px;}
+.member-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;}
 .member-email{font-size:12px;color:var(--ghost);}
 .member-labels-row{display:flex;flex-wrap:wrap;gap:2px;margin-top:3px;}
 .status-badge{display:inline-block;border-radius:20px;padding:1px 9px;font-size:10.5px;font-family:'DM Sans',sans-serif;border:1px solid;}
@@ -283,7 +296,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 /* Labels modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;}
 .modal-box{background:var(--cream);border-radius:16px;padding:28px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
-.modal-title{font-family:'Cormorant Garamond',serif;color:var(--plum);font-size:20px;font-weight:700;margin-bottom:16px;}
+.modal-title{font-family:'DM Sans',sans-serif;color:var(--plum);font-size:18px;font-weight:700;margin-bottom:16px;}
 .label-checkbox-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--muted);}
 .label-checkbox-row:last-child{border-bottom:none;}
 .label-checkbox-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--plum);cursor:pointer;}
@@ -302,7 +315,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .mobile-rules-body.open{max-height:600px;padding:4px 16px 12px;}
 .avatar-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;}
 .avatar-modal-box{background:var(--cream);border-radius:16px;padding:28px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
-.avatar-modal-title{font-family:'Cormorant Garamond',serif;color:var(--plum);font-size:20px;font-weight:700;margin-bottom:6px;}
+.avatar-modal-title{font-family:'DM Sans',sans-serif;color:var(--plum);font-size:18px;font-weight:700;margin-bottom:6px;}
 .avatar-modal-sub{font-size:13px;color:var(--ghost);margin-bottom:18px;line-height:1.5;}
 .avatar-preview-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
 .avatar-preview-img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--muted);background:var(--soft);}
@@ -342,7 +355,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
     </div>
     <div id="forgot-sent" class="hidden" style="text-align:center;padding:10px 0;">
       <div style="font-size:32px;margin-bottom:12px;">📬</div>
-      <h3 style="font-family:'Cormorant Garamond',serif;color:var(--plum);font-size:20px;margin-bottom:8px;">Request Sent</h3>
+      <h3 style="font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:18px;margin-bottom:8px;">Request Sent</h3>
       <p style="font-size:13px;color:var(--mid);line-height:1.6;margin-bottom:20px;">Your reset request has been received. The admin will set a temporary password for you shortly.</p>
       <button class="btn btn-ghost btn-full" id="forgot-back-login">Back to Sign In</button>
     </div>
@@ -368,7 +381,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   <div class="auth-card" style="text-align:center;padding:40px 36px;">
     <div class="dwc-masthead" style="margin-bottom:16px;"><div class="dwc-name">DWC</div><div class="dwc-sub">Strong Women, Strong Voices</div></div>
     <div class="dwc-rule"></div>
-    <h2 style="font-family:'Cormorant Garamond',serif;color:var(--plum);font-size:24px;margin:16px 0 10px;">Application Received</h2>
+    <h2 style="font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:20px;margin:16px 0 10px;">Application Received</h2>
     <p style="color:var(--mid);font-size:14px;line-height:1.7;">Your account is awaiting approval.<br/>You'll be able to sign in once reviewed.</p>
     <button class="btn btn-ghost" style="margin-top:24px;" id="pending-back">Back to Sign In</button>
   </div>
@@ -416,7 +429,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <div class="avatar" id="stats-avatar" style="width:34px;height:34px;font-size:13px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
     </div>
     <!-- Guest join nudge -->
-    <div id="stats-guest" style="font-size:11px;color:rgba(250,247,243,.4);font-family:'DM Sans',sans-serif;font-style:italic;">Join the conversation →</div>
+    <div id="stats-guest" style="font-size:11px;color:rgba(250,247,243,.4);font-family:'DM Sans',sans-serif;">Join the conversation →</div>
   </div>
 
   <div id="filter-bar" class="hidden"></div>
@@ -469,7 +482,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <div id="feed-main">
         <!-- Guest join prompt -->
         <div id="guest-join-prompt" class="hidden" style="background:#fff;border-radius:12px;padding:18px 20px;border:1px solid var(--muted);margin-bottom:20px;box-shadow:0 2px 12px rgba(92,45,78,.05);text-align:center;">
-          <p style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--plum);margin-bottom:6px;font-weight:600;">Want to join the conversation?</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:15px;color:var(--plum);margin-bottom:6px;font-weight:600;">Want to join the conversation?</p>
           <p style="font-size:13px;color:var(--ghost);margin-bottom:14px;">Post, react, and comment as a member of DWC Community.</p>
           <div style="display:flex;gap:10px;justify-content:center;">
             <button class="btn btn-ghost btn-sm" id="prompt-signin">Sign In</button>
@@ -508,120 +521,55 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <!-- Sidebar -->
       <aside id="sidebar">
 
-        <!-- Rules -->
+        <!-- Cornerstone Partners -->
         <div class="sidebar-card">
-          <div class="sidebar-card-header">House Rules</div>
-          <div class="sidebar-card-body" style="padding:10px 16px;">
-            <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><div class="rule-text"><strong>Be kind, always</strong>Disagreements are fine. Unkindness isn't. This is a safe space for women.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="rule-text"><strong>One post per day</strong>Quality over quantity. You get one post every 24 hours — make it count.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div class="rule-text"><strong>Share freely</strong>Personal updates, insights, conversations — always welcome, always free.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://buy.stripe.com/28EeVdcG5cHLeE4dkA5Rm08" target="_blank" style="color:var(--gold);">buy us a coffee</a> first. One time only.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
-            <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
-            <div class="rule-item" style="background:linear-gradient(135deg,#faf4ff,#fff8ee);border-radius:8px;padding:10px 12px;margin-top:4px;border:1px solid rgba(184,150,90,0.2);">
-              <span class="rule-emoji" style="color:var(--gold);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 21 12 21 16 21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 4H17V13a5 5 0 0 1-10 0V4z"/><path d="M7 9H4a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1h4"/><path d="M17 9h3a2 2 0 0 0 2-2V6a1 1 0 0 0-1-1h-4"/></svg></span>
-              <div class="rule-text"><strong style="color:var(--gold);">Earn points &amp; win things</strong>The more you engage, the more you earn. Points unlock cover features, directory listings, and more — coming soon.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Latest Issue -->
-        <div class="sidebar-card">
-          <div class="sidebar-card-header">Latest Issue</div>
-          <div class="sidebar-card-body cover-feature">
-            <a href="https://dwcmagazine.com/pages/dwc-weekly-issue-92-zoe-watts-endeyecheck" target="_blank">
-              <img src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_76.png?v=1780415283" alt="DWC Issue 92" />
-            </a>
-            <p class="cover-caption">Issue 92 — Zoe Watts on the #EndEyeCheck campaign. Raw, necessary, and quietly powerful.</p>
-            <a class="cover-link" href="https://dwcmagazine.com/pages/dwc-weekly-issue-92-zoe-watts-endeyecheck" target="_blank">Read Issue 92 →</a>
-          </div>
-        </div>
-
-        <!-- Brands We Love -->
-        <div class="sidebar-card">
-          <div class="sidebar-card-header">Brands We Love</div>
+          <div class="sidebar-card-header">Cornerstone Partners</div>
           <div class="sidebar-card-body" style="padding:8px 16px;">
-            <div class="brand-item">
-              <img class="brand-img" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/10355.png?v=1778538183" alt="L'Oréal"/>
-              <div class="brand-info">
-                <div class="brand-name">L'Oréal Glass Skin Mask</div>
-                <div class="brand-cat">Beauty · Skincare</div>
-                <a class="brand-link" href="https://amzn.eu/d/057yubgd" target="_blank">Shop →</a>
-              </div>
-            </div>
-            <div class="brand-item">
-              <img class="brand-img" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/9663.png?v=1778022836" alt="Mielle"/>
-              <div class="brand-info">
-                <div class="brand-name">Mielle Rosemary Mint Oil</div>
-                <div class="brand-cat">Beauty · Hair Care</div>
-                <a class="brand-link" href="https://amzn.to/4ubYqgB" target="_blank">Shop →</a>
-              </div>
-            </div>
-            <div class="brand-item">
-              <img class="brand-img" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/9636.jpg?v=1777998475" alt="Legian Village"/>
-              <div class="brand-info">
-                <div class="brand-name">The Legian Village Hotel</div>
-                <div class="brand-cat">Travel · Bali</div>
-                <a class="brand-link" href="https://www.legianvillage-hotel.com/en/" target="_blank">Visit →</a>
-              </div>
-            </div>
-            <div class="brand-item">
-              <img class="brand-img" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/9638.webp?v=1777998475" alt="Siam Social"/>
-              <div class="brand-info">
-                <div class="brand-name">Siam Social</div>
-                <div class="brand-cat">Dining · Penang</div>
-                <a class="brand-link" href="https://share.google/m9CERY4XdyBZg6ABk" target="_blank">Directions →</a>
-              </div>
-            </div>
-            <a class="sidebar-more" href="https://dwcmagazine.com/pages/dwc-brands-we-love" target="_blank">See all brands →</a>
-          </div>
-        </div>
 
-        <!-- Podcasts -->
-        <div class="sidebar-card">
-          <div class="sidebar-card-header">Featured Podcasts</div>
-          <div class="sidebar-card-body" style="padding:8px 16px;">
-            <div class="pod-item">
-              <div class="pod-img" style="background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:18px;">🎙</div>
-              <div class="pod-info">
-                <div class="pod-name">Soul Loom</div>
-                <div class="pod-host">Michelle Wollaston</div>
-                <a class="pod-link" href="https://open.spotify.com/show/5qSCUQm4zPcWZY5dkWoFe5" target="_blank">Listen on Spotify →</a>
+            <div class="partner-item">
+              <img class="partner-photo" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_19.png?v=1771252805" alt="Michelle Wollaston">
+              <div class="partner-info">
+                <div class="partner-name">Michelle Wollaston</div>
+                <span class="partner-role">Contributor &amp; Cornerstone Partner</span>
+                <a class="partner-title" href="https://dwcmagazine.com/a/blog/post/michelle-wollaston-why-your-body-still-remembers-trauma-long-after-its-over" target="_blank">Why Your Body Still Remembers Trauma Long After It's Over</a>
+                <span class="partner-dek">Most conversations about abuse focus on the moment it occurs. But for many women, the greater impact lies in what follows. The mind may decide to move on. The body does not.</span>
+                <a class="partner-link" href="https://dwcmagazine.com/a/blog/post/michelle-wollaston-why-your-body-still-remembers-trauma-long-after-its-over" target="_blank">Read the Article →</a>
               </div>
             </div>
-            <div class="pod-item">
-              <div class="pod-img" style="background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:18px;">🎙</div>
-              <div class="pod-info">
-                <div class="pod-name">The Desire Gap</div>
-                <div class="pod-host">Dr Laura Jurgens</div>
-                <a class="pod-link" href="https://open.spotify.com/show/0SfpVI3oXn4Tk3zh3xCisf" target="_blank">Listen on Spotify →</a>
+
+            <div class="partner-item">
+              <img class="partner-photo" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_59.png?v=1776607668" alt="Julie Hayes">
+              <div class="partner-info">
+                <div class="partner-name">Julie Hayes</div>
+                <span class="partner-role">Contributor &amp; Cornerstone Partner</span>
+                <a class="partner-title" href="https://dwcmagazine.com/a/blog/post/julie-hayes-on-the-avalanche-of-inadequacy-boobs-bum-cheeks-and-beauty-blunders" target="_blank">The Avalanche of Inadequacy: Boobs, Bum Cheeks, and Beauty Blunders</a>
+                <span class="partner-dek">There she stood, ankle-deep in products bought in moments of weakness — each one promising to reverse, plump, tighten, and whisper kind things to her pores. All promises. Then she caught a glimpse of herself in the mirror. Always a gamble.</span>
+                <a class="partner-link" href="https://dwcmagazine.com/a/blog/post/julie-hayes-on-the-avalanche-of-inadequacy-boobs-bum-cheeks-and-beauty-blunders" target="_blank">Read the Article →</a>
               </div>
             </div>
-            <div class="pod-item">
-              <div class="pod-img" style="background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:18px;">🎙</div>
-              <div class="pod-info">
-                <div class="pod-name">The Infinite Life</div>
-                <div class="pod-host">Katische Dionne Haberfield</div>
-                <a class="pod-link" href="https://open.spotify.com/show/4nRLNxlzZWziRsDM1d0BiZ" target="_blank">Listen on Spotify →</a>
+
+            <div class="partner-item">
+              <img class="partner-photo" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_x_1080_px_57.png?v=1765452996" alt="Jamie Tedrick-Monroe">
+              <div class="partner-info">
+                <div class="partner-name">Jamie Tedrick-Monroe</div>
+                <span class="partner-role">Contributor &amp; Cornerstone Partner</span>
+                <a class="partner-title" href="https://dwcmagazine.com/a/blog/post/jamie-tedrick-monroe-on-lessons-from-the-shadows-mental-health-healing-and-year-end-renewal" target="_blank">Lessons from the Shadows: Mental Health, Healing, and Year-End Renewal</a>
+                <span class="partner-dek">Shadows are often misunderstood — seen as dark corners to avoid, or as evidence of failure. Yet they can be our greatest teachers. Addiction teaches honesty. Mental health struggles teach compassion. Each shadow carries pain, and each carries a message.</span>
+                <a class="partner-link" href="https://dwcmagazine.com/a/blog/post/jamie-tedrick-monroe-on-lessons-from-the-shadows-mental-health-healing-and-year-end-renewal" target="_blank">Read the Article →</a>
               </div>
             </div>
-            <div class="pod-item">
-              <div class="pod-img" style="background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:18px;">🎙</div>
-              <div class="pod-info">
-                <div class="pod-name">Her Story</div>
-                <div class="pod-host">Kylie King</div>
-                <a class="pod-link" href="https://open.spotify.com/show/3gSgIXnclLPrWiQJUVSOy8" target="_blank">Listen on Spotify →</a>
+
+            <div class="partner-item">
+              <img class="partner-photo" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_9.jpg?v=1779778577" alt="Sofia Pedroso">
+              <div class="partner-info">
+                <div class="partner-name">Sofia Pedroso</div>
+                <span class="partner-role">Contributor &amp; Cornerstone Partner</span>
+                <a class="partner-title" href="https://dwcmagazine.com/a/blog/post/the-breakdown-that-built-me-sofia-pedroso-on-how-a-crisis-sparked-her-business-shiffully" target="_blank">The Breakdown That Built Me: Sofia Pedroso on How a Crisis Sparked Her Business, Shiffully</a>
+                <span class="partner-dek">The breaking point came during yet another failed business attempt. On the phone with a friend, crying so hard she could barely speak. A pause. "But how many attempts were there really?" Something about that question stayed with her.</span>
+                <a class="partner-link" href="https://dwcmagazine.com/a/blog/post/the-breakdown-that-built-me-sofia-pedroso-on-how-a-crisis-sparked-her-business-shiffully" target="_blank">Read the Article →</a>
               </div>
             </div>
-            <div class="pod-item">
-              <div class="pod-img" style="background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:18px;">🎙</div>
-              <div class="pod-info">
-                <div class="pod-name">She Who Dares</div>
-                <div class="pod-host">Krystal Wilson</div>
-                <a class="pod-link" href="https://open.spotify.com/show/70PvFqxxlc7pI6vuE0HRqe" target="_blank">Listen on Spotify →</a>
-              </div>
-            </div>
-            <a class="sidebar-more" href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank">Full directory →</a>
+
           </div>
         </div>
 
@@ -1143,7 +1091,7 @@ function runSearch(q){
   ).slice(0,4);
 
   if(!matchedPosts.length && !matchedMembers.length){
-    searchResults.innerHTML = '<div style="background:#fff;border-radius:12px;padding:20px;border:1px solid var(--muted);text-align:center;margin-bottom:16px;"><p style="font-family:\'Cormorant Garamond\',serif;color:var(--plum);opacity:0.5;font-size:16px;">No results found.</p><\/div>';
+    searchResults.innerHTML = '<div style="background:#fff;border-radius:12px;padding:20px;border:1px solid var(--muted);text-align:center;margin-bottom:16px;"><p style="font-family:\'DM Sans\',sans-serif;font-weight:500;color:var(--plum);opacity:0.5;font-size:14px;">No results found.</p><\/div>';
     return;
   }
 
@@ -1154,7 +1102,7 @@ function runSearch(q){
     matchedMembers.forEach(u => {
       html += '<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--muted);">'
         + avHTML(u.name, 34, u.photo)
-        + '<div><div style="font-family:\'Cormorant Garamond\',serif;font-weight:700;color:var(--plum);font-size:15px;">'+esc(u.name)+'<\/div>'
+        + '<div><div style="font-family:\'DM Sans\',sans-serif;font-weight:700;color:var(--plum);font-size:14px;">'+esc(u.name)+'<\/div>'
         + (u.title?'<div style="font-size:11px;color:var(--gold);">'+esc(u.title)+'<\/div>':'')
         + '<\/div><\/div>';
     });
@@ -1166,7 +1114,7 @@ function runSearch(q){
       const author = getAuthor(p.authorId);
       const preview = p.text.length > 100 ? p.text.slice(0,100)+'\u2026' : p.text;
       html += '<div style="padding:12px 16px;border-bottom:1px solid var(--muted);cursor:pointer;" onclick="document.getElementById(\'posts-container\').querySelectorAll(\'[data-id]\').forEach(el=>{if(el.dataset.id===\''+p.id+'\')el.scrollIntoView({behavior:\'smooth\'})});searchBar.style.display=\'none\';searchInput.value=\'\';hideEl(searchResults);">'
-        + '<div style="font-family:\'Cormorant Garamond\',serif;font-weight:700;color:var(--plum);font-size:14px;">'+esc(author.name)+'<span style="font-weight:400;color:var(--ghost);font-size:12px;margin-left:6px;">'+timeAgo(p.ts)+'<\/span><\/div>'
+        + '<div style="font-family:\'DM Sans\',sans-serif;font-weight:700;color:var(--plum);font-size:14px;">'+esc(author.name)+'<span style="font-weight:400;color:var(--ghost);font-size:12px;margin-left:6px;">'+timeAgo(p.ts)+'<\/span><\/div>'
         + '<div style="font-size:13px;color:var(--dark);line-height:1.5;margin-top:2px;">'+esc(preview)+'<\/div>'
         + '<\/div>';
     });
@@ -1438,7 +1386,7 @@ function renderPost(p){
       ${(p.views&&p.views>0)?`<span style="font-size:12px;color:var(--ghost);margin-left:auto;display:flex;align-items:center;gap:3px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><\/svg> ${p.views}<\/span>`:''}
       <button style="display:none;" data-action="view-post" data-id="${p.id}"><\/button>
     <\/div>
-    <div class="comments-section hidden" id="comments-${p.id}">
+    <div class="comments-section${commentCount>0?'':' hidden'}" id="comments-${p.id}">
       ${comments.map(c=>renderComment(c,p.id,false)).join('')}
       ${commentInputHTML}
     <\/div>
@@ -1679,7 +1627,7 @@ function renderActivity(){
     <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:${i<arr.length-1?'1px solid var(--muted)':'none'}">
       ${avHTML(a.userName||'?', 32)}
       <div style="flex:1;">
-        <span style="font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--plum);font-size:14px;">${esc(a.userName)}<\/span>
+        <span style="font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;">${esc(a.userName)}<\/span>
         <span style="font-size:13px;color:var(--mid);"> ${esc(a.detail)}<\/span>
       <\/div>
       <span style="font-size:11px;color:var(--ghost);white-space:nowrap;">${timeAgo(a.ts)}<\/span>
