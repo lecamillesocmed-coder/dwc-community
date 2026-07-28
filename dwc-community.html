@@ -3,38 +3,1542 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DWC Community</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<title>DWC Community by DWC Magazine</title>
 
+<!-- Primary SEO -->
+<meta name="description" content="DWC Community is where readers and contributors meet. Join Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso, Annette Densham and women from around the world. Share stories, connect, and celebrate each other. Part of DWC Magazine, published weekly in 106 countries." />
+<meta name="keywords" content="DWC Magazine, DWC Community, women's community, strong women, women's forum, Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso, Annette Densham, women contributors, women empowerment, women's magazine community, defiant women" />
+<meta name="author" content="DWC Magazine" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://community.dwcmagazine.com" />
+
+<!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="DWC Magazine" />
+<meta property="og:title" content="DWC Community by DWC Magazine" />
+<meta property="og:description" content="Where DWC readers and contributors meet. Join Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso, Annette Densham and strong women from around the world." />
+<meta property="og:url" content="https://community.dwcmagazine.com" />
+<meta property="og:image" content="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_76.png?v=1780415283" />
+<meta property="og:image:width" content="1080" />
+<meta property="og:image:height" content="1080" />
+<meta property="og:locale" content="en_GB" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="DWC Community by DWC Magazine" />
+<meta name="twitter:description" content="Where DWC readers and contributors meet. Join Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso, Annette Densham and strong women from around the world." />
+<meta name="twitter:image" content="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_76.png?v=1780415283" />
+<meta name="twitter:site" content="@dwcmagazine" />
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "DWC Community",
+  "url": "https://community.dwcmagazine.com",
+  "description": "Where DWC readers and contributors meet — including Michelle Wollaston, Julie Hayes, Jamie Tedrick-Monroe, Sofia Pedroso and Annette Densham. Part of DWC Magazine, published weekly in 106 countries.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "DWC Magazine",
+    "url": "https://dwcmagazine.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_76.png?v=1780415283"
+    }
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --plum:#5c2d4e;--plumdk:#3d1e34;--plumlt:#7a4060;
+  --gold:#b8965a;--goldlt:#d4aa6a;
+  --cream:#faf7f3;--soft:#f0e8df;--muted:#e0d5cb;
+  --dark:#1a0e16;--mid:#6b5460;--ghost:#9e8490;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;}
 
-  :root {
-    --plum:   #5c2d4e;
-    --plumdk: #3d1e34;
-    --plumlt: #7a4060;
-    --gold:   #b8965a;
-    --goldlt: #d4aa6a;
-    --cream:  #faf7f3;
-    --soft:   #f0e8df;
-    --muted:  #e0d5cb;
-    --dark:   #1a0e16;
-    --mid:    #6b5460;
-    --ghost:  #9e8490;
+/* Loading */
+#loading-screen{position:fixed;inset:0;background:var(--plumdk);display:flex;align-items:center;justify-content:center;z-index:9999;}
+#loading-screen span{font-family:'DM Sans',sans-serif;color:var(--gold);font-size:22px;letter-spacing:.08em;font-weight:500;}
+
+/* Auth */
+#auth-screen{min-height:100vh;background:radial-gradient(ellipse at 60% 0%,#7a3060 0%,var(--plumdk) 45%,#1a0e16 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
+.auth-card{background:var(--cream);border-radius:16px;padding:40px 36px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.45),0 0 0 1px rgba(184,150,90,.15);}
+.dwc-masthead{text-align:center;margin-bottom:6px;}
+.dwc-name{font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:52px;line-height:1;letter-spacing:.14em;text-transform:uppercase;}
+.dwc-sub{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-top:4px;}
+.dwc-rule{width:100%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:10px 0 6px;}
+.auth-community-label{font-family:'DM Sans',sans-serif;font-size:18px;color:var(--mid);text-align:center;margin-bottom:24px;font-weight:600;letter-spacing:.02em;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;color:var(--mid);margin-bottom:5px;letter-spacing:.06em;}
+.field input{width:100%;border:1px solid var(--muted);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--soft);color:var(--dark);outline:none;transition:border-color .2s;}
+.field input:focus{border-color:var(--plum);}
+.field-error{font-size:11px;color:#c0392b;margin-top:4px;}
+.btn{border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;padding:10px 22px;transition:all .18s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:var(--plum);color:#fff;}.btn-primary:hover{background:var(--plumlt);}.btn-primary:disabled{opacity:.5;cursor:default;}
+.btn-ghost{background:transparent;color:var(--mid);border:1px solid var(--muted);}.btn-ghost:hover{border-color:var(--plum);color:var(--plum);}
+.btn-approve{background:#e8f5ee;color:#2e7d52;border:1px solid #b0d9bf;}.btn-approve:hover{background:#d0edd8;}
+.btn-reject{background:#fdf0ef;color:#c0392b;border:1px solid #f0c0bc;}.btn-reject:hover{background:#fce0de;}
+.btn-admin{background:#f3eeff;color:#5c2d7e;border:1px solid #c8a8f0;}.btn-admin:hover{background:#e8d8ff;}
+.btn-sm{font-size:12px;padding:5px 13px;}.btn-full{width:100%;justify-content:center;}
+.btn-link{border:none;background:none;cursor:pointer;color:var(--gold);font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;}
+.divider{display:flex;align-items:center;gap:10px;margin:20px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--muted);}
+.divider span{font-size:11px;color:var(--ghost);letter-spacing:.08em;}
+.auth-switch{text-align:center;font-size:13px;color:var(--ghost);}
+
+/* Topbar */
+#topbar{background:var(--plumdk);padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-brand{font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:22px;letter-spacing:.1em;text-transform:uppercase;}
+.topbar-sep{color:var(--gold);opacity:.4;font-size:16px;}
+.topbar-section{font-family:'DM Sans',sans-serif;font-weight:500;color:var(--goldlt);font-size:15px;letter-spacing:.04em;opacity:.9;}
+.topbar-member-count{font-size:12px;color:rgba(250,247,243,.45);font-family:'DM Sans',sans-serif;letter-spacing:.04em;margin-left:2px;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.topbar-user .name{font-size:12px;color:var(--cream);}
+.topbar-user .utitle{font-size:10px;color:var(--gold);}
+.mod-btn{border:1px solid rgba(184,150,90,.4);background:none;color:var(--goldlt);border-radius:20px;padding:4px 13px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;}
+.mod-btn:hover{background:rgba(184,150,90,.1);}
+.badge-count{background:var(--gold);color:#fff;border-radius:20px;padding:0 6px;font-size:10px;line-height:17px;}
+.signout-btn{border:none;background:none;color:var(--ghost);cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;}
+.signout-btn:hover{color:var(--goldlt);}
+
+/* Avatar */
+.avatar{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 0 0 2px var(--cream),0 0 0 3px var(--muted);}
+
+/* Member badges */
+.member-label{display:inline-block;border-radius:20px;padding:1px 8px;font-size:10px;font-family:'DM Sans',sans-serif;font-weight:500;margin:1px 2px;}
+.label-cover{background:#fff4e6;color:#b85a00;border:1px solid #f0c880;}
+.label-cornerstone{background:#e8f0ff;color:#2a50a0;border:1px solid #a8c0f0;}
+.label-team{background:#f0fff4;color:#1a6b3a;border:1px solid #90d0a8;}
+.label-contributor{background:#fff0f8;color:#8b1a6b;border:1px solid #e0a0d0;}
+.label-moderator{background:#f3eeff;color:#5c2d7e;border:1px solid #c8a8f0;}
+
+/* Filter bar */
+#filter-bar{background:#fff;border-bottom:1px solid var(--muted);padding:0 20px;display:flex;gap:6px;overflow-x:auto;align-items:center;height:44px;}
+.filter-tag{border-radius:20px;padding:3px 13px;cursor:pointer;font-size:11.5px;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .15s;border:1px solid var(--muted);background:none;color:var(--ghost);}
+.filter-tag.active{background:var(--plum);color:#fff;border-color:var(--plum);}
+
+/* Site tabs — links out to other DWC Magazine sections */
+#site-tabs{background:var(--plumdk);border-bottom:1px solid rgba(255,255,255,.08);padding:0 20px;display:flex;gap:8px;overflow-x:auto;align-items:center;height:42px;}
+.site-tab{border-radius:20px;padding:5px 14px;font-size:12px;white-space:nowrap;font-family:'DM Sans',sans-serif;font-weight:500;color:var(--goldlt);text-decoration:none;border:1px solid rgba(255,255,255,.15);transition:all .15s;flex-shrink:0;}
+.site-tab:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.32);}
+
+/* Layout */
+#feed-layout{max-width:1120px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 290px;gap:24px;align-items:stretch;}
+@media(max-width:1024px){
+  #feed-layout{grid-template-columns:1fr;padding:16px 12px;}
+  #sidebar{display:none;}
+  #mobile-rules{display:block;}
+  .topbar-member-count{display:none;}
+  #topbar{padding:0 12px;}
+  .topbar-brand{font-size:18px;}
+  .topbar-section{font-size:15px;}
+  .mod-btn{padding:3px 10px;font-size:11px;}
+  .topbar-user .name{display:none;}
+  .topbar-user .utitle{display:none;}
+}
+@media(min-width:1025px){#mobile-rules{display:none;}}
+
+/* Composer */
+#composer{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid var(--muted);margin-bottom:20px;box-shadow:0 2px 12px rgba(92,45,78,.05);}
+.composer-row{display:flex;gap:10px;}
+.composer-row textarea{flex:1;resize:none;border:1px solid var(--muted);border-radius:10px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--soft);color:var(--dark);outline:none;line-height:1.65;transition:border-color .2s;overflow:hidden;}
+.composer-row textarea:focus{border-color:var(--plum);}
+.composer-extras{margin-top:12px;padding-left:50px;display:flex;flex-direction:column;gap:8px;}
+.composer-extras-row{display:flex;gap:8px;flex-wrap:wrap;}
+.composer-extras input{border:1px solid var(--muted);border-radius:8px;padding:7px 11px;font-family:'DM Sans',sans-serif;font-size:12px;background:var(--soft);color:var(--dark);outline:none;}
+.composer-extras input:focus{border-color:var(--plum);}
+.composer-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.composer-hint{font-size:11px;color:var(--ghost);}
+
+/* Pending notice */
+.pending-notice{background:#fff8ee;border:1px solid rgba(184,150,90,.35);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--mid);display:flex;align-items:center;gap:8px;}
+
+/* Post card */
+.post-card{background:#fff;border-radius:12px;padding:20px 22px;border:1px solid var(--muted);margin-bottom:16px;box-shadow:0 2px 12px rgba(92,45,78,.05);animation:fadeUp .3s ease both;}
+.post-card.highlighted{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,150,90,0.2);animation:fadeUp .3s ease both;}
+.post-card.pinned{border-color:var(--plum);border-width:2px;}
+.pin-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--plum);font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;opacity:0.7;}
+.pin-btn{border:none;background:none;cursor:pointer;font-size:12px;color:var(--ghost);padding:4px 6px;font-family:'DM Sans',sans-serif;transition:color .15s;}
+.pin-btn:hover{color:var(--plum);}
+.pin-btn.active{color:var(--plum);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.post-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.post-author{display:flex;gap:10px;align-items:flex-start;}
+.post-author-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:15px;}
+.post-author-title{font-size:11px;color:var(--gold);}
+.post-author-labels{display:flex;flex-wrap:wrap;gap:2px;margin-top:3px;}
+.post-time{font-size:11px;color:var(--ghost);}
+.post-body{font-size:15px;line-height:1.75;color:var(--dark);white-space:pre-wrap;margin-bottom:14px;}
+.post-image{border-radius:8px;overflow:hidden;margin-bottom:14px;border:1px solid var(--muted);}
+.post-image img{width:100%;display:block;max-height:420px;object-fit:cover;}
+.post-embed{border-radius:8px;overflow:hidden;margin-bottom:14px;border:1px solid var(--muted);}
+.post-embed iframe{width:100%;display:block;border:none;}
+.post-embed-spotify{border-radius:8px;overflow:hidden;margin-bottom:14px;}
+.post-tag{display:inline-block;background:var(--soft);color:var(--gold);border:1px solid rgba(184,150,90,.3);border-radius:20px;padding:1px 10px;font-size:10.5px;margin-bottom:12px;}
+.post-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--muted);padding-top:10px;}
+.reaction-btn{border:1px solid transparent;background:none;cursor:pointer;padding:4px 9px;display:flex;align-items:center;gap:4px;color:var(--ghost);font-size:13px;font-family:'DM Sans',sans-serif;transition:all .15s;border-radius:20px;}
+.reaction-btn:hover{background:var(--soft);border-color:var(--muted);}
+.reaction-btn .emoji{font-size:16px;}
+.reaction-btn.reacted-heart{border-color:#e8a0b0;background:#fff0f4;color:#c0304a;}
+.reaction-btn.reacted-laugh{border-color:#f0d080;background:#fffbe8;color:#a07800;}
+.reaction-btn.reacted-sad{border-color:#a0b8e8;background:#f0f4ff;color:#3050a0;}
+.reaction-btn.reacted-angry{border-color:#e8a080;background:#fff4f0;color:#a03010;}
+.comment-toggle{border:none;background:none;cursor:pointer;font-size:13px;color:var(--ghost);padding:4px 9px;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;margin-left:auto;}
+.comment-toggle:hover{color:var(--plum);}
+.delete-btn{border:none;background:none;cursor:pointer;color:var(--muted);font-size:16px;padding:4px;line-height:1;}
+.delete-btn:hover{color:#c0392b;}
+
+/* Comments */
+.comments-section{margin-top:14px;border-top:1px solid var(--muted);padding-top:14px;}
+.comment-item{margin-top:10px;display:flex;gap:8px;}
+.comment-item.reply{margin-left:34px;}
+.comment-body{flex:1;background:var(--soft);border-radius:10px;padding:8px 12px;}
+.comment-body.reply-body{border-left:2px solid var(--gold);}
+.comment-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.comment-author{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:13px;}
+.comment-text{font-size:13px;color:var(--dark);line-height:1.55;}
+.comment-actions{display:flex;gap:10px;margin-top:3px;padding-left:4px;}
+.reply-btn{border:none;background:none;cursor:pointer;font-size:12px;color:var(--ghost);padding:4px 0;font-family:'DM Sans',sans-serif;}
+.reply-btn:hover{color:var(--plum);}
+.comment-input-row{display:flex;gap:8px;align-items:flex-start;margin-top:10px;}
+.comment-input-row textarea{flex:1;resize:none;border:1px solid var(--muted);border-radius:20px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--soft);color:var(--dark);outline:none;line-height:1.5;overflow:hidden;min-height:36px;}
+.comment-input-row textarea:focus{border-color:var(--plum);}
+.comment-submit{background:var(--plum);color:#fff;border:none;border-radius:20px;padding:7px 16px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;flex-shrink:0;}
+.comment-submit:hover{background:var(--plumlt);}
+
+/* Empty */
+.empty-state{text-align:center;padding:60px 20px;}
+.empty-state p{font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:var(--plum);opacity:.4;}
+
+/* Sidebar */
+#sidebar{display:block;}
+.sidebar-sticky{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;}
+.sidebar-card{background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;box-shadow:0 2px 12px rgba(92,45,78,.05);}
+.sidebar-card-header{background:var(--plum);padding:13px 18px;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--cream);font-size:13px;letter-spacing:.1em;text-transform:uppercase;}
+.sidebar-card-body{padding:14px 16px;}
+
+/* Rules card */
+.rule-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
+.rule-item:last-child{border-bottom:none;padding-bottom:0;}
+.rule-emoji{width:22px;flex-shrink:0;margin-top:2px;display:flex;align-items:flex-start;justify-content:center;}
+.rule-text{font-size:14px;color:#1a0e16;line-height:1.6;}
+.rule-text strong{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:var(--plum);display:block;margin-bottom:2px;}
+
+/* Cover card */
+.cover-feature img{width:100%;border-radius:8px;display:block;border:1px solid var(--muted);}
+.cover-caption{font-size:13px;color:var(--mid);margin:9px 0 5px;line-height:1.55;font-family:'DM Sans',sans-serif;}
+.cover-link{font-size:12px;color:var(--gold);text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:500;}
+.cover-link:hover{text-decoration:underline;}
+
+/* Brands */
+.brand-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--muted);align-items:center;}
+.brand-item:last-child{border-bottom:none;padding-bottom:0;}
+.brand-img{width:42px;height:42px;border-radius:6px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
+.brand-info{flex:1;min-width:0;}
+.brand-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.brand-cat{font-size:11px;color:var(--ghost);margin-bottom:2px;}
+.brand-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
+.brand-link:hover{text-decoration:underline;}
+
+/* Podcasts */
+.pod-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
+.pod-item:last-child{border-bottom:none;padding-bottom:0;}
+.pod-img{width:40px;height:40px;border-radius:6px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
+.pod-info{flex:1;min-width:0;}
+.pod-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;line-height:1.3;}
+.pod-host{font-size:11px;color:var(--ghost);margin-bottom:3px;}
+.pod-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
+.pod-link:hover{text-decoration:underline;}
+.sidebar-more{display:block;text-align:center;font-size:12px;color:var(--gold);text-decoration:none;margin-top:10px;font-family:'DM Sans',sans-serif;font-weight:500;}
+.sidebar-more:hover{text-decoration:underline;}
+
+/* Cornerstone Partners */
+.partner-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
+.partner-item:last-child{border-bottom:none;padding-bottom:0;}
+.partner-photo{width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;}
+.partner-info{flex:1;min-width:0;}
+.partner-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;}
+.partner-role{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;font-weight:500;margin:2px 0 6px;display:block;}
+.partner-title{font-family:'DM Sans',sans-serif;font-weight:600;color:var(--dark);font-size:13px;line-height:1.4;text-decoration:none;display:block;margin-bottom:4px;}
+.partner-title:hover{color:var(--plum);}
+.partner-dek{font-size:12px;color:var(--mid);line-height:1.55;margin-bottom:6px;display:block;}
+.partner-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
+.partner-link:hover{text-decoration:underline;}
+
+/* Mod */
+#mod-view{min-height:100vh;background:var(--cream);}
+.mod-header{padding:28px 16px 0;max-width:800px;margin:0 auto;}
+.mod-header h2{font-family:'Libre Bodoni',serif;color:var(--plum);font-size:26px;margin-bottom:4px;}
+.mod-header p{color:var(--ghost);font-size:13px;}
+.tab-bar{display:flex;gap:4px;margin:20px 0;background:#fff;border-radius:10px;padding:4px;border:1px solid var(--muted);}
+.tab-btn{flex:1;border:none;border-radius:8px;padding:8px 0;background:none;color:var(--mid);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.tab-btn.active{background:var(--plum);color:#fff;}
+.mod-card{background:#fff;border-radius:12px;padding:18px 20px;margin-bottom:12px;border:1px solid var(--muted);}
+.mod-card-header{display:flex;gap:12px;align-items:center;margin-bottom:14px;}
+.mod-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:15px;}
+.mod-email{font-size:12px;color:var(--ghost);}
+.mod-registered{font-size:11px;color:var(--ghost);margin-top:2px;}
+.title-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.title-input{flex:1;min-width:160px;border:1px solid var(--muted);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--soft);color:var(--dark);outline:none;}
+.title-input:focus{border-color:var(--plum);}
+.member-row{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--muted);flex-wrap:wrap;}
+.member-row:last-child{border-bottom:none;}
+.member-info{flex:1;min-width:120px;}
+.member-name{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;}
+.member-email{font-size:12px;color:var(--ghost);}
+.member-labels-row{display:flex;flex-wrap:wrap;gap:2px;margin-top:3px;}
+.status-badge{display:inline-block;border-radius:20px;padding:1px 9px;font-size:10.5px;font-family:'DM Sans',sans-serif;border:1px solid;}
+.status-approved{color:#2e7d52;background:#e8f5ee;border-color:#b0d9bf;}
+.status-pending{color:var(--gold);background:#fff8ee;border-color:rgba(184,150,90,.4);}
+.status-rejected{color:#c0392b;background:#fdf0ef;border-color:#f0c0bc;}
+.title-badge{display:inline-block;background:#fff8ee;color:var(--gold);border:1px solid rgba(184,150,90,.3);border-radius:20px;padding:1px 9px;font-size:10.5px;font-family:'DM Sans',sans-serif;}
+.mod-content{max-width:800px;margin:0 auto;padding:0 16px 40px;}
+
+/* Labels modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal-box{background:var(--cream);border-radius:16px;padding:28px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.modal-title{font-family:'DM Sans',sans-serif;color:var(--plum);font-size:18px;font-weight:700;margin-bottom:16px;}
+.label-checkbox-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--muted);}
+.label-checkbox-row:last-child{border-bottom:none;}
+.label-checkbox-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--plum);cursor:pointer;}
+.label-checkbox-row label{font-size:14px;color:var(--dark);cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+#pending-screen{min-height:100vh;background:radial-gradient(ellipse at 60% 0%,#7a3060 0%,var(--plumdk) 45%,#1a0e16 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
+#footer{text-align:center;padding:20px 0 32px;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--muted);border-radius:4px;}
+/* Mobile rules strip */
+#mobile-rules{margin:0 12px 16px;border-radius:12px;border:1px solid var(--muted);overflow:hidden;box-shadow:0 2px 8px rgba(92,45,78,.05);}
+.mobile-rules-toggle{width:100%;background:var(--plum);border:none;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.mobile-rules-toggle span{font-family:'DM Sans',sans-serif;font-weight:600;color:var(--cream);font-size:13px;letter-spacing:.1em;text-transform:uppercase;}
+.mobile-rules-toggle .chevron{color:var(--goldlt);font-size:14px;transition:transform .2s;}
+.mobile-rules-toggle.open .chevron{transform:rotate(180deg);}
+.mobile-rules-body{background:#fff;padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;}
+.mobile-rules-body.open{max-height:600px;padding:4px 16px 12px;}
+.avatar-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;}
+.avatar-modal-box{background:var(--cream);border-radius:16px;padding:28px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.avatar-modal-title{font-family:'DM Sans',sans-serif;color:var(--plum);font-size:18px;font-weight:700;margin-bottom:6px;}
+.avatar-modal-sub{font-size:13px;color:var(--ghost);margin-bottom:18px;line-height:1.5;}
+.avatar-preview-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.avatar-preview-img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--muted);background:var(--soft);}
+.avatar-url-input{width:100%;border:1px solid var(--muted);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--soft);color:var(--dark);outline:none;}
+.avatar-url-input:focus{border-color:var(--plum);}
+
+.hidden{display:none!important;}
+</style>
+<!-- OneSignal Web Push -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "90fa44ef-2756-47be-b396-b6feda581206",
+    });
+  });
+</script>
+
+</head>
+<body>
+
+<div id="loading-screen"><span>Loading…</span></div>
+
+<!-- Auth -->
+<div id="auth-screen" class="hidden">
+  <div class="auth-card">
+    <div class="dwc-masthead">
+      <div class="dwc-name">DWC</div>
+      <div class="dwc-sub">Strong Women, Strong Voices</div>
+    </div>
+    <div class="dwc-rule"></div>
+    <div class="auth-community-label">Community</div>
+    <div id="login-form">
+      <div class="field"><label>EMAIL</label><input type="email" id="login-email" placeholder="you@example.com"/><div class="field-error hidden" id="login-email-err"></div></div>
+      <div class="field"><label>PASSWORD</label><input type="password" id="login-password" placeholder="••••••••"/><div class="field-error hidden" id="login-pass-err"></div></div>
+      <button class="btn btn-primary btn-full" id="login-btn">Sign In</button>
+      <p style="text-align:center;margin-top:10px;font-size:12px;color:var(--ghost);">Forgotten your password? <button class="btn-link" style="font-size:12px;" id="go-forgot">Request a reset</button></p>
+      <div class="divider"><span>OR</span></div>
+      <p class="auth-switch">New here? <button class="btn-link" id="go-register">Request access</button></p>
+    </div>
+    <div id="forgot-form" class="hidden">
+      <p style="font-size:13px;color:var(--mid);margin-bottom:18px;line-height:1.6;">Enter your email and we'll flag a reset request for the admin. You'll receive a temporary password once it's been processed.</p>
+      <div class="field"><label>EMAIL</label><input type="email" id="forgot-email" placeholder="you@example.com"/><div class="field-error hidden" id="forgot-email-err"></div></div>
+      <button class="btn btn-primary btn-full" id="forgot-btn">Request Reset</button>
+      <div class="divider"><span>OR</span></div>
+      <p class="auth-switch"><button class="btn-link" id="go-login-from-forgot">Back to Sign In</button></p>
+    </div>
+    <div id="forgot-sent" class="hidden" style="text-align:center;padding:10px 0;">
+      <div style="font-size:32px;margin-bottom:12px;">📬</div>
+      <h3 style="font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:18px;margin-bottom:8px;">Request Sent</h3>
+      <p style="font-size:13px;color:var(--mid);line-height:1.6;margin-bottom:20px;">Your reset request has been received. The admin will set a temporary password for you shortly.</p>
+      <button class="btn btn-ghost btn-full" id="forgot-back-login">Back to Sign In</button>
+    </div>
+
+    <div id="register-form" class="hidden">
+      <div class="field"><label>FULL NAME</label><input type="text" id="reg-name" placeholder="Your name"/><div class="field-error hidden" id="reg-name-err"></div></div>
+      <div class="field"><label>EMAIL</label><input type="email" id="reg-email" placeholder="you@example.com"/><div class="field-error hidden" id="reg-email-err"></div></div>
+      <div class="field"><label>PASSWORD</label><input type="password" id="reg-password" placeholder="Min. 6 characters"/><div class="field-error hidden" id="reg-pass-err"></div></div>
+      <div class="field"><label>CONFIRM PASSWORD</label><input type="password" id="reg-confirm" placeholder="••••••••"/><div class="field-error hidden" id="reg-confirm-err"></div></div>
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;padding:12px;background:var(--soft);border-radius:8px;border:1px solid var(--muted);">
+        <input type="checkbox" id="reg-email-opt" style="margin-top:3px;width:16px;height:16px;accent-color:var(--plum);flex-shrink:0;cursor:pointer;" checked/>
+        <label for="reg-email-opt" style="font-size:13px;color:var(--mid);line-height:1.5;cursor:pointer;">Send me a daily nudge when there's something new in the community. No spam — just a gentle heads up.</label>
+      </div>
+      <button class="btn btn-primary btn-full" id="register-btn">Create Account</button>
+      <div class="divider"><span>OR</span></div>
+      <p class="auth-switch">Already have an account? <button class="btn-link" id="go-login">Sign in</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- Pending -->
+<div id="pending-screen" class="hidden">
+  <div class="auth-card" style="text-align:center;padding:40px 36px;">
+    <div class="dwc-masthead" style="margin-bottom:16px;"><div class="dwc-name">DWC</div><div class="dwc-sub">Strong Women, Strong Voices</div></div>
+    <div class="dwc-rule"></div>
+    <h2 style="font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:20px;margin:16px 0 10px;">Application Received</h2>
+    <p style="color:var(--mid);font-size:14px;line-height:1.7;">Your account is awaiting approval.<br/>You'll be able to sign in once reviewed.</p>
+    <button class="btn btn-ghost" style="margin-top:24px;" id="pending-back">Back to Sign In</button>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app-screen" class="hidden">
+  <div id="topbar">
+    <div class="topbar-left">
+      <a href="https://dwcmagazine.com" target="_blank" style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:22px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;" class="topbar-brand">DWC</a>
+      <span class="topbar-sep">|</span>
+      <span class="topbar-section" id="topbar-section">Community</span>
+      <button id="search-toggle" style="border:none;background:none;color:var(--goldlt);cursor:pointer;font-size:16px;padding:4px 6px;opacity:0.8;" title="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+    </div>
+    <div class="topbar-right">
+      <!-- Guest buttons -->
+      <div id="guest-btns" style="display:flex;gap:8px;">
+        <button class="mod-btn" id="guest-signin-btn" style="color:var(--cream);border-color:rgba(255,255,255,0.3);">Sign In</button>
+        <button class="mod-btn" id="guest-join-btn" style="background:var(--gold);color:#fff;border-color:var(--gold);">Join</button>
+      </div>
+      <!-- Member buttons — mod only, sign out only -->
+      <div id="member-btns" class="hidden" style="display:flex;align-items:center;gap:8px;">
+        <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
+        <button class="signout-btn" id="signout-btn" style="border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:11px;color:rgba(250,247,243,0.6);">Sign out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site tabs — links to other DWC Magazine sections -->
+  <div id="site-tabs">
+    <a class="site-tab" href="https://dwcmagazine.com/" target="_blank">This Week's Issue</a>
+    <a class="site-tab" href="https://dwcmagazine.com/pages/dwc-conversations-new" target="_blank">Conversations</a>
+    <a class="site-tab" href="https://dwcmagazine.com/pages/pat-allchorne-book-picks" target="_blank">Pat's Book Picks</a>
+    <a class="site-tab" href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank">Brands, Places &amp; People We Love</a>
+    <a class="site-tab" href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank">Podcast Directory</a>
+    <a class="site-tab" href="https://dwcmagazine.com/pages/dwc-reading-room" target="_blank">Reading Room</a>
+    <a class="site-tab" href="https://dwcmagazine.com/pages/media-kit" target="_blank">Submit Your Story</a>
+  </div>
+
+  <!-- Stats bar — members left, profile right -->
+  <div id="stats-bar" style="background:var(--plumdk);border-top:1px solid rgba(255,255,255,0.06);padding:8px 20px;display:flex;justify-content:space-between;align-items:center;">
+    <!-- Members count -->
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div>
+        <div style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:18px;line-height:1;" id="stats-members">—</div>
+        <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,243,.4);font-family:'DM Sans',sans-serif;margin-top:1px;">Members</div>
+      </div>
+    </div>
+    <!-- Profile info — hidden for guests -->
+    <div id="stats-profile" class="hidden" style="display:flex;align-items:center;gap:10px;">
+      <div style="text-align:right;">
+        <div style="font-size:12px;color:var(--cream);font-family:'DM Sans',sans-serif;" id="stats-name"></div>
+        <div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;" id="stats-title"></div>
+        <div style="font-size:10px;color:var(--goldlt);font-family:'DM Sans',sans-serif;" id="stats-points"></div>
+      </div>
+      <div class="avatar" id="stats-avatar" style="width:34px;height:34px;font-size:13px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
+    </div>
+    <!-- Guest join nudge -->
+    <div id="stats-guest" style="font-size:11px;color:rgba(250,247,243,.4);font-family:'DM Sans',sans-serif;">Join the conversation →</div>
+  </div>
+
+  <div id="filter-bar" class="hidden"></div>
+
+  <!-- New posts nudge banner -->
+  <div id="new-posts-banner" class="hidden" style="background:linear-gradient(135deg,var(--plum),var(--plumlt));padding:10px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+    <span style="font-size:13px;color:var(--cream);font-family:'DM Sans',sans-serif;" id="new-posts-text"></span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button onclick="document.getElementById('new-posts-banner').classList.add('hidden');saveLastVisit();" style="border:1px solid rgba(255,255,255,0.3);background:none;color:var(--cream);border-radius:20px;padding:3px 12px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;">Dismiss</button>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div id="search-bar" style="background:#fff;border-bottom:1px solid var(--muted);padding:10px 20px;display:none;">
+    <div style="max-width:640px;margin:0 auto;position:relative;">
+      <input type="text" id="search-input" placeholder="Search posts and members…"
+        style="width:100%;border:1px solid var(--muted);border-radius:24px;padding:9px 40px 9px 16px;
+        font-family:'DM Sans',sans-serif;font-size:14px;background:var(--soft);color:var(--dark);outline:none;" />
+      <button id="search-clear" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+        border:none;background:none;cursor:pointer;color:var(--ghost);font-size:16px;display:none;">✕</button>
+    </div>
+  </div>
+
+  <!-- Search results panel -->
+  <div id="search-results" class="hidden" style="max-width:640px;margin:0 auto;padding:16px 16px 0;"></div>
+
+  <div id="feed-view">
+    <!-- Mobile house rules (hidden on desktop) -->
+  <div id="mobile-rules">
+    <button class="mobile-rules-toggle" id="mobile-rules-toggle">
+      <span>House Rules</span>
+      <span class="chevron">▼</span>
+    </button>
+    <div class="mobile-rules-body" id="mobile-rules-body">
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><div class="rule-text"><strong>Be kind, always</strong>Disagreements are fine. Unkindness isn't. This is a safe space for women.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="rule-text"><strong>One post per day</strong>Quality over quantity. You get one post every 24 hours — make it count.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div class="rule-text"><strong>Share freely</strong>Personal updates, insights, conversations — always welcome, always free.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://buy.stripe.com/28EeVdcG5cHLeE4dkA5Rm08" target="_blank" style="color:var(--gold);">buy us a coffee</a> first. One time only.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
+      <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
+      <div class="rule-item" style="background:linear-gradient(135deg,#faf4ff,#fff8ee);border-radius:8px;padding:10px 12px;margin-top:4px;border:1px solid rgba(184,150,90,0.2);">
+        <span class="rule-emoji" style="color:var(--gold);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 21 12 21 16 21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 4H17V13a5 5 0 0 1-10 0V4z"/><path d="M7 9H4a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1h4"/><path d="M17 9h3a2 2 0 0 0 2-2V6a1 1 0 0 0-1-1h-4"/></svg></span>
+        <div class="rule-text"><strong style="color:var(--gold);">Earn points &amp; win things</strong>The more you engage, the more you earn. Points unlock cover features, directory listings, and more — coming soon.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="feed-layout">
+      <!-- Feed main -->
+      <div id="feed-main">
+        <!-- Guest join prompt -->
+        <div id="guest-join-prompt" class="hidden" style="background:#fff;border-radius:12px;padding:18px 20px;border:1px solid var(--muted);margin-bottom:20px;box-shadow:0 2px 12px rgba(92,45,78,.05);text-align:center;">
+          <p style="font-family:'DM Sans',sans-serif;font-size:15px;color:var(--plum);margin-bottom:6px;font-weight:600;">Want to join the conversation?</p>
+          <p style="font-size:13px;color:var(--ghost);margin-bottom:14px;">Post, react, and comment as a member of DWC Community.</p>
+          <div style="display:flex;gap:10px;justify-content:center;">
+            <button class="btn btn-ghost btn-sm" id="prompt-signin">Sign In</button>
+            <button class="btn btn-primary btn-sm" id="prompt-join">Request Access</button>
+          </div>
+        </div>
+
+        <div id="composer">
+          <div class="composer-row">
+            <div class="avatar" id="composer-avatar" style="width:40px;height:40px;font-size:15px;margin-top:2px;"></div>
+            <textarea id="composer-text" rows="2" placeholder="What's on your mind?"></textarea>
+          </div>
+          <div class="composer-extras hidden" id="composer-extras">
+            <div class="composer-extras-row">
+              <div style="display:flex;align-items:center;gap:8px;flex:1;">
+                <button type="button" id="upload-btn" class="btn btn-ghost btn-sm" style="white-space:nowrap;flex-shrink:0;">📷 Upload Photo</button>
+                <input type="file" id="upload-input" accept="image/*" style="display:none;"/>
+                <div id="upload-status" style="font-size:12px;color:var(--ghost);flex:1;"></div>
+                <input type="hidden" id="composer-img"/>
+              </div>
+              <input type="text" id="composer-tag" placeholder="#tag" style="width:110px;"/>
+            </div>
+            <div class="composer-actions">
+              <span class="composer-hint" id="composer-hint">Posts go to moderation before appearing. YouTube &amp; Spotify links embed automatically.</span>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-ghost btn-sm" id="composer-cancel">Cancel</button>
+                <button class="btn btn-primary btn-sm" id="composer-submit" disabled>Share</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pending-notice hidden" id="pending-posts-notice"><span>⏳</span> <span id="pending-posts-text"></span></div>
+        <div id="posts-container"></div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+      <div class="sidebar-sticky">
+
+        <!-- Cornerstone Partners -->
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">Cornerstone Partners</div>
+          <div class="sidebar-card-body" style="padding:8px 16px;max-height:calc(100vh - 220px);overflow-y:auto;">
+
+            <div class="partner-item">
+              <img class="partner-photo" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_19.png?v=1771252805" alt="Michelle Wollaston">
+              <div class="partner-info">
+                <div class="partner-name">Michelle Wollaston</div>
+                <span class="partner-role">Contributor &amp; Cornerstone Partner</span>
+                <a class="partner-title" href="https://dwcmagazine.com/a/blog/post/michelle-wollaston-why-your-body-still-remembers-trauma-long-after-its-over" target="_blank">Why Your Body Still Remembers Trauma Long After It's Over</a>
+                <span class="partner-dek">Most conversations about abuse focus on the moment it occurs. But for many women, the greater impact lies in what follows. The mind may decide to move on. The body does not.</span>
+                <a class="partner-link" href="https://dwcmagazine.com/a/blog/post/michelle-wollaston-why-your-body-still-remembers-trauma-long-after-its-over" target="_blank">Read the Article →</a>
+              </div>
+            </div>
+
+            <div class="partner-item">
+              <img class="partner-photo" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_59.png?v=1776607668" alt="Julie Hayes">
+              <div class="partner-info">
+                <div class="partner-name">Julie Hayes</div>
+                <span class="partner-role">Contributor &amp; Cornerstone Partner</span>
+                <a class="partner-title" href="https://dwcmagazine.com/a/blog/post/julie-hayes-on-the-avalanche-of-inadequacy-boobs-bum-cheeks-and-beauty-blunders" target="_blank">The Avalanche of Inadequacy: Boobs, Bum Cheeks, and Beauty Blunders</a>
+                <span class="partner-dek">There she stood, ankle-deep in products bought in moments of weakness — each one promising to reverse, plump, tighten, and whisper kind things to her pores. All promises. Then she caught a glimpse of herself in the mirror. Always a gamble.</span>
+                <a class="partner-link" href="https://dwcmagazine.com/a/blog/post/julie-hayes-on-the-avalanche-of-inadequacy-boobs-bum-cheeks-and-beauty-blunders" target="_blank">Read the Article →</a>
+              </div>
+            </div>
+
+            <div class="partner-item">
+              <img class="partner-photo" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_x_1080_px_57.png?v=1765452996" alt="Jamie Tedrick-Monroe">
+              <div class="partner-info">
+                <div class="partner-name">Jamie Tedrick-Monroe</div>
+                <span class="partner-role">Contributor &amp; Cornerstone Partner</span>
+                <a class="partner-title" href="https://dwcmagazine.com/a/blog/post/jamie-tedrick-monroe-on-lessons-from-the-shadows-mental-health-healing-and-year-end-renewal" target="_blank">Lessons from the Shadows: Mental Health, Healing, and Year-End Renewal</a>
+                <span class="partner-dek">Shadows are often misunderstood — seen as dark corners to avoid, or as evidence of failure. Yet they can be our greatest teachers. Addiction teaches honesty. Mental health struggles teach compassion. Each shadow carries pain, and each carries a message.</span>
+                <a class="partner-link" href="https://dwcmagazine.com/a/blog/post/jamie-tedrick-monroe-on-lessons-from-the-shadows-mental-health-healing-and-year-end-renewal" target="_blank">Read the Article →</a>
+              </div>
+            </div>
+
+            <div class="partner-item">
+              <img class="partner-photo" src="https://cdn.shopify.com/s/files/1/0703/3022/0765/files/DWC_Magazine_Covers_1080_Jan_Feb_March_2026_9.jpg?v=1779778577" alt="Sofia Pedroso">
+              <div class="partner-info">
+                <div class="partner-name">Sofia Pedroso</div>
+                <span class="partner-role">Contributor &amp; Cornerstone Partner</span>
+                <a class="partner-title" href="https://dwcmagazine.com/a/blog/post/the-breakdown-that-built-me-sofia-pedroso-on-how-a-crisis-sparked-her-business-shiffully" target="_blank">The Breakdown That Built Me: Sofia Pedroso on How a Crisis Sparked Her Business, Shiffully</a>
+                <span class="partner-dek">The breaking point came during yet another failed business attempt. On the phone with a friend, crying so hard she could barely speak. A pause. "But how many attempts were there really?" Something about that question stayed with her.</span>
+                <a class="partner-link" href="https://dwcmagazine.com/a/blog/post/the-breakdown-that-built-me-sofia-pedroso-on-how-a-crisis-sparked-her-business-shiffully" target="_blank">Read the Article →</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Mod view -->
+  <div id="mod-view" class="hidden">
+    <div class="mod-header">
+      <div style="margin-bottom:8px;"><button class="btn btn-ghost btn-sm" id="mod-back">← Back to Community</button></div>
+      <h2>Moderation</h2>
+      <p>Review accounts and posts before they go live.</p>
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="pending-users">Members <span class="badge-count hidden" id="tab-users-count"></span></button>
+        <button class="tab-btn" data-tab="pending-posts">Posts <span class="badge-count hidden" id="tab-posts-count"></span></button>
+        <button class="tab-btn" data-tab="password-resets">Passwords <span class="badge-count hidden" id="tab-resets-count"></span></button>
+        <button class="tab-btn" data-tab="all-members">All Members</button>
+        <button class="tab-btn" data-tab="activity">Activity</button>
+      </div>
+    </div>
+    <div class="mod-content">
+      <div id="tab-pending-users"></div>
+      <div id="tab-pending-posts" class="hidden"></div>
+      <div id="tab-password-resets" class="hidden"></div>
+      <div id="tab-all-members" class="hidden"></div>
+      <div id="tab-activity" class="hidden"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Labels Modal -->
+<div class="modal-overlay hidden" id="labels-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="labels-modal-title">Member Labels</div>
+    <div id="labels-checkboxes"></div>
+    <div style="display:flex;gap:8px;margin-top:20px;justify-content:flex-end;">
+      <button class="btn btn-ghost btn-sm" id="labels-cancel">Cancel</button>
+      <button class="btn btn-primary btn-sm" id="labels-save">Save Labels</button>
+    </div>
+  </div>
+</div>
+
+<!-- Avatar modal -->
+<div class="avatar-modal-overlay hidden" id="avatar-modal">
+  <div class="avatar-modal-box">
+    <div class="avatar-modal-title">Your Profile Photo</div>
+    <p class="avatar-modal-sub">Upload a photo from your device or paste a direct image URL.</p>
+    <div class="avatar-preview-row">
+      <div id="avatar-modal-preview" style="width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid var(--muted);flex-shrink:0;"></div>
+      <div style="flex:1;font-size:12px;color:var(--ghost);line-height:1.5;">Your photo will appear next to your name on all posts and comments.</div>
+    </div>
+    <!-- Upload button -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <button type="button" id="avatar-upload-btn" class="btn btn-ghost btn-sm" style="flex-shrink:0;">📷 Upload Photo</button>
+      <input type="file" id="avatar-upload-input" accept="image/*" style="display:none;"/>
+      <span id="avatar-upload-status" style="font-size:12px;color:var(--ghost);"></span>
+    </div>
+    <p style="font-size:11px;color:var(--ghost);margin-bottom:6px;">Or paste an image URL:</p>
+    <input type="url" class="avatar-url-input" id="avatar-url-input" placeholder="https://example.com/your-photo.jpg" />
+    <p style="font-size:11px;color:var(--ghost);margin-top:6px;">Leave blank to use your initials instead.</p>
+    <div style="display:flex;gap:8px;margin-top:18px;justify-content:flex-end;">
+      <button class="btn btn-ghost btn-sm" id="avatar-cancel">Cancel</button>
+      <button class="btn btn-primary btn-sm" id="avatar-save">Save Photo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inline confirm modal (replaces confirm() which is blocked in iframes on mobile) -->
+<div class="modal-overlay hidden" id="confirm-modal" onclick="event.stopPropagation()">
+  <div class="modal-box" style="max-width:320px;" onclick="event.stopPropagation()">
+    <div class="modal-title" id="confirm-modal-title" style="font-size:17px;margin-bottom:10px;"></div>
+    <p id="confirm-modal-msg" style="font-size:13px;color:var(--mid);margin-bottom:20px;line-height:1.5;"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn btn-ghost btn-sm" id="confirm-no">Cancel</button>
+      <button class="btn btn-reject btn-sm" id="confirm-yes">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp }               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get,
+         update, remove, onValue, off,
+         onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const ADMIN_EMAIL = "lecamillesocmed@gmail.com";
+const REACTIONS   = [
+  {key:'heart',emoji:'❤️',label:'Love'},
+  {key:'laugh',emoji:'😂',label:'Haha'},
+  {key:'sad',  emoji:'😢',label:'Sad'},
+  {key:'angry',emoji:'😡',label:'Angry'},
+];
+const MEMBER_LABELS = [
+  {key:'cover',      text:'DWC Weekly Cover',        cls:'label-cover'},
+  {key:'cornerstone',text:'DWC Cornerstone Partner', cls:'label-cornerstone'},
+  {key:'team',       text:'DWC Team',                cls:'label-team'},
+  {key:'contributor',text:'DWC Contributor',         cls:'label-contributor'},
+];
+const POST_LIMIT_MS = 24 * 60 * 60 * 1000; // 24h
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyCVyfftndug8Wr1A_GU2zvlSnEKG_4-LTM",
+  authDomain:        "dwc-community.firebaseapp.com",
+  databaseURL:       "https://dwc-community-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:         "dwc-community",
+  storageBucket:     "dwc-community.firebasestorage.app",
+  messagingSenderId: "165245825127",
+  appId:             "1:165245825127:web:30f7fd704d587a9b88a4c2"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+let currentUser  = null;
+let allUsers     = {};
+let allPosts     = {};
+let allResets    = {};
+let allActivity  = {};
+let activeFilter = "all";
+let labelsTarget = null;
+
+const uid      = () => Date.now().toString(36)+Math.random().toString(36).slice(2);
+const hashPw   = s => { let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h)^s.charCodeAt(i); return (h>>>0).toString(36); };
+const esc      = s => { const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; };
+const timeAgo  = ts => { const s=Math.floor((Date.now()-ts)/1000); if(s<60) return 'just now'; if(s<3600) return Math.floor(s/60)+'m ago'; if(s<86400) return Math.floor(s/3600)+'h ago'; return Math.floor(s/86400)+'d ago'; };
+const initials = n => (n||'').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
+const AV       = ['#5c2d4e','#7a4060','#8b6914','#3d4e5c','#4e3d2d','#5c4e3d'];
+const avBg     = n => AV[(n||' ').charCodeAt(0)%AV.length];
+const avHTML   = (n,sz,photo) => photo
+  ? `<div class="avatar" style="width:${sz}px;height:${sz}px;overflow:hidden;padding:0;background:${avBg(n)};"><img src="${esc(photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'"/><\/div>`
+  : `<div class="avatar" style="width:${sz}px;height:${sz}px;font-size:${Math.floor(sz*.38)}px;background:${avBg(n)}">${esc(initials(n))}<\/div>`;
+const showEl   = id => document.getElementById(id)?.classList.remove('hidden');
+const hideEl   = id => document.getElementById(id)?.classList.add('hidden');
+const getVal   = id => (document.getElementById(id)?.value||'').trim();
+const setVal   = (id,v) => { const e=document.getElementById(id); if(e) e.value=v; };
+const showErr  = (id,m) => { const e=document.getElementById(id); if(e){e.textContent=m;e.classList.remove('hidden');} };
+const clearErr = id => { const e=document.getElementById(id); if(e){e.textContent='';e.classList.add('hidden');} };
+const sanKey   = e => e.toLowerCase().replace(/\./g,'_dot_').replace(/@/g,'_at_');
+const canMod   = u => u&&(u.role==='admin'||u.role==='moderator');
+const saveSession = e => { try{localStorage.setItem('dwcforum_v3',e||'');}catch{} };
+const loadSession = () => { try{return localStorage.getItem('dwcforum_v3')||null;}catch{return null;} };
+
+const fbGet    = async p => { const s=await get(ref(db,p)); return s.exists()?s.val():null; };
+const fbSet    = async (p,v) => set(ref(db,p),v);
+const fbUpdate = async (p,v) => update(ref(db,p),v);
+const fbRemove = async p => remove(ref(db,p));
+
+async function logActivity(type, detail){
+  if(!currentUser) return;
+  const id = uid();
+  await fbSet('activity/'+id, {
+    id, type, detail,
+    userId: currentUser.id,
+    userName: currentUser.name,
+    ts: Date.now()
+  });
+}
+
+async function awardPoints(userId, amount, reason){
+  const key = Object.keys(allUsers).find(k => allUsers[k].id === userId);
+  if(!key) return;
+  const current = allUsers[key].points || 0;
+  await fbUpdate('users/'+key, { points: current + amount });
+}
+
+// Inline confirm — replaces confirm() which is blocked in mobile iframes
+function inlineConfirm(title, msg){
+  return new Promise(resolve => {
+    document.getElementById('confirm-modal-title').textContent = title;
+    document.getElementById('confirm-modal-msg').textContent = msg;
+    showEl('confirm-modal');
+    const yes = document.getElementById('confirm-yes');
+    const no  = document.getElementById('confirm-no');
+    const cleanup = () => { hideEl('confirm-modal'); yes.onclick=null; no.onclick=null; };
+    yes.onclick = () => { cleanup(); resolve(true); };
+    no.onclick  = () => { cleanup(); resolve(false); };
+  });
+}
+
+// Auto-detect URLs in text and convert to clickable links
+function getAutoImage(text){
+  const imgPattern = /https?:\/\/[^\s]+\.(?:jpg|jpeg|png|webp|gif)(\?[^\s]*)?/i;
+  const match = text.match(imgPattern);
+  return match ? match[0] : null;
+}
+
+function getYouTubeId(text){
+  const patterns = [
+    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/
+  ];
+  for(const p of patterns){ const m = text.match(p); if(m) return m[1]; }
+  return null;
+}
+
+function getSpotifyEmbed(text){
+  const m = text.match(/https?:\/\/open\.spotify\.com\/(track|album|playlist|episode|show)\/([a-zA-Z0-9]+)/);
+  if(!m) return null;
+  return 'https://open.spotify.com/embed/' + m[1] + '/' + m[2];
+}
+
+function renderMediaEmbed(post){
+  const text = post.text || '';
+  const imageUrl = post.imageUrl || getAutoImage(text);
+  // YouTube
+  const ytId = getYouTubeId(text);
+  if(ytId){
+    return '<div class="post-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin-bottom:14px;">'
+      + '<iframe src="https://www.youtube-nocookie.com/embed/' + ytId + '" '
+      + 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" '
+      + 'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" '
+      + 'allowfullscreen loading="lazy"><\/iframe><\/div>';
+  }
+  // Spotify
+  const spotifyUrl = getSpotifyEmbed(text);
+  if(spotifyUrl){
+    const isEpisodeOrShow = spotifyUrl.includes('/episode/') || spotifyUrl.includes('/show/');
+    const h = isEpisodeOrShow ? '152' : '80';
+    return '<div style="margin-bottom:14px;border-radius:12px;overflow:hidden;">'
+      + '<iframe src="' + spotifyUrl + '" width="100%" height="' + h + '" '
+      + 'frameborder="0" allowtransparency="true" '
+      + 'allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" '
+      + 'loading="lazy" style="border-radius:12px;display:block;"><\/iframe><\/div>';
+  }
+  // Direct image
+  if(imageUrl){
+    return '<div class="post-image"><img src="' + esc(imageUrl) + '" loading="lazy" onerror="this.closest(\'.post-image\').style.display=\'none\'"/><\/div>';
+  }
+  return '';
+}
+
+function linkify(text){
+  const escaped = esc(text);
+  // Match full URLs (with protocol) and bare domain URLs (e.g. dwcmagazine.com/...)
+  const urlPattern = /(https?:\/\/[^\s<>"]+|(?<![/@\w])(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s<>"]*)?(?=\s|$))/g;
+  return escaped.replace(urlPattern, function(url){
+    const href = url.startsWith('http') ? url : 'https://' + url;
+    const display = url.length > 50 ? url.slice(0,50)+'\u2026' : url;
+    return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">' + display + '<\/a>';
+  });
+}
+
+function labelBadgesHTML(labels) {
+  if(!labels||!labels.length) return '';
+  return labels.map(k=>{
+    const l=MEMBER_LABELS.find(x=>x.key===k);
+    return l?`<span class="member-label ${l.cls}">${l.text}<\/span>`:'';
+  }).join('');
+}
+
+function updateMemberCount() {
+  const approved = Object.values(allUsers).filter(u=>u.status==='approved').length;
+  const el = document.getElementById('topbar-member-count');
+  if(el){ el.setAttribute('data-members', approved); el.textContent=''; }
+  const sm = document.getElementById('stats-members');
+  if(sm) sm.textContent = approved || '—';
+}
+
+const PRESENCE_BASE = 644;
+const PRESENCE_TTL  = 4 * 60 * 1000;
+
+function startPresence(){
+  let presenceKey = null;
+  try { presenceKey = sessionStorage.getItem('dwc_presence_key'); } catch{}
+  if(!presenceKey){
+    presenceKey = uid();
+    try { sessionStorage.setItem('dwc_presence_key', presenceKey); } catch{}
+  }
+  const presenceRef = ref(db, 'presence/'+presenceKey);
+  const writePresence = () => set(presenceRef, { t: Date.now() });
+  writePresence();
+  onDisconnect(presenceRef).remove();
+  setInterval(writePresence, 2 * 60 * 1000);
+  onValue(ref(db,'presence'), snap=>{
+    const live = snap.exists() ? Object.keys(snap.val()).length : 0;
+    const total = PRESENCE_BASE + live;
+    const el = document.getElementById('topbar-member-count');
+    const members = parseInt(el?.getAttribute('data-members')||'0');
+    if(el) el.textContent = members > 0 ? '\u00b7 ' + members + ' member' + (members===1?'':'s') : '';
+    const mm = document.getElementById('mobile-members');
+    if(mm) mm.textContent = members;
+  });
+}
+
+// Guest sign-in / join buttons
+document.getElementById('guest-signin-btn').onclick = ()=>{ hideEl('app-screen'); showEl('auth-screen'); hideEl('register-form'); showEl('login-form'); };
+document.getElementById('guest-join-btn').onclick   = ()=>{ hideEl('app-screen'); showEl('auth-screen'); hideEl('login-form'); showEl('register-form'); };
+document.getElementById('prompt-signin').onclick    = ()=>{ hideEl('app-screen'); showEl('auth-screen'); hideEl('register-form'); showEl('login-form'); };
+document.getElementById('prompt-join').onclick      = ()=>{ hideEl('app-screen'); showEl('auth-screen'); hideEl('login-form'); showEl('register-form'); };
+
+// ── Auth ──────────────────────────────────────────────────────
+document.getElementById('go-forgot').onclick=()=>{hideEl('login-form');showEl('forgot-form');};
+document.getElementById('go-login-from-forgot').onclick=()=>{hideEl('forgot-form');hideEl('forgot-sent');showEl('login-form');};
+document.getElementById('forgot-back-login').onclick=()=>{hideEl('forgot-sent');showEl('login-form');};
+document.getElementById('forgot-btn').onclick=async()=>{
+  clearErr('forgot-email-err');
+  const email=getVal('forgot-email');
+  if(!email.includes('@')){showErr('forgot-email-err','Enter a valid email.');return;}
+  const btn=document.getElementById('forgot-btn');btn.disabled=true;btn.textContent='Sending…';
+  const users=await fbGet('users');const key=sanKey(email);
+  if(!users||!users[key]){showErr('forgot-email-err','No account found with this email.');btn.disabled=false;btn.textContent='Request Reset';return;}
+  await fbSet(`passwordResets/${key}`,{email:email.toLowerCase(),name:users[key].name,requestedAt:Date.now(),status:'pending',tempPassword:''});
+  btn.disabled=false;btn.textContent='Request Reset';
+  hideEl('forgot-form');showEl('forgot-sent');
+};
+document.getElementById('forgot-email').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('forgot-btn').click();});
+document.getElementById('go-register').onclick=()=>{hideEl('login-form');showEl('register-form');};
+document.getElementById('go-login').onclick=()=>{hideEl('register-form');showEl('login-form');};
+document.getElementById('pending-back').onclick=()=>{hideEl('pending-screen');showEl('auth-screen');};
+
+document.getElementById('login-btn').onclick=async()=>{
+  ['login-email-err','login-pass-err'].forEach(clearErr);
+  const email=getVal('login-email'),pw=getVal('login-password');
+  if(!email.includes('@')){showErr('login-email-err','Enter a valid email.');return;}
+  if(pw.length<6){showErr('login-pass-err','Password must be at least 6 characters.');return;}
+  const btn=document.getElementById('login-btn');btn.disabled=true;btn.textContent='Signing in…';
+  const users=await fbGet('users');const key=sanKey(email);const u=users?.[key];
+  if(!u){showErr('login-email-err','No account found.');btn.disabled=false;btn.textContent='Sign In';return;}
+  if(u.password!==hashPw(pw)){showErr('login-pass-err','Incorrect password.');btn.disabled=false;btn.textContent='Sign In';return;}
+  if(u.status==='pending'){hideEl('auth-screen');showEl('pending-screen');btn.disabled=false;btn.textContent='Sign In';return;}
+  if(u.status==='rejected'){showErr('login-email-err','Your account was not approved.');btn.disabled=false;btn.textContent='Sign In';return;}
+  // Ensure role is always explicitly set
+  if(!u.role) u.role='member';
+  allUsers=users;await signInUser(u);
+};
+
+document.getElementById('register-btn').onclick=async()=>{
+  ['reg-name-err','reg-email-err','reg-pass-err','reg-confirm-err'].forEach(clearErr);
+  const name=getVal('reg-name'),email=getVal('reg-email'),pw=getVal('reg-password'),confirm=getVal('reg-confirm');
+  let ok=true;
+  if(!name){showErr('reg-name-err','Name is required.');ok=false;}
+  if(!email.includes('@')){showErr('reg-email-err','Enter a valid email.');ok=false;}
+  if(pw.length<6){showErr('reg-pass-err','Password must be at least 6 characters.');ok=false;}
+  if(pw!==confirm){showErr('reg-confirm-err','Passwords do not match.');ok=false;}
+  if(!ok) return;
+  const btn=document.getElementById('register-btn');btn.disabled=true;btn.textContent='Creating account…';
+  const key=sanKey(email);const users=await fbGet('users')||{};
+  if(users[key]){showErr('reg-email-err','An account with this email already exists.');btn.disabled=false;btn.textContent='Create Account';return;}
+  const isAdmin=email.toLowerCase()===ADMIN_EMAIL.toLowerCase();
+  const emailOptIn = document.getElementById('reg-email-opt')?.checked || false;
+  const newUser={id:uid(),name,email:email.toLowerCase(),password:hashPw(pw),title:isAdmin?'Administrator':'',status:isAdmin?'approved':'pending',role:isAdmin?'admin':'member',joinedAt:Date.now(),labels:[],emailUpdates:emailOptIn};
+  await fbSet(`users/${key}`,newUser);
+  if(isAdmin){allUsers={...users,[key]:newUser};await signInUser(newUser);}
+  else{btn.disabled=false;btn.textContent='Create Account';hideEl('auth-screen');showEl('pending-screen');}
+};
+
+['login-email','login-password'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-btn').click();});});
+['reg-name','reg-email','reg-password','reg-confirm'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('register-btn').click();});});
+
+async function signInUser(user){
+  currentUser=user;saveSession(user.email);
+  hideEl('guest-btns'); showEl('member-btns');
+  hideEl('guest-join-prompt'); showEl('composer');
+  hideEl('auth-screen'); showEl('app-screen'); showEl('feed-view'); hideEl('mod-view');
+  // Stats bar — hide guest nudge, show profile
+  const statsGuest = document.getElementById('stats-guest');
+  const statsProfile = document.getElementById('stats-profile');
+  if(statsGuest) statsGuest.style.display='none';
+  if(statsProfile){ statsProfile.style.display='flex'; statsProfile.classList.remove('hidden'); }
+  // Stats avatar
+  const sa = document.getElementById('stats-avatar');
+  if(sa){
+    if(user.photo){ sa.style.background='none'; sa.style.padding='0'; sa.style.overflow='hidden'; sa.innerHTML='<img src="'+esc(user.photo)+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>'; }
+    else { sa.textContent=initials(user.name); sa.style.background=avBg(user.name); }
+  }
+  const sn = document.getElementById('stats-name'); if(sn) sn.textContent=user.name;
+  const st = document.getElementById('stats-title'); if(st) st.textContent=user.title||'';
+  const sp = document.getElementById('stats-points'); if(sp) sp.textContent=(user.points&&user.points>0)?'★ '+user.points+' pts':'';
+  // Keep hidden topbar-avatar for openAvatarModal target
+  const av=document.getElementById('topbar-avatar');
+  if(av){ av.textContent=initials(user.name); av.style.background=avBg(user.name); }
+  if(canMod(user)){showEl('mod-btn');document.getElementById('mod-btn').onclick=openMod;}
+  const ca=document.getElementById('composer-avatar');
+  if(ca){ ca.textContent=initials(user.name); ca.style.background=avBg(user.name); }
+  document.getElementById('composer-text').placeholder=`What's on your mind, ${user.name.split(' ')[0]}?`;
+  hideEl('loading-screen');
+  renderFeed();
+}
+
+document.getElementById('signout-btn').onclick=()=>{
+  currentUser=null; saveSession('');
+  setVal('login-email',''); setVal('login-password','');
+  hideEl('member-btns'); showEl('guest-btns');
+  hideEl('composer'); showEl('guest-join-prompt');
+  hideEl('mod-btn'); hideEl('mod-view'); showEl('feed-view');
+  // Reset stats bar
+  const statsGuest = document.getElementById('stats-guest');
+  const statsProfile = document.getElementById('stats-profile');
+  if(statsGuest) statsGuest.style.display='block';
+  if(statsProfile){ statsProfile.style.display='none'; statsProfile.classList.add('hidden'); }
+  document.getElementById('topbar-section').textContent='Community';
+  renderFeed();
+};
+
+// ── Avatar modal ──────────────────────────────────────────────
+function openAvatarModal(){
+  const input=document.getElementById('avatar-url-input');
+  input.value=currentUser.photo||'';
+  const preview=document.getElementById('avatar-modal-preview');
+  if(currentUser.photo){ preview.innerHTML=`<img src="${esc(currentUser.photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`; }
+  else { preview.innerHTML=`<div class="avatar" style="width:56px;height:56px;font-size:21px;background:${avBg(currentUser.name)};display:flex;align-items:center;justify-content:center;">${esc(initials(currentUser.name))}<\/div>`; }
+  document.getElementById('avatar-modal').classList.remove('hidden');
+}
+window.openAvatarModal = openAvatarModal;
+
+// Avatar upload via Cloudinary
+document.getElementById('avatar-upload-btn').onclick = () => document.getElementById('avatar-upload-input').click();
+document.getElementById('avatar-upload-input').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const status = document.getElementById('avatar-upload-status');
+  status.textContent = 'Uploading…';
+  status.style.color = 'var(--gold)';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+  formData.append('folder', 'dwc-community/avatars');
+  try {
+    const res = await fetch('https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD+'/image/upload', { method:'POST', body:formData });
+    const data = await res.json();
+    if(data.secure_url){
+      document.getElementById('avatar-url-input').value = data.secure_url;
+      status.textContent = '✓ Photo ready';
+      status.style.color = '#2e7d52';
+      // Update preview
+      const preview = document.getElementById('avatar-modal-preview');
+      preview.innerHTML = '<img src="'+data.secure_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">';
+    } else {
+      status.textContent = 'Upload failed — try again.';
+      status.style.color = '#c0392b';
+    }
+  } catch {
+    status.textContent = 'Upload failed — check connection.';
+    status.style.color = '#c0392b';
+  }
+});
+
+// Mobile rules toggle
+document.getElementById('mobile-rules-toggle').addEventListener('click',()=>{
+  const toggle=document.getElementById('mobile-rules-toggle');
+  const body=document.getElementById('mobile-rules-body');
+  toggle.classList.toggle('open');
+  body.classList.toggle('open');
+});
+document.getElementById('avatar-cancel').onclick=()=>{ document.getElementById('avatar-modal').classList.add('hidden'); };
+document.getElementById('avatar-url-input').addEventListener('input', ()=>{
+  const url=document.getElementById('avatar-url-input').value.trim();
+  const preview=document.getElementById('avatar-modal-preview');
+  if(url){ preview.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ghost);>Invalid<\/div>'">`; }
+  else { preview.innerHTML=`<div class="avatar" style="width:56px;height:56px;font-size:21px;background:${avBg(currentUser.name)}">${esc(initials(currentUser.name))}<\/div>`; }
+});
+document.getElementById('avatar-save').onclick=async()=>{
+  const url=document.getElementById('avatar-url-input').value.trim();
+  const key=sanKey(currentUser.email);
+  await fbUpdate(`users/${key}`,{photo:url});
+  currentUser={...currentUser,photo:url};
+  // Update stats avatar
+  const sa=document.getElementById('stats-avatar');
+  if(sa){
+    if(url){ sa.style.background='none';sa.style.padding='0';sa.style.overflow='hidden'; sa.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>`; }
+    else { sa.innerHTML=''; sa.textContent=initials(currentUser.name); sa.style.background=avBg(currentUser.name); }
+  }
+  // Keep topbar-avatar in sync
+  const av=document.getElementById('topbar-avatar');
+  if(av){
+    if(url){ av.style.background='none';av.style.padding='0';av.style.overflow='hidden'; av.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>`; }
+    else { av.innerHTML=''; av.textContent=initials(currentUser.name); av.style.background=avBg(currentUser.name); }
+  }
+  document.getElementById('avatar-modal').classList.add('hidden');
+};
+
+
+// ── Search ────────────────────────────────────────────────────
+const searchBar     = document.getElementById('search-bar');
+const searchInput   = document.getElementById('search-input');
+const searchClear   = document.getElementById('search-clear');
+const searchResults = document.getElementById('search-results');
+const searchToggle  = document.getElementById('search-toggle');
+
+searchToggle.onclick = () => {
+  const open = searchBar.style.display === 'block';
+  searchBar.style.display = open ? 'none' : 'block';
+  if(!open){ searchInput.focus(); }
+  else { searchInput.value=''; searchClear.style.display='none'; hideEl('search-results'); }
+};
+
+searchClear.onclick = () => {
+  searchInput.value=''; searchClear.style.display='none';
+  hideEl('search-results'); searchInput.focus();
+};
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  searchClear.style.display = q ? 'block' : 'none';
+  if(!q){ hideEl('search-results'); return; }
+  showEl('search-results');
+  runSearch(q);
+});
+
+searchInput.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ searchToggle.click(); }
+});
+
+function runSearch(q){
+  const approvedPosts = Object.values(allPosts).filter(p=>p.status==='approved');
+  const matchedPosts = approvedPosts.filter(p=>{
+    const author = getAuthor(p.authorId);
+    return p.text.toLowerCase().includes(q)
+      || (author.name&&author.name.toLowerCase().includes(q))
+      || (p.tag&&p.tag.toLowerCase().includes(q));
+  }).sort((a,b)=>b.ts-a.ts).slice(0,5);
+
+  const matchedMembers = Object.values(allUsers).filter(u=>
+    u.status==='approved' &&
+    ((u.name&&u.name.toLowerCase().includes(q)) || (u.title&&u.title.toLowerCase().includes(q)))
+  ).slice(0,4);
+
+  if(!matchedPosts.length && !matchedMembers.length){
+    searchResults.innerHTML = '<div style="background:#fff;border-radius:12px;padding:20px;border:1px solid var(--muted);text-align:center;margin-bottom:16px;"><p style="font-family:\'DM Sans\',sans-serif;font-weight:500;color:var(--plum);opacity:0.5;font-size:14px;">No results found.</p><\/div>';
+    return;
   }
 
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); min-height: 100vh; }
+  let html = '<div style="background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;margin-bottom:16px;box-shadow:0 2px 12px rgba(92,45,78,.05);">';
 
-  /* ── Loading ── */
-  #loading-screen {
-    position: fixed; inset: 0; background: var(--plumdk);
-    display: flex; align-items: center; justify-content: center; z-index: 9999;
+  if(matchedMembers.length){
+    html += '<div style="padding:10px 16px;border-bottom:1px solid var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ghost);font-family:\'DM Sans\',sans-serif;font-weight:600;">Members<\/div>';
+    matchedMembers.forEach(u => {
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--muted);">'
+        + avHTML(u.name, 34, u.photo)
+        + '<div><div style="font-family:\'DM Sans\',sans-serif;font-weight:700;color:var(--plum);font-size:14px;">'+esc(u.name)+'<\/div>'
+        + (u.title?'<div style="font-size:11px;color:var(--gold);">'+esc(u.title)+'<\/div>':'')
+        + '<\/div><\/div>';
+    });
   }
-  #loading-screen span { font-family: 'Libre Bodoni', serif; color: var(--gold); font-size: 22px; letter-spacing: 0.1em; }
 
-  /* ── Auth ── */
-  #auth-screen {
-    min-height: 100vh;
+  if(matchedPosts.length){
+    html += '<div style="padding:10px 16px;border-bottom:1px solid var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ghost);font-family:\'DM Sans\',sans-serif;font-weight:600;">Posts<\/div>';
+    matchedPosts.forEach(p => {
+      const author = getAuthor(p.authorId);
+      const preview = p.text.length > 100 ? p.text.slice(0,100)+'\u2026' : p.text;
+      html += '<div style="padding:12px 16px;border-bottom:1px solid var(--muted);cursor:pointer;" onclick="document.getElementById(\'posts-container\').querySelectorAll(\'[data-id]\').forEach(el=>{if(el.dataset.id===\''+p.id+'\')el.scrollIntoView({behavior:\'smooth\'})});searchBar.style.display=\'none\';searchInput.value=\'\';hideEl(searchResults);">'
+        + '<div style="font-family:\'DM Sans\',sans-serif;font-weight:700;color:var(--plum);font-size:14px;">'+esc(author.name)+'<span style="font-weight:400;color:var(--ghost);font-size:12px;margin-left:6px;">'+timeAgo(p.ts)+'<\/span><\/div>'
+        + '<div style="font-size:13px;color:var(--dark);line-height:1.5;margin-top:2px;">'+esc(preview)+'<\/div>'
+        + '<\/div>';
+    });
+  }
+
+  html += '<\/div>';
+  searchResults.innerHTML = html;
+}
+
+// ── Cloudinary config ──────────────────────────────────────────
+const CLOUDINARY_CLOUD  = 'dpoiukzbh';
+const CLOUDINARY_PRESET = 'ml_default';
+
+async function uploadToCloudinary(file){
+  const status = document.getElementById('upload-status');
+  status.textContent = 'Uploading…';
+  status.style.color = 'var(--gold)';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_PRESET);
+  formData.append('folder', 'dwc-community');
+  try {
+    const res = await fetch('https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD+'/image/upload', {
+      method: 'POST', body: formData
+    });
+    const data = await res.json();
+    if(data.secure_url){
+      document.getElementById('composer-img').value = data.secure_url;
+      status.textContent = '✓ Photo ready';
+      status.style.color = '#2e7d52';
+      const btn = document.getElementById('upload-btn');
+      btn.textContent = '📷 Change Photo';
+    } else {
+      status.textContent = 'Upload failed — try again.';
+      status.style.color = '#c0392b';
+    }
+  } catch {
+    status.textContent = 'Upload failed — check connection.';
+    status.style.color = '#c0392b';
+  }
+}
+
+document.getElementById('upload-btn').onclick = () => document.getElementById('upload-input').click();
+document.getElementById('upload-input').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if(file) uploadToCloudinary(file);
+});
+const composerText=document.getElementById('composer-text');
+const composerExtras=document.getElementById('composer-extras');
+const composerSubmit=document.getElementById('composer-submit');
+
+composerText.addEventListener('focus',()=>showEl('composer-extras'));
+composerText.addEventListener('input',()=>{
+  composerText.style.height='auto';
+  composerText.style.height=composerText.scrollHeight+'px';
+  composerSubmit.disabled=!composerText.value.trim();
+  showEl('composer-extras');
+  // Smart hint — nudge image if link detected but not YouTube/Spotify/direct image
+  const val = composerText.value;
+  const hint = document.getElementById('composer-hint');
+  const hasLink = /https?:\/\/[^\s]+/.test(val);
+  const hasYT = getYouTubeId(val);
+  const hasSpotify = getSpotifyEmbed(val);
+  const hasImg = getAutoImage(val);
+  if(hint){
+    if(hasLink && !hasYT && !hasSpotify && !hasImg){
+      hint.style.color = 'var(--gold)';
+      hint.textContent = 'Sharing a link? Add an image URL above so it looks great in the feed.';
+    } else {
+      hint.style.color = '';
+      hint.textContent = 'Posts go to moderation before appearing. YouTube & Spotify links embed automatically.';
+    }
+  }
+});
+document.getElementById('composer-cancel').onclick=()=>{
+  composerText.value='';
+  setVal('composer-tag','');
+  document.getElementById('composer-img').value='';
+  document.getElementById('upload-status').textContent='';
+  document.getElementById('upload-input').value='';
+  document.getElementById('upload-btn').textContent='📷 Upload Photo';
+  composerSubmit.disabled=true;
+  hideEl('composer-extras');
+  composerText.style.height='';
+};
+
+composerSubmit.onclick=async()=>{
+  const text=composerText.value.trim();if(!text)return;
+  // 24h post limit (not for admins/mods)
+  if(!canMod(currentUser)){
+    const myPosts=Object.values(allPosts).filter(p=>p.authorId===currentUser.id&&p.status!=='rejected');
+    const lastPost=myPosts.sort((a,b)=>b.ts-a.ts)[0];
+    if(lastPost&&(Date.now()-lastPost.ts)<POST_LIMIT_MS){
+      const remaining=Math.ceil((POST_LIMIT_MS-(Date.now()-lastPost.ts))/3600000);
+      alert(`You've already posted today. You can post again in about ${remaining} hour${remaining===1?'':'s'}. One post per 24 hours keeps the community fresh!`);
+      return;
+    }
+  }
+  composerSubmit.disabled=true;composerSubmit.textContent='Posting…';
+  const post={id:uid(),authorId:currentUser.id,text,imageUrl:document.getElementById('composer-img')?.value.trim()||'',tag:getVal('composer-tag').replace(/^#/,''),ts:Date.now(),status:'pending',reactions:{},comments:{}};
+  await fbSet(`posts/${post.id}`,post);
+  logActivity('post', 'Submitted a post for moderation');
+  composerText.value='';
+  setVal('composer-tag','');
+  document.getElementById('composer-img').value='';
+  document.getElementById('upload-status').textContent='';
+  document.getElementById('upload-input').value='';
+  document.getElementById('upload-btn').textContent='📷 Upload Photo';
+  composerSubmit.textContent='Share';composerText.style.height='';hideEl('composer-extras');
+};
+
+// ── Feed ──────────────────────────────────────────────────────
+const getAuthor = id => Object.values(allUsers).find(u=>u.id===id)||{name:'Member',title:'',labels:[],photo:''};
+
+function renderFeed(){
+  const container=document.getElementById('posts-container');
+  const approved=Object.values(allPosts).filter(p=>p.status==='approved').sort((a,b)=>{
+    if(b.pinned&&!a.pinned) return 1;
+    if(a.pinned&&!b.pinned) return -1;
+    return b.ts-a.ts;
+  });
+  const allTags=[...new Set(approved.map(p=>p.tag).filter(Boolean))];
+  renderFilterBar(allTags);
+  // Only show pending notice for signed-in members
+  if(currentUser){
+    const myPending=Object.values(allPosts).filter(p=>p.authorId===currentUser.id&&p.status==='pending');
+    if(myPending.length>0){showEl('pending-posts-notice');document.getElementById('pending-posts-text').textContent=myPending.length===1?'You have 1 post awaiting moderation.':`You have ${myPending.length} posts awaiting moderation.`;}
+    else hideEl('pending-posts-notice');
+  } else {
+    hideEl('pending-posts-notice');
+  }
+  const filtered=activeFilter==='all'?approved:approved.filter(p=>p.tag===activeFilter);
+  if(filtered.length===0){container.innerHTML=`<div class="empty-state"><p>Nothing here yet. Be the first to share.<\/p><\/div>`;return;}
+  container.innerHTML=filtered.map(renderPost).join('');
+  // Track post views when posts become visible
+  if('IntersectionObserver' in window){
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const btn = entry.target.querySelector('[data-action="view-post"]');
+          if(btn) btn.click();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.5});
+    container.querySelectorAll('.post-card').forEach(card=>observer.observe(card));
+  }
+  // Auto-grow textareas in newly rendered posts
+  container.querySelectorAll('textarea').forEach(ta=>{
+    ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';});
+    ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const a=ta.dataset.action;if(a==='comment-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-comment"]')?.click();if(a==='reply-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-reply"]')?.click();}});
+  });
+  // Check for shared post link
+  checkHash();
+  // Show new posts banner
+  checkNewPosts();
+}
+
+function saveLastVisit(){
+  try{ localStorage.setItem('dwc_last_visit', Date.now()); }catch{}
+}
+
+function checkNewPosts(){
+  if(!currentUser) return;
+  let lastVisit = 0;
+  try{ lastVisit = parseInt(localStorage.getItem('dwc_last_visit')||'0'); }catch{}
+  if(!lastVisit){ saveLastVisit(); return; } // First visit — just save timestamp
+  const newPosts = Object.values(allPosts).filter(p=>
+    p.status==='approved' && p.ts > lastVisit && p.authorId !== currentUser.id
+  );
+  if(newPosts.length > 0){
+    const banner = document.getElementById('new-posts-banner');
+    const text = document.getElementById('new-posts-text');
+    if(banner && text){
+      text.textContent = newPosts.length === 1
+        ? '✦ 1 new post since your last visit'
+        : `✦ ${newPosts.length} new posts since your last visit`;
+      banner.classList.remove('hidden');
+    }
+  }
+  saveLastVisit();
+}
+
+function checkHash(){
+  if(!hash || !hash.startsWith('#post-')) return;
+  const postId = hash.replace('#post-','');
+  const el = document.getElementById('post-'+postId);
+  if(el){
+    setTimeout(()=>{
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      el.classList.add('highlighted');
+      setTimeout(()=>el.classList.remove('highlighted'), 3000);
+    }, 400);
+  }
+}
+
+function renderFilterBar(tags){
+  const bar=document.getElementById('filter-bar');
+  if(tags.length===0){hideEl('filter-bar');return;}
+  showEl('filter-bar');
+  bar.innerHTML=['all',...tags].map(t=>`<button class="filter-tag${activeFilter===t?' active':''}" data-tag="${esc(t)}">#${esc(t)}<\/button>`).join('');
+  bar.querySelectorAll('.filter-tag').forEach(btn=>{btn.onclick=()=>{activeFilter=btn.dataset.tag;renderFeed();};});
+}
+
+function getReactorNames(post, key){
+  const ids = post.reactions&&post.reactions[key]?Object.values(post.reactions[key]):[];
+  return ids.map(id=>{ const u=Object.values(allUsers).find(u=>u.id===id); return u?u.name:'Someone'; });
+}
+
+function renderReactions(post){
+  if(!currentUser){
+    return REACTIONS.map(function(r){
+      const names = getReactorNames(post, r.key);
+      if(!names.length) return '';
+      const titleStr = esc(names.join(', '));
+      return '<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid var(--muted);font-size:13px;color:var(--ghost);" title="'+titleStr+'">'
+        +'<span style="font-size:16px;">'+r.emoji+'<\/span><span>'+names.length+'<\/span><\/span>';
+    }).join('');
+  }
+  return REACTIONS.map(function(r){
+    const names = getReactorNames(post, r.key);
+    const ids = post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[];
+    const reacted = currentUser && ids.includes(currentUser.id);
+    const titleStr = esc(names.length ? r.label+': '+names.join(', ') : r.label);
+    return '<button class="reaction-btn'+(reacted?' reacted-'+r.key:'')+'" data-action="react" data-post-id="'+post.id+'" data-reaction="'+r.key+'" title="'+titleStr+'">'
+      +'<span class="emoji">'+r.emoji+'<\/span>'+(names.length?'<span>'+names.length+'<\/span>':'')+'<\/button>';
+  }).join('');
+}
+
+
+function renderPost(p){
+  const author=getAuthor(p.authorId);
+  const comments=p.comments?Object.values(p.comments).sort((a,b)=>a.ts-b.ts):[];
+  const commentCount=comments.reduce((n,c)=>n+1+(c.replies?Object.values(c.replies).length:0),0);
+  const canDelete=currentUser&&(p.authorId===currentUser.id||canMod(currentUser));
+  const authorLabels=labelBadgesHTML(author.labels||[]);
+  const commentInputHTML = currentUser
+    ? `<div class="comment-input-row" style="margin-top:${comments.length>0?'10px':'0'}">
+        <textarea placeholder="Add a comment…" rows="1" data-action="comment-input" data-id="${p.id}"><\/textarea>
+        <button class="comment-submit" data-action="submit-comment" data-id="${p.id}">Post<\/button>
+      <\/div>`
+    : `<p style="font-size:12px;color:var(--ghost);text-align:center;padding:10px 0;"><button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');" style="font-size:12px;">Sign in<\/button> or <button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');document.getElementById('register-form').classList.remove('hidden');" style="font-size:12px;">join<\/button> to comment.<\/p>`;
+  return `
+  <article class="post-card${p.pinned?' pinned':''}" data-id="${p.id}" id="post-${p.id}">
+    ${p.pinned?`<div class="pin-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><\/svg> Pinned<\/div>`:''}
+    <div class="post-header">
+      <div class="post-author">
+        ${avHTML(author.name,42,author.photo)}
+        <div>
+          <div class="post-author-name">${esc(author.name)}<\/div>
+          ${author.title?`<div class="post-author-title">${esc(author.title)}<\/div>`:''}
+          ${authorLabels?`<div class="post-author-labels">${authorLabels}<\/div>`:''}
+          ${(author.points&&author.points>0)?`<div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;margin-top:1px;">★ ${author.points} pts<\/div>`:''}
+          <div class="post-time">${timeAgo(p.ts)}<\/div>
+        <\/div>
+      <\/div>
+      <div style="display:flex;align-items:center;gap:4px;">
+        ${canMod(currentUser)?`<button class="pin-btn${p.pinned?' active':''}" data-action="pin-post" data-id="${p.id}" title="${p.pinned?'Unpin':'Pin post'}"><svg width="13" height="13" viewBox="0 0 24 24" fill="${p.pinned?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><\/svg><\/button>`:''}
+        ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}">✕<\/button>`:''}
+      <\/div>
+    <\/div>
+    <div class="post-body">${linkify(p.text)}<\/div>
+    ${renderMediaEmbed(p)}
+    ${p.tag?`<span class="post-tag">#${esc(p.tag)}<\/span>`:''}
+    <div class="post-actions">
+      ${renderReactions(p)}
+      <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">💬 ${commentCount>0?commentCount+' ':''}Comment${commentCount!==1?'s':''}<\/button>
+      <button class="comment-toggle" data-action="share-post" data-id="${p.id}" style="margin-left:0;" title="Copy link">🔗 Share<\/button>
+      ${(p.views&&p.views>0)?`<span style="font-size:12px;color:var(--ghost);margin-left:auto;display:flex;align-items:center;gap:3px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><\/svg> ${p.views}<\/span>`:''}
+      <button style="display:none;" data-action="view-post" data-id="${p.id}"><\/button>
+    <\/div>
+    <div class="comments-section${commentCount>0?'':' hidden'}" id="comments-${p.id}">
+      ${comments.map(c=>renderComment(c,p.id,false)).join('')}
+      ${commentInputHTML}
+    <\/div>
+  <\/article>`;
+}
+
+function renderComment(c,postId,isReply){
+  const author=getAuthor(c.authorId);
+  const replies=c.replies?Object.values(c.replies).sort((a,b)=>a.ts-b.ts):[];
+  const canDel=currentUser&&(c.authorId===currentUser.id||canMod(currentUser));
+  return `
+  <div class="comment-item${isReply?' reply':''}" data-comment-id="${c.id}">
+    ${avHTML(author.name,28,author.photo)}
+    <div style="flex:1">
+      <div class="comment-body${isReply?' reply-body':''}">
+        <div class="comment-meta">
+          <span class="comment-author">${esc(author.name)}<\/span>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span style="font-size:10px;color:var(--ghost)">${timeAgo(c.ts)}<\/span>
+            ${canDel?`<button class="delete-btn" style="font-size:11px;" data-action="delete-comment" data-post-id="${postId}" data-comment-id="${c.id}">✕<\/button>`:''}
+          <\/div>
+        <\/div>
+        <div class="comment-text">${esc(c.text)}<\/div>
+      <\/div>
+      <div class="comment-actions">
+        ${!isReply?`<button class="reply-btn" data-action="toggle-reply" data-post-id="${postId}" data-comment-id="${c.id}">Reply<\/button>`:''}
+      <\/div>
+      ${!isReply?`<div class="reply-form hidden" id="reply-form-${c.id}"><div class="comment-input-row"><textarea placeholder="Reply…" rows="1" data-action="reply-input"><\/textarea><button class="comment-submit" data-action="submit-reply" data-post-id="${postId}" data-comment-id="${c.id}">Post<\/button><\/div><\/div>`:''}
+      ${replies.map(r=>renderComment(r,postId,true)).join('')}
+    <\/div>
+  <\/div>`;
+}
+
+function setupPostEvents(){
+  const container = document.getElementById('posts-container');
+  container.addEventListener('click',async e=>{
+    const btn=e.target.closest('[data-action]');if(!btn)return;
+    const action=btn.dataset.action;
+    if(action==='react'){
+      if(!currentUser) return;
+      const postId=btn.dataset.postId;const newKey=btn.dataset.reaction;
+      const reactionBase = 'posts/'+postId+'/reactions';
+      // Check current state fresh from Firebase
+      const currentReactions = await fbGet(reactionBase);
+      // Remove any existing reaction by this user
+      if(currentReactions){
+        for(const rKey of Object.keys(currentReactions)){
+          if(currentReactions[rKey]&&currentReactions[rKey][currentUser.id]){
+            await fbRemove(reactionBase+'/'+rKey+'/'+currentUser.id);
+          }
+        }
+      }
+      // If they clicked a different reaction (not removing their current one), set it
+      const hadThis = currentReactions&&currentReactions[newKey]&&currentReactions[newKey][currentUser.id];
+      if(!hadThis){
+        await fbSet(reactionBase+'/'+newKey+'/'+currentUser.id, currentUser.id);
+        const r=REACTIONS.find(x=>x.key===newKey);
+        logActivity('reaction','Reacted with '+r.emoji+' '+r.label);
+        // Award 5 points to post author for heart reactions
+        if(newKey==='heart'){
+          const post = allPosts[postId];
+          if(post && post.authorId !== currentUser.id){
+            await awardPoints(post.authorId, 5, 'heart reaction received');
+          }
+        }
+      }
+    }
+    if(action==='delete-post'){
+      const ok = await inlineConfirm('Delete post', 'This will permanently remove this post.');
+      if(!ok) return;
+      await fbRemove('posts/'+btn.dataset.id);
+    }
+    if(action==='pin-post'){
+      if(!canMod(currentUser)) return;
+      const pid = btn.dataset.id;
+      const post = allPosts[pid];
+      if(!post) return;
+      const alreadyPinned = !!post.pinned;
+      if(!alreadyPinned){
+        const pinnedCount = Object.values(allPosts).filter(p=>p.pinned&&p.status==='approved').length;
+        if(pinnedCount >= 3){
+          await inlineConfirm('Pin limit reached', 'You already have 3 pinned posts. Unpin one first before pinning another.');
+          return;
+        }
+      }
+      await fbUpdate('posts/'+pid, {pinned: alreadyPinned ? null : true});
+    }
+    if(action==='toggle-comments'){document.getElementById(`comments-${btn.dataset.id}`)?.classList.toggle('hidden');}
+    if(action==='view-post'){
+      // Increment view count once per session per post
+      const pid = btn.dataset.id;
+      const sessionKey = 'dwc_viewed_'+pid;
+      try {
+        if(!sessionStorage.getItem(sessionKey)){
+          sessionStorage.setItem(sessionKey,'1');
+          const current = await fbGet('posts/'+pid+'/views') || 0;
+          await fbSet('posts/'+pid+'/views', current+1);
+        }
+      } catch{}
+    }
+    if(action==='share-post'){
+      const url = window.location.href.split('#')[0] + '#post-' + btn.dataset.id;
+      navigator.clipboard.writeText(url).then(()=>{
+        const orig = btn.textContent;
+        btn.textContent = '✓ Copied';
+        btn.style.color = 'var(--plum)';
+        setTimeout(()=>{ btn.textContent = orig; btn.style.color = ''; }, 2000);
+      }).catch(()=>{
+        prompt('Copy this link:', url);
+      });
+    }
+    if(action==='submit-comment'){
+      const ta=btn.closest('.comment-input-row')?.querySelector('textarea');
+      const text=ta?.value.trim();if(!text)return;
+      const cid=uid();
+      await fbSet(`posts/${btn.dataset.id}/comments/${cid}`,{id:cid,authorId:currentUser.id,text,ts:Date.now(),replies:{}});
+      logActivity('comment','Left a comment');
+      if(text.split(/\s+/).filter(Boolean).length > 5) await awardPoints(currentUser.id, 3, 'qualifying comment');
+      ta.value='';ta.style.height='';
+    }
+    if(action==='toggle-reply'){document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.toggle('hidden');}
+    if(action==='submit-reply'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');    min-height: 100vh;
     background: radial-gradient(ellipse at 60% 0%, #7a3060 0%, var(--plumdk) 45%, #1a0e16 100%);
     display: flex; align-items: center; justify-content: center; padding: 20px;
   }
