@@ -53,7 +53,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --plum:#5c2d4e;--plumdk:#3d1e34;--plumlt:#7a4060;
+  --plum:#4a2040;--plumdk:#35172e;--plumlt:#7a4060;
   --gold:#b8965a;--goldlt:#d4aa6a;
   --cream:#faf7f3;--soft:#f0e8df;--muted:#e0d5cb;
   --dark:#1a0e16;--mid:#6b5460;--ghost:#9e8490;
@@ -328,6 +328,67 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .avatar-url-input{width:100%;border:1px solid var(--muted);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--soft);color:var(--dark);outline:none;}
 .avatar-url-input:focus{border-color:var(--plum);}
 
+
+/* ══ MASTHEAD ══ */
+#dwc-mast{background:#fff;border-bottom:3px solid var(--plum);}
+
+.mast-util{background:#fff;border-bottom:1px solid var(--muted);height:34px;}
+.mast-util-inner{max-width:1120px;margin:0 auto;padding:0 20px;height:34px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mast-tagline{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500;white-space:nowrap;}
+.mast-util-right{display:flex;align-items:center;gap:12px;}
+.mast-members{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ghost);white-space:nowrap;}
+.mast-members b{font-family:'Libre Bodoni',serif;font-size:14px;color:var(--plum);letter-spacing:0;}
+
+.mast-logo-row{background:#fff;}
+.mast-logo-inner{max-width:1120px;margin:0 auto;padding:18px 20px 14px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;row-gap:10px;}
+.mast-logo{display:flex;align-items:center;gap:12px;min-width:0;}
+.mast-word{font-family:'Libre Bodoni',serif;font-weight:700;font-size:46px;line-height:.9;letter-spacing:.06em;color:var(--plum);text-transform:uppercase;text-decoration:none;}
+.mast-word:hover{color:var(--plumlt);}
+.mast-sep{width:1px;height:28px;background:var(--muted);}
+.mast-section{font-size:17px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);}
+.mast-actions{display:flex;align-items:center;gap:12px;margin-left:auto;}
+.mast-profile{display:flex;align-items:center;gap:10px;}
+.mast-profile-text{text-align:right;line-height:1.35;}
+.mast-profile-name{font-size:13px;font-weight:600;color:var(--plum);}
+.mast-profile-title{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+.mast-profile-points{font-size:10px;color:var(--ghost);}
+.mast-btn-group{display:flex;align-items:center;gap:8px;}
+.mast-btn-solid{background:var(--plum);color:#fff;border-color:var(--plum);}
+.mast-btn-solid:hover{background:var(--plumlt);border-color:var(--plumlt);}
+.mast-guest{max-width:1120px;margin:0 auto;padding:0 20px 12px;font-size:11px;letter-spacing:.06em;color:var(--ghost);}
+
+.mast-nav{background:#fff;border-top:1px solid var(--muted);}
+.mast-nav-inner{max-width:1120px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;}
+.mast-nav-inner::-webkit-scrollbar{display:none;}
+.mast-nav-inner a{flex-shrink:0;border-radius:20px;padding:6px 15px;font-size:12.5px;font-weight:500;white-space:nowrap;text-decoration:none;background:var(--soft);color:var(--plum);border:1px solid var(--muted);transition:all .15s;}
+.mast-nav-inner a:hover{background:var(--plum);color:#fff;border-color:var(--plum);}
+
+/* OneSignal subscribe link — forced to DWC styling */
+.onesignal-customlink-container{display:inline-flex!important;align-items:center!important;margin:0!important;}
+.onesignal-customlink-container .onesignal-customlink-explanation{display:none!important;}
+.onesignal-customlink-container .onesignal-customlink-subscribe{
+  background:var(--soft)!important;color:var(--plum)!important;border:1px solid var(--muted)!important;
+  border-radius:20px!important;padding:4px 13px!important;margin:0!important;
+  font-family:'DM Sans',sans-serif!important;font-size:11px!important;font-weight:500!important;
+  letter-spacing:.04em!important;text-transform:none!important;line-height:1.5!important;
+  height:auto!important;box-shadow:none!important;white-space:nowrap!important;
+}
+.onesignal-customlink-container .onesignal-customlink-subscribe:hover{
+  background:var(--plum)!important;color:#fff!important;border-color:var(--plum)!important;
+}
+
+@media(max-width:760px){
+  .mast-util-inner{padding:0 14px;}
+  .mast-tagline{display:none;}
+  .mast-logo-inner{padding:14px 14px 12px;}
+  .mast-word{font-size:34px;}
+  .mast-sep{height:22px;}
+  .mast-section{font-size:14px;}
+  .mast-profile-title,.mast-profile-points{display:none;}
+  .mast-nav-inner{padding:8px 14px;}
+  .mast-guest{padding:0 14px 10px;}
+}
+
 .hidden{display:none!important;}
 </style>
 <!-- OneSignal Web Push -->
@@ -406,58 +467,67 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 
 <!-- App -->
 <div id="app-screen" class="hidden">
-  <div id="topbar">
-    <div class="topbar-left">
-      <a href="https://dwcmagazine.com" target="_blank" style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--plum);font-size:22px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;" class="topbar-brand">DWC</a>
-      <span class="topbar-sep">|</span>
-      <span class="topbar-section" id="topbar-section">Community</span>
-    </div>
-    <div class="topbar-right">
-      <!-- Guest buttons -->
-      <div id="guest-btns" style="display:flex;gap:8px;">
-        <button class="mod-btn" id="guest-signin-btn" style="color:var(--plum);border-color:var(--muted);">Sign In</button>
-        <button class="mod-btn" id="guest-join-btn" style="background:var(--gold);color:#fff;border-color:var(--gold);">Join</button>
-      </div>
-      <!-- Member buttons — mod only, sign out only -->
-      <div id="member-btns" class="hidden" style="display:flex;align-items:center;gap:8px;">
-        <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
-        <button class="signout-btn" id="signout-btn" style="border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:11px;color:rgba(250,247,243,0.6);">Sign out</button>
-      </div>
-    </div>
-  </div>
+  <!-- ══ MASTHEAD ══ -->
+  <div id="dwc-mast">
 
-  <!-- Site tabs — links to other DWC Magazine sections -->
-  <div id="site-tabs">
-    <a class="site-tab" href="https://dwcmagazine.com/" target="_blank">This Week's Issue</a>
-    <a class="site-tab" href="https://dwcmagazine.com/pages/dwc-conversations-new" target="_blank">Conversations</a>
-    <a class="site-tab" href="https://dwcmagazine.com/pages/pat-allchorne-book-picks" target="_blank">Pat's Book Picks</a>
-    <a class="site-tab" href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank">Brands, Places &amp; People We Love</a>
-    <a class="site-tab" href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank">Podcast Directory</a>
-    <a class="site-tab" href="https://dwcmagazine.com/pages/dwc-reading-room" target="_blank">Reading Room</a>
-    <a class="site-tab" href="https://dwcmagazine.com/pages/media-kit" target="_blank">Submit Your Story</a>
-  </div>
+    <!-- Utility strip -->
+    <div class="mast-util">
+      <div class="mast-util-inner">
+        <span class="mast-tagline">Strong Women &middot; Strong Voices</span>
+        <div class="mast-util-right">
+          <span class="mast-members"><b id="stats-members">&mdash;</b> Members</span>
+          <span id="topbar-member-count" style="display:none;"></span>
+          <div class="onesignal-customlink-container"></div>
+        </div>
+      </div>
+    </div>
 
-  <!-- Stats bar — members left, profile right -->
-  <div id="stats-bar" style="background:var(--plumdk);border-top:1px solid rgba(255,255,255,0.06);padding:8px 20px;display:flex;justify-content:space-between;align-items:center;">
-    <!-- Members count -->
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div>
-        <div style="font-family:'Libre Bodoni',serif;font-weight:700;color:var(--cream);font-size:18px;line-height:1;" id="stats-members">—</div>
-        <div style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,243,.4);font-family:'DM Sans',sans-serif;margin-top:1px;">Members</div>
+    <!-- Logo row -->
+    <div class="mast-logo-row">
+      <div class="mast-logo-inner">
+        <div class="mast-logo">
+          <a href="https://dwcmagazine.com" target="_blank" rel="noopener" class="mast-word">DWC</a>
+          <span class="mast-sep"></span>
+          <span class="mast-section" id="topbar-section">Community</span>
+        </div>
+        <div class="mast-actions">
+          <!-- Member profile -->
+          <div id="stats-profile" class="mast-profile hidden">
+            <div class="mast-profile-text">
+              <div class="mast-profile-name" id="stats-name"></div>
+              <div class="mast-profile-title" id="stats-title"></div>
+              <div class="mast-profile-points" id="stats-points"></div>
+            </div>
+            <div class="avatar" id="stats-avatar" style="width:38px;height:38px;font-size:14px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
+          </div>
+          <!-- Guest buttons -->
+          <div id="guest-btns" class="mast-btn-group">
+            <button class="mod-btn" id="guest-signin-btn">Sign In</button>
+            <button class="mod-btn mast-btn-solid" id="guest-join-btn">Join</button>
+          </div>
+          <!-- Member buttons -->
+          <div id="member-btns" class="mast-btn-group hidden">
+            <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
+            <button class="signout-btn" id="signout-btn">Sign out</button>
+          </div>
+        </div>
       </div>
-      <div class="onesignal-customlink-container"></div>
+      <div id="stats-guest" class="mast-guest">Join the conversation &rarr;</div>
     </div>
-    <!-- Profile info — hidden for guests -->
-    <div id="stats-profile" class="hidden" style="display:flex;align-items:center;gap:10px;">
-      <div style="text-align:right;">
-        <div style="font-size:12px;color:var(--cream);font-family:'DM Sans',sans-serif;" id="stats-name"></div>
-        <div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;" id="stats-title"></div>
-        <div style="font-size:10px;color:var(--goldlt);font-family:'DM Sans',sans-serif;" id="stats-points"></div>
+
+    <!-- Section nav -->
+    <nav class="mast-nav">
+      <div class="mast-nav-inner" id="site-tabs">
+        <a href="https://dwcmagazine.com/" target="_blank" rel="noopener">This Week's Issue</a>
+        <a href="https://dwcmagazine.com/pages/dwc-conversations-new" target="_blank" rel="noopener">Conversations</a>
+        <a href="https://dwcmagazine.com/pages/pat-allchorne-book-picks" target="_blank" rel="noopener">Pat's Book Picks</a>
+        <a href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank" rel="noopener">Brands, Places &amp; People We Love</a>
+        <a href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank" rel="noopener">Podcast Directory</a>
+        <a href="https://dwcmagazine.com/pages/dwc-reading-room" target="_blank" rel="noopener">Reading Room</a>
+        <a href="https://dwcmagazine.com/pages/media-kit" target="_blank" rel="noopener">Submit Your Story</a>
       </div>
-      <div class="avatar" id="stats-avatar" style="width:34px;height:34px;font-size:13px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
-    </div>
-    <!-- Guest join nudge -->
-    <div id="stats-guest" style="font-size:11px;color:rgba(250,247,243,.4);font-family:'DM Sans',sans-serif;">Join the conversation →</div>
+    </nav>
+
   </div>
 
   <div id="filter-bar" class="hidden"></div>
