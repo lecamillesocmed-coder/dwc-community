@@ -122,11 +122,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .filter-tag{border-radius:20px;padding:3px 13px;cursor:pointer;font-size:11.5px;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .15s;border:1px solid var(--muted);background:none;color:var(--ghost);}
 .filter-tag.active{background:var(--plum);color:#fff;border-color:var(--plum);}
 
-/* Site tabs — links out to other DWC Magazine sections */
-#site-tabs{background:var(--plumdk);border-bottom:1px solid rgba(255,255,255,.08);padding:0 20px;display:flex;gap:8px;overflow-x:auto;align-items:center;height:42px;}
-.site-tab{border-radius:20px;padding:5px 14px;font-size:12px;white-space:nowrap;font-family:'DM Sans',sans-serif;font-weight:500;color:var(--goldlt);text-decoration:none;border:1px solid rgba(255,255,255,.15);transition:all .15s;flex-shrink:0;}
-.site-tab:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.32);}
-
 /* Layout */
 #feed-layout{max-width:1120px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1fr 290px;gap:24px;align-items:stretch;}
 @media(max-width:1024px){
@@ -332,8 +327,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 /* ══ MASTHEAD ══ */
 #dwc-mast{background:#fff;border-bottom:3px solid var(--plum);}
 
-.mast-util{background:#fff;border-bottom:1px solid var(--muted);height:34px;}
-.mast-util-inner{max-width:1120px;margin:0 auto;padding:0 20px;height:34px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mast-util{background:#fff;border-bottom:1px solid var(--muted);}
+.mast-util-inner{max-width:1120px;margin:0 auto;padding:4px 20px;min-height:34px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;row-gap:4px;}
 .mast-tagline{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500;white-space:nowrap;}
 .mast-util-right{display:flex;align-items:center;gap:12px;}
 .mast-members{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ghost);white-space:nowrap;}
@@ -357,12 +352,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .mast-btn-solid:hover{background:var(--plumlt);border-color:var(--plumlt);}
 .mast-guest{max-width:1120px;margin:0 auto;padding:0 20px 12px;font-size:11px;letter-spacing:.06em;color:var(--ghost);}
 
-.mast-nav{background:#fff;border-top:1px solid var(--muted);}
+.mast-nav{background:var(--plumdk);}
 .mast-nav-inner{max-width:1120px;margin:0 auto;padding:0 20px 5px;display:flex;align-items:stretch;gap:0;overflow-x:auto;scrollbar-width:none;}
 .mast-nav-inner::-webkit-scrollbar{display:none;}
-.mast-nav-inner a{flex-shrink:0;display:flex;align-items:center;padding:11px 14px 8px;font-size:13px;font-weight:500;letter-spacing:.02em;white-space:nowrap;text-decoration:none;background:none;color:var(--plum);border:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
+.mast-nav-inner a{flex-shrink:0;display:flex;align-items:center;padding:11px 14px 8px;font-size:13px;font-weight:500;letter-spacing:.02em;white-space:nowrap;text-decoration:none;background:none;color:#fff;border:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
 .mast-nav-inner a:first-child{padding-left:0;}
-.mast-nav-inner a:hover{color:var(--gold);border-bottom-color:var(--gold);}
+.mast-nav-inner a:hover{color:var(--goldlt);border-bottom-color:var(--goldlt);}
 
 /* OneSignal subscribe link — forced to DWC styling */
 .onesignal-customlink-container{display:inline-flex!important;align-items:center!important;margin:0!important;}
@@ -378,7 +373,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   background:var(--plum)!important;color:#fff!important;border-color:var(--plum)!important;
 }
 
-@media(max-width:760px){
+@media(max-width:860px){
   .mast-util-inner{padding:0 14px;}
   .mast-tagline{display:none;}
   .mast-logo-inner{padding:14px 14px 12px;}
