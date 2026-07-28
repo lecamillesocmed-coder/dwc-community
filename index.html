@@ -332,7 +332,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .mast-tagline{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500;white-space:nowrap;}
 .mast-util-right{display:flex;align-items:center;gap:12px;}
 .mast-members{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ghost);white-space:nowrap;}
-.mast-members b{font-family:'Libre Bodoni',serif;font-size:14px;color:var(--plum);letter-spacing:0;}
+.mast-members b{font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:var(--plum);letter-spacing:.02em;}
 
 .mast-logo-row{background:#fff;}
 .mast-logo-inner{max-width:1120px;margin:0 auto;padding:10px 20px 8px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;row-gap:6px;}
@@ -343,7 +343,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .mast-section{font-size:15px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);}
 .mast-actions{display:flex;align-items:center;gap:12px;margin-left:auto;}
 .mast-profile{display:flex;align-items:center;gap:10px;}
-.mast-profile-text{text-align:right;line-height:1.35;}
+.mast-profile-text{display:flex;align-items:baseline;gap:8px;line-height:1.3;}
+.mast-logo-right{display:flex;align-items:center;gap:12px;margin-left:auto;}
+.mast-push{display:inline-flex;align-items:center;height:28px;max-height:28px;overflow:hidden;}
 .mast-profile-name{font-size:13px;font-weight:600;color:var(--plum);}
 .mast-profile-title{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
 .mast-profile-points{font-size:10px;color:var(--ghost);}
@@ -474,27 +476,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   <!-- ══ MASTHEAD ══ -->
   <div id="dwc-mast">
 
-    <!-- Utility strip -->
+    <!-- Top strip: identity + account actions -->
     <div class="mast-util">
       <div class="mast-util-inner">
         <span class="mast-tagline">Strong Women &middot; Strong Voices</span>
         <div class="mast-util-right">
-          <span class="mast-members"><b id="stats-members">&mdash;</b> Members</span>
-          <span id="topbar-member-count" style="display:none;"></span>
-          <div class="onesignal-customlink-container"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Logo row -->
-    <div class="mast-logo-row">
-      <div class="mast-logo-inner">
-        <div class="mast-logo">
-          <a href="https://dwcmagazine.com" target="_blank" rel="noopener" class="mast-word">DWC</a>
-          <span class="mast-sep"></span>
-          <span class="mast-section" id="topbar-section">Community</span>
-        </div>
-        <div class="mast-actions">
           <!-- Member profile -->
           <div id="stats-profile" class="mast-profile hidden">
             <div class="mast-profile-text">
@@ -502,7 +488,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
               <div class="mast-profile-title" id="stats-title"></div>
               <div class="mast-profile-points" id="stats-points"></div>
             </div>
-            <div class="avatar" id="stats-avatar" style="width:38px;height:38px;font-size:14px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
+            <div class="avatar" id="stats-avatar" style="width:26px;height:26px;font-size:11px;cursor:pointer;" title="Edit profile photo" onclick="openAvatarModal()"></div>
           </div>
           <!-- Guest buttons -->
           <div id="guest-btns" class="mast-btn-group">
@@ -514,6 +500,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
             <button class="mod-btn hidden" id="mod-btn">Moderation <span class="badge-count hidden" id="mod-count"></span></button>
             <button class="signout-btn" id="signout-btn">Sign out</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo row: wordmark + members + push -->
+    <div class="mast-logo-row">
+      <div class="mast-logo-inner">
+        <div class="mast-logo">
+          <a href="https://dwcmagazine.com" target="_blank" rel="noopener" class="mast-word">DWC</a>
+          <span class="mast-sep"></span>
+          <span class="mast-section" id="topbar-section">Community</span>
+        </div>
+        <div class="mast-logo-right">
+          <span class="mast-members"><b id="stats-members">&mdash;</b> Members</span>
+          <span id="topbar-member-count" style="display:none;"></span>
+          <div class="mast-push"><div class="onesignal-customlink-container"></div></div>
         </div>
       </div>
       <div id="stats-guest" class="mast-guest">Join the conversation &rarr;</div>
