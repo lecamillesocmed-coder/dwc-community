@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,6 +117,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .label-team{background:var(--soft);color:var(--mid);}
 .label-contributor{background:var(--soft);color:var(--mid);}
 .label-moderator{background:var(--soft);color:var(--mid);}
+.label-unlimited{background:var(--soft);color:var(--mid);}
 
 /* Filter bar */
 #filter-bar{background:#fff;border-bottom:1px solid var(--muted);padding:0 20px;display:flex;gap:6px;overflow-x:auto;align-items:center;height:44px;}
@@ -239,6 +241,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .brand-cat{font-size:11px;color:var(--ghost);margin-bottom:2px;}
 .brand-link{font-size:11px;color:var(--gold);text-decoration:none;font-weight:500;}
 .brand-link:hover{text-decoration:underline;}
+
+/* Unlimited conversations list */
+.unlimited-note{font-size:12px;color:var(--mid);line-height:1.5;padding-bottom:10px;margin-bottom:8px;border-bottom:1px solid var(--muted);}
+.unlimited-note b{color:var(--plum);}
+.unlimited-item{display:block;padding:8px 0;border-bottom:1px solid var(--muted);font-size:13px;color:var(--plum);text-decoration:none;font-weight:500;line-height:1.4;}
+.unlimited-item:last-child{border-bottom:none;padding-bottom:0;}
+.unlimited-item:hover{color:var(--gold);}
 
 /* Podcasts */
 .pod-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
@@ -635,6 +644,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <aside id="sidebar">
       <div class="sidebar-sticky">
 
+        <!-- DWC Unlimited — visible only to members with the 'unlimited' label -->
+        <div class="sidebar-card hidden" id="unlimited-card">
+          <div class="sidebar-card-header">DWC Unlimited</div>
+          <div class="sidebar-card-body">
+            <div class="unlimited-note">Page password for all Conversations below: <b>marigold</b></div>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 1: Is This Growth Or Just Chaos?</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 3: Is Coaching Creating Growth Or Dependence?</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 8: Is Manifestation a Tool or a Distraction from Reality?</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 11: Meta Ads Uncomplicated</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 18: How To Set Boundaries and Protect Your Energy</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 19: How to Build a Business That Works Around Your Energy, Not Your Calendar</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 20: Plan for the Future When the Present Feels Financially Overwhelming</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 23: How To Get Featured in the Media Without a PR Agency or a Big Budget</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 28: Where Are My Customers?</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 30: Mic Drop How To Launch &amp; Promote Your Podcast</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 39: Charge It Like You Mean It</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 197 (Video Class): How To Make Traditional Beer Battered Fish &amp; Chips</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 200: The Newsletter Nobody Dreads</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 206 (Video Class): How To Make Tie &amp; Dye Clothing</a>
+            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 246 (In Person): Menopause: Turns Out... It's Not Just Me!</a>
+          </div>
+        </div>
+
         <!-- Cornerstone Partners -->
         <div class="sidebar-card">
           <div class="sidebar-card-header">Cornerstone Partners</div>
@@ -786,6 +818,7 @@ const MEMBER_LABELS = [
   {key:'cornerstone',text:'DWC Cornerstone Partner', cls:'label-cornerstone'},
   {key:'team',       text:'DWC Team',                cls:'label-team'},
   {key:'contributor',text:'DWC Contributor',         cls:'label-contributor'},
+  {key:'unlimited',  text:'DWC Unlimited',           cls:'label-unlimited'},
 ];
 const POST_LIMIT_MS = 24 * 60 * 60 * 1000; // 24h
 
@@ -942,6 +975,13 @@ function labelBadgesHTML(labels) {
   }).join('');
 }
 
+function updateUnlimitedCard(){
+  const card=document.getElementById('unlimited-card');
+  if(!card) return;
+  const isUnlimited = !!(currentUser && currentUser.labels && currentUser.labels.includes('unlimited'));
+  card.classList.toggle('hidden', !isUnlimited);
+}
+
 function updateMemberCount() {
   const approved = Object.values(allUsers).filter(u=>u.status==='approved').length;
   const el = document.getElementById('topbar-member-count');
@@ -1069,6 +1109,7 @@ async function signInUser(user){
   hideEl('loading-screen');
   renderFeed();
   refreshPushPrompt();
+  updateUnlimitedCard();
 }
 
 // ── Push notification prompt ─────────────────────────────
@@ -1122,6 +1163,7 @@ document.getElementById('signout-btn').onclick=()=>{
   if(statsProfile){ statsProfile.style.display='none'; statsProfile.classList.add('hidden'); }
   document.getElementById('topbar-section').textContent='Community';
   renderFeed();
+  updateUnlimitedCard();
 };
 
 // ── Avatar modal ──────────────────────────────────────────────
@@ -1917,8 +1959,10 @@ function startPublicListeners(){
       const key = Object.keys(allUsers).find(k=>allUsers[k].id===currentUser.id);
       if(key){
         currentUser.points = allUsers[key].points||0;
+        currentUser.labels = allUsers[key].labels||[];
         const sp = document.getElementById('stats-points');
         if(sp) sp.textContent = currentUser.points > 0 ? '★ '+currentUser.points+' pts' : '';
+        updateUnlimitedCard();
       }
     }
   });
