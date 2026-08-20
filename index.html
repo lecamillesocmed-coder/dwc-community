@@ -249,6 +249,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .unlimited-item:last-child{border-bottom:none;padding-bottom:0;}
 .unlimited-item:hover{color:var(--gold);}
 
+/* Unlimited tab view */
+#unlimited-view{max-width:520px;margin:0 auto;padding:40px 16px 60px;}
+.unlimited-gate{background:#fff;border-radius:12px;border:1px solid var(--muted);padding:32px 28px;box-shadow:0 2px 12px rgba(92,45,78,.05);text-align:center;}
+.unlimited-gate h2{font-family:'Libre Bodoni',serif;color:var(--plum);font-size:24px;margin-bottom:8px;}
+.unlimited-gate-sub{font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:22px;}
+.unlimited-gate-form{display:flex;gap:8px;margin-bottom:6px;}
+.unlimited-gate-form input{flex:1;border:1px solid var(--muted);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--soft);color:var(--dark);outline:none;}
+.unlimited-gate-form input:focus{border-color:var(--plum);}
+.unlimited-gate-error{font-size:12px;color:#c0392b;min-height:16px;margin-bottom:14px;}
+.unlimited-gate-cta{font-size:12.5px;color:var(--ghost);line-height:1.6;border-top:1px solid var(--muted);margin-top:18px;padding-top:16px;}
+.unlimited-gate-cta a{color:var(--gold);font-weight:600;text-decoration:none;}
+.unlimited-gate-cta a:hover{text-decoration:underline;}
+.unlimited-list-card{background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;box-shadow:0 2px 12px rgba(92,45,78,.05);}
+.unlimited-list-header{background:var(--plum);padding:14px 20px;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--cream);font-size:13px;letter-spacing:.1em;text-transform:uppercase;}
+.unlimited-list-body{padding:6px 20px 4px;}
+
 /* Podcasts */
 .pod-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--muted);align-items:flex-start;}
 .pod-item:last-child{border-bottom:none;padding-bottom:0;}
@@ -369,6 +385,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .mast-nav-inner a{flex-shrink:0;display:flex;align-items:center;padding:8px 14px 6px;font-size:13px;font-weight:500;letter-spacing:.02em;white-space:nowrap;text-decoration:none;background:none;color:#fff;border:none;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
 .mast-nav-inner a:first-child{padding-left:0;}
 .mast-nav-inner a:hover{color:var(--goldlt);border-bottom-color:var(--goldlt);}
+.mast-nav-inner button.nav-tab-btn{flex-shrink:0;display:flex;align-items:center;padding:8px 14px 6px;font-size:13px;font-weight:500;letter-spacing:.02em;white-space:nowrap;font-family:'DM Sans',sans-serif;background:none;color:#fff;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:color .15s,border-color .15s;}
+.mast-nav-inner button.nav-tab-btn:hover{color:var(--goldlt);border-bottom-color:var(--goldlt);}
 
 /* OneSignal subscribe link — scoped to #dwc-mast to outrank injected styles */
 #dwc-mast .onesignal-customlink-container{
@@ -536,6 +554,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
         <a href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank" rel="noopener">Podcast Directory</a>
         <a href="https://dwcmagazine.com/pages/dwc-reading-room" target="_blank" rel="noopener">Reading Room</a>
         <a href="https://dwcmagazine.com/pages/media-kit" target="_blank" rel="noopener">Submit Your Story</a>
+        <button type="button" class="nav-tab-btn" id="unlimited-tab-btn">DWC Unlimited</button>
       </div>
     </nav>
 
@@ -644,29 +663,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <aside id="sidebar">
       <div class="sidebar-sticky">
 
-        <!-- DWC Unlimited — visible only to members with the 'unlimited' label -->
-        <div class="sidebar-card hidden" id="unlimited-card">
-          <div class="sidebar-card-header">DWC Unlimited</div>
-          <div class="sidebar-card-body">
-            <div class="unlimited-note">Page password for all Conversations below: <b>marigold</b></div>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 1: Is This Growth Or Just Chaos?</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 3: Is Coaching Creating Growth Or Dependence?</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 8: Is Manifestation a Tool or a Distraction from Reality?</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 11: Meta Ads Uncomplicated</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 18: How To Set Boundaries and Protect Your Energy</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 19: How to Build a Business That Works Around Your Energy, Not Your Calendar</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 20: Plan for the Future When the Present Feels Financially Overwhelming</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 23: How To Get Featured in the Media Without a PR Agency or a Big Budget</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 28: Where Are My Customers?</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 30: Mic Drop How To Launch &amp; Promote Your Podcast</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 39: Charge It Like You Mean It</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 197 (Video Class): How To Make Traditional Beer Battered Fish &amp; Chips</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 200: The Newsletter Nobody Dreads</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 206 (Video Class): How To Make Tie &amp; Dye Clothing</a>
-            <a class="unlimited-item" href="#" target="_blank">DWC Conversations 246 (In Person): Menopause: Turns Out... It's Not Just Me!</a>
-          </div>
-        </div>
-
         <!-- Cornerstone Partners -->
         <div class="sidebar-card">
           <div class="sidebar-card-header">Cornerstone Partners</div>
@@ -722,6 +718,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       </div>
       </aside>
     </div>
+  </div>
+
+  <!-- DWC Unlimited view -->
+  <div id="unlimited-view" class="hidden">
+    <div style="max-width:520px;margin:0 auto;padding:16px 16px 0;"><button class="btn btn-ghost btn-sm" id="unlimited-back">← Back to Community</button></div>
+    <div id="unlimited-view-inner"></div>
   </div>
 
   <!-- Mod view -->
@@ -975,13 +977,6 @@ function labelBadgesHTML(labels) {
   }).join('');
 }
 
-function updateUnlimitedCard(){
-  const card=document.getElementById('unlimited-card');
-  if(!card) return;
-  const isUnlimited = !!(currentUser && currentUser.labels && currentUser.labels.includes('unlimited'));
-  card.classList.toggle('hidden', !isUnlimited);
-}
-
 function updateMemberCount() {
   const approved = Object.values(allUsers).filter(u=>u.status==='approved').length;
   const el = document.getElementById('topbar-member-count');
@@ -1109,7 +1104,6 @@ async function signInUser(user){
   hideEl('loading-screen');
   renderFeed();
   refreshPushPrompt();
-  updateUnlimitedCard();
 }
 
 // ── Push notification prompt ─────────────────────────────
@@ -1163,7 +1157,6 @@ document.getElementById('signout-btn').onclick=()=>{
   if(statsProfile){ statsProfile.style.display='none'; statsProfile.classList.add('hidden'); }
   document.getElementById('topbar-section').textContent='Community';
   renderFeed();
-  updateUnlimitedCard();
 };
 
 // ── Avatar modal ──────────────────────────────────────────────
@@ -1725,6 +1718,76 @@ function openMod(){
 }
 document.getElementById('mod-back').onclick=()=>{hideEl('mod-view');showEl('feed-view');document.getElementById('topbar-section').textContent='Community';};
 
+// ── DWC Unlimited tab ────────────────────────────────────────
+const UNLIMITED_PASSWORD = 'clifton';
+const UNLIMITED_CONVERSATIONS = [
+  'DWC Conversations 1: Is This Growth Or Just Chaos?',
+  'DWC Conversations 3: Is Coaching Creating Growth Or Dependence?',
+  'DWC Conversations 8: Is Manifestation a Tool or a Distraction from Reality?',
+  'DWC Conversations 11: Meta Ads Uncomplicated',
+  'DWC Conversations 18: How To Set Boundaries and Protect Your Energy',
+  'DWC Conversations 19: How to Build a Business That Works Around Your Energy, Not Your Calendar',
+  'DWC Conversations 20: Plan for the Future When the Present Feels Financially Overwhelming',
+  'DWC Conversations 23: How To Get Featured in the Media Without a PR Agency or a Big Budget',
+  'DWC Conversations 28: Where Are My Customers?',
+  'DWC Conversations 30: Mic Drop How To Launch & Promote Your Podcast',
+  'DWC Conversations 39: Charge It Like You Mean It',
+  'DWC Conversations 197 (Video Class): How To Make Traditional Beer Battered Fish & Chips',
+  'DWC Conversations 200: The Newsletter Nobody Dreads',
+  'DWC Conversations 206 (Video Class): How To Make Tie & Dye Clothing',
+  'DWC Conversations 246 (In Person): Menopause: Turns Out... It\'s Not Just Me!',
+];
+let unlimitedUnlocked = false;
+
+function renderUnlimitedGate(){
+  const el = document.getElementById('unlimited-view-inner');
+  el.innerHTML = `
+    <div class="unlimited-gate">
+      <h2>DWC Unlimited</h2>
+      <p class="unlimited-gate-sub">Enter your DWC Unlimited password to unlock every Conversation in one place.</p>
+      <div class="unlimited-gate-form">
+        <input type="password" id="unlimited-pw-input" placeholder="Password" autocomplete="off"/>
+        <button class="btn btn-primary" id="unlimited-pw-submit">Unlock</button>
+      </div>
+      <div class="unlimited-gate-error" id="unlimited-pw-error"></div>
+      <p class="unlimited-gate-cta">Don't have the password? <a href="https://dwcmagazine.com/products/dwc-conversations-unlimited" target="_blank" rel="noopener">Purchase DWC Unlimited</a> for full access, or email <a href="mailto:hello@dwcmagazine.com">hello@dwcmagazine.com</a> and we'll sort you out.</p>
+    </div>`;
+  const submit = () => {
+    const val = document.getElementById('unlimited-pw-input').value.trim();
+    const err = document.getElementById('unlimited-pw-error');
+    if(val.toLowerCase() === UNLIMITED_PASSWORD){
+      unlimitedUnlocked = true;
+      renderUnlimitedList();
+    } else {
+      err.textContent = 'That password isn\'t right. Please try again.';
+    }
+  };
+  document.getElementById('unlimited-pw-submit').onclick = submit;
+  document.getElementById('unlimited-pw-input').onkeydown = e => { if(e.key==='Enter') submit(); };
+}
+
+function renderUnlimitedList(){
+  const el = document.getElementById('unlimited-view-inner');
+  el.innerHTML = `
+    <div class="unlimited-list-card">
+      <div class="unlimited-list-header">DWC Unlimited — All Conversations</div>
+      <div class="unlimited-list-body">
+        ${UNLIMITED_CONVERSATIONS.map(t=>`<a class="unlimited-item" href="#" target="_blank">${esc(t)}<\/a>`).join('')}
+      </div>
+    </div>`;
+}
+
+function openUnlimitedView(){
+  hideEl('feed-view'); hideEl('mod-view'); showEl('unlimited-view');
+  document.getElementById('topbar-section').textContent='DWC Unlimited';
+  unlimitedUnlocked ? renderUnlimitedList() : renderUnlimitedGate();
+}
+document.getElementById('unlimited-tab-btn').onclick = openUnlimitedView;
+document.getElementById('unlimited-back').onclick = () => {
+  hideEl('unlimited-view'); showEl('feed-view');
+  document.getElementById('topbar-section').textContent='Community';
+};
+
 function renderModDashboard(){renderPendingUsers();renderPendingPosts();renderPasswordResets();renderAllMembers();renderActivity();updateTabCounts();}
 
 function updateTabCounts(){
@@ -1959,10 +2022,8 @@ function startPublicListeners(){
       const key = Object.keys(allUsers).find(k=>allUsers[k].id===currentUser.id);
       if(key){
         currentUser.points = allUsers[key].points||0;
-        currentUser.labels = allUsers[key].labels||[];
         const sp = document.getElementById('stats-points');
         if(sp) sp.textContent = currentUser.points > 0 ? '★ '+currentUser.points+' pts' : '';
-        updateUnlimitedCard();
       }
     }
   });
