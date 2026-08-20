@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,6 +77,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .field label{display:block;font-size:11px;color:var(--mid);margin-bottom:5px;letter-spacing:.06em;}
 .field input{width:100%;border:1px solid var(--muted);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--soft);color:var(--dark);outline:none;transition:border-color .2s;}
 .field input:focus{border-color:var(--plum);}
+.pw-wrap{position:relative;}
+.pw-wrap input{padding-right:38px;}
+.pw-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ghost);padding:4px;display:flex;align-items:center;}
+.pw-toggle:hover{color:var(--plum);}
 .field-error{font-size:11px;color:#c0392b;margin-top:4px;}
 .btn{border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;padding:10px 22px;transition:all .18s;display:inline-flex;align-items:center;gap:6px;}
 .btn-primary{background:var(--plum);color:#fff;}.btn-primary:hover{background:var(--plumlt);}.btn-primary:disabled{opacity:.5;cursor:default;}
@@ -253,6 +258,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .unlimited-item{display:block;padding:8px 0;border-bottom:1px solid var(--muted);font-size:13px;color:var(--plum);text-decoration:none;font-weight:500;line-height:1.4;}
 .unlimited-item:last-child{border-bottom:none;padding-bottom:0;}
 .unlimited-item:hover{color:var(--gold);}
+.unlimited-conv-item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--muted);text-decoration:none;}
+.unlimited-conv-item:last-child{border-bottom:none;}
+.unlimited-conv-item:not(.disabled):hover .unlimited-conv-title{color:var(--gold);}
+.unlimited-conv-item.disabled{opacity:.45;cursor:default;}
+.unlimited-conv-img{width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
+.unlimited-conv-info{flex:1;min-width:0;}
+.unlimited-conv-title{font-family:'DM Sans',sans-serif;font-weight:600;color:var(--plum);font-size:13px;line-height:1.35;transition:color .15s;}
+.unlimited-conv-pw{font-size:11px;color:var(--gold);margin-top:3px;}
+.unlimited-conv-pw.pending{color:var(--ghost);font-style:italic;}
 
 /* Unlimited tab view */
 #unlimited-view{max-width:520px;margin:0 auto;padding:40px 16px 60px;}
@@ -448,7 +462,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
     <div class="auth-community-label">Community</div>
     <div id="login-form">
       <div class="field"><label>EMAIL</label><input type="email" id="login-email" placeholder="you@example.com"/><div class="field-error hidden" id="login-email-err"></div></div>
-      <div class="field"><label>PASSWORD</label><input type="password" id="login-password" placeholder="••••••••"/><div class="field-error hidden" id="login-pass-err"></div></div>
+      <div class="field"><label>PASSWORD</label><div class="pw-wrap"><input type="password" id="login-password" placeholder="••••••••"/><button type="button" class="pw-toggle" data-target="login-password" aria-label="Show password"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="field-error hidden" id="login-pass-err"></div></div>
       <button class="btn btn-primary btn-full" id="login-btn">Sign In</button>
       <p style="text-align:center;margin-top:10px;font-size:12px;color:var(--ghost);">Forgotten your password? <button class="btn-link" style="font-size:12px;" id="go-forgot">Request a reset</button></p>
       <div class="divider"><span>OR</span></div>
@@ -1223,6 +1237,15 @@ document.getElementById('avatar-upload-input').addEventListener('change', async 
 });
 
 document.getElementById('avatar-cancel').onclick=()=>{ document.getElementById('avatar-modal').classList.add('hidden'); };
+function wirePwToggle(btn){
+  btn.onclick=()=>{
+    const inp=document.getElementById(btn.dataset.target);
+    if(!inp) return;
+    inp.type = inp.type==='password' ? 'text' : 'password';
+    btn.style.color = inp.type==='text' ? 'var(--plum)' : '';
+  };
+}
+document.querySelectorAll('.pw-toggle').forEach(wirePwToggle);
 document.getElementById('mobile-rules-toggle').addEventListener('click',()=>{
   document.getElementById('mobile-rules-toggle').classList.toggle('open');
   document.getElementById('mobile-rules-body').classList.toggle('open');
@@ -1753,22 +1776,25 @@ document.getElementById('house-rules-back').onclick = () => {
 
 // ── DWC Unlimited tab ────────────────────────────────────────
 const UNLIMITED_PASSWORD = 'clifton';
+const CDN = 'https://dwcmagazine.com/cdn/shop/files/';
 const UNLIMITED_CONVERSATIONS = [
-  'DWC Conversations 1: Is This Growth Or Just Chaos?',
-  'DWC Conversations 3: Is Coaching Creating Growth Or Dependence?',
-  'DWC Conversations 8: Is Manifestation a Tool or a Distraction from Reality?',
-  'DWC Conversations 11: Meta Ads Uncomplicated',
-  'DWC Conversations 18: How To Set Boundaries and Protect Your Energy',
-  'DWC Conversations 19: How to Build a Business That Works Around Your Energy, Not Your Calendar',
-  'DWC Conversations 20: Plan for the Future When the Present Feels Financially Overwhelming',
-  'DWC Conversations 23: How To Get Featured in the Media Without a PR Agency or a Big Budget',
-  'DWC Conversations 28: Where Are My Customers?',
-  'DWC Conversations 30: Mic Drop How To Launch & Promote Your Podcast',
-  'DWC Conversations 39: Charge It Like You Mean It',
-  'DWC Conversations 197 (Video Class): How To Make Traditional Beer Battered Fish & Chips',
-  'DWC Conversations 200: The Newsletter Nobody Dreads',
-  'DWC Conversations 206 (Video Class): How To Make Tie & Dye Clothing',
-  'DWC Conversations 246 (In Person): Menopause: Turns Out... It\'s Not Just Me!',
+  {num:1,   title:'Is This Growth Or Just Chaos?', img:CDN+'DWC-Conversations-1_-Is-This-Growth-Or-Just-Chaos_-DWC-Magazine-98099057.png?v=1777046528&width=160', href:null, pw:null},
+  {num:3,   title:'Is Coaching Creating Growth Or Dependence?', img:CDN+'DWC-Conversations-3_-Is-Coaching-Creating-Growth-Or-Dependence_-DWC-Magazine-98091022.png?v=1777046528&width=160', href:null, pw:null},
+  {num:8,   title:'Is Manifestation a Tool or a Distraction from Reality?', img:CDN+'DWC-Conversations-8_-Is-Manifestation-a-Tool-or-a-Distraction-from-Reality_-DWC-Magazine-98098956.png?v=1777046544&width=160', href:null, pw:null},
+  {num:10,  title:'Meta Pre Launch Checklist', img:CDN+'dwc-free-download-meta-ads-pre-launch-checklist-8250467.jpg?v=1786880465&width=160', href:'https://dwcmagazine.com/pages/dwc-freebie-meta-ads-pre-launch-checklist', pw:'adrianmole'},
+  {num:11,  title:'Meta Ads Uncomplicated', img:CDN+'dwc-conversations-11-meta-ads-uncomplicated-3920761.jpg?v=1786714386&width=160', href:'https://dwcmagazine.com/pages/conversations-11-meta-ads-uncomplicated', pw:'marigold'},
+  {num:18,  title:'How To Set Boundaries and Protect Your Energy', img:CDN+'DWC-Conversations-18_-How-To-Set-Boundaries-and-Protect-Your-Energy-DWC-Magazine-98090925.png?v=1777046541&width=160', href:null, pw:null},
+  {num:19,  title:'How to Build a Business That Works Around Your Energy, Not Your Calendar', img:CDN+'DWC-Conversations-19_-How-to-Build-a-Business-That-Works-Around-Your-Energy_-Not-Your-Calendar-DWC-Magazine-98100892.png?v=1777046553&width=160', href:null, pw:null},
+  {num:20,  title:'Plan for the Future When the Present Feels Financially Overwhelming', img:CDN+'DWC-Conversations-20_-Plan-for-the-Future-When-the-Present-Feels-Financially-Overwhelming-DWC-Magazine-98101097.png?v=1777046552&width=160', href:null, pw:null},
+  {num:23,  title:'How To Get Featured in the Media Without a PR Agency or a Big Budget', img:CDN+'DWC-Conversations-23_-How-To-Get-Featured-in-the-Media-Without-a-PR-Agency-or-a-Big-Budget-DWC-Magazine-98091341.png?v=1777046544&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-23-how-to-get-featured-in-media', pw:'marigold'},
+  {num:28,  title:'Where Are My Customers?', img:CDN+'dwc-conversations-28-where-are-my-customers-2945986.png?v=1786051748&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-28-where-are-my-customers', pw:'marigold'},
+  {num:30,  title:'Mic Drop: How To Launch & Promote Your Podcast', img:CDN+'dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast-1770324.jpg?v=1786714386&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast', pw:'marigold'},
+  {num:39,  title:'Charge It Like You Mean It', img:CDN+'dwc-conversations-39-charge-it-like-you-mean-it-2749425.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-39-charge-it-like-you-mean-it', pw:'marigold'},
+  {num:100, title:'100 Ways to Get Publicity Without Social Media', img:CDN+'dwc-100th-issue-free-download-8700078.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
+  {num:197, title:'(Video Class) How To Make Traditional Beer Battered Fish & Chips', img:CDN+'dwc-conversations-197-video-class-how-to-make-traditional-beer-battered-fish-chips-5622397.png?v=1785802925&width=160', href:null, pw:null},
+  {num:200, title:'The Newsletter Nobody Dreads', img:CDN+'DWC-Conversations-30_-Mic-Drop-How-To-Launch-_-Promote-Your-Podcast-DWC-Magazine-101534231.png?v=1784957490&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-200-the-newsletter-nobody-dreads', pw:'marigold'},
+  {num:206, title:'(Video Class) How To Make Tie & Dye Clothing', img:CDN+'dwc-conversations-206-video-class-how-to-make-tie-dye-clothing-1551616.png?v=1785802928&width=160', href:null, pw:null},
+  {num:246, title:'(In Person) Menopause: Turns Out... It\'s Not Just Me!', img:CDN+'dwc-conversations-246-in-person-menopause-turns-out-its-not-just-me-9606396.jpg?v=1786051746&width=160', href:null, pw:null},
 ];
 let unlimitedUnlocked = false;
 
@@ -1779,7 +1805,10 @@ function renderUnlimitedGate(){
       <h2>DWC Unlimited</h2>
       <p class="unlimited-gate-sub">Enter your DWC Unlimited password to unlock every Conversation in one place.</p>
       <div class="unlimited-gate-form">
-        <input type="password" id="unlimited-pw-input" placeholder="Password" autocomplete="off"/>
+        <div class="pw-wrap" style="flex:1;">
+          <input type="password" id="unlimited-pw-input" placeholder="Password" autocomplete="off" style="width:100%;"/>
+          <button type="button" class="pw-toggle" data-target="unlimited-pw-input" aria-label="Show password"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </div>
         <button class="btn btn-primary" id="unlimited-pw-submit">Unlock</button>
       </div>
       <div class="unlimited-gate-error" id="unlimited-pw-error"></div>
@@ -1797,6 +1826,7 @@ function renderUnlimitedGate(){
   };
   document.getElementById('unlimited-pw-submit').onclick = submit;
   document.getElementById('unlimited-pw-input').onkeydown = e => { if(e.key==='Enter') submit(); };
+  wirePwToggle(document.querySelector('#unlimited-view-inner .pw-toggle'));
 }
 
 function renderUnlimitedList(){
@@ -1805,7 +1835,18 @@ function renderUnlimitedList(){
     <div class="unlimited-list-card">
       <div class="unlimited-list-header">DWC Unlimited — All Conversations</div>
       <div class="unlimited-list-body">
-        ${UNLIMITED_CONVERSATIONS.map(t=>`<a class="unlimited-item" href="#" target="_blank">${esc(t)}<\/a>`).join('')}
+        ${UNLIMITED_CONVERSATIONS.map(c=>{
+          const ready = !!(c.href && c.pw);
+          const tag = ready ? 'a' : 'div';
+          const hrefAttr = ready ? `href="${esc(c.href)}" target="_blank" rel="noopener"` : '';
+          return `<${tag} class="unlimited-conv-item${ready?'':' disabled'}" ${hrefAttr}>
+            <img class="unlimited-conv-img" src="${esc(c.img)}" alt=""/>
+            <div class="unlimited-conv-info">
+              <div class="unlimited-conv-title">DWC Conversations ${c.num}: ${esc(c.title)}</div>
+              <div class="unlimited-conv-pw${ready?'':' pending'}">${ready?`Password: ${esc(c.pw)}`:'Password coming soon'}</div>
+            </div>
+          <\/${tag}>`;
+        }).join('')}
       </div>
     </div>`;
 }
