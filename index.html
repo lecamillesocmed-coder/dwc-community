@@ -630,7 +630,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
                 <div id="upload-status" style="font-size:12px;color:var(--ghost);flex:1;"></div>
                 <input type="hidden" id="composer-img"/>
               </div>
-              <input type="text" id="composer-tag" placeholder="#tag" style="width:110px;"/>
+              <input type="text" id="composer-tag" placeholder="#tag" list="tag-options" autocomplete="off" style="width:110px;"/>
+              <datalist id="tag-options"></datalist>
             </div>
             <div class="composer-actions">
               <span class="composer-hint" id="composer-hint">Posts go to moderation before appearing. YouTube &amp; Spotify links embed automatically.</span>
@@ -1157,7 +1158,7 @@ document.getElementById('signout-btn').onclick=()=>{
   hideEl('member-btns'); showEl('guest-btns');
   hideEl('composer'); showEl('guest-join-prompt');
   hideEl('push-prompt');
-  hideEl('mod-btn'); hideEl('mod-view'); showEl('feed-view');
+  hideEl('mod-btn'); showView('feed-view');
   // Reset stats bar
   const statsGuest = document.getElementById('stats-guest');
   const statsProfile = document.getElementById('stats-profile');
@@ -1408,7 +1409,7 @@ composerSubmit.onclick=async()=>{
     }
   }
   composerSubmit.disabled=true;composerSubmit.textContent='Posting…';
-  const post={id:uid(),authorId:currentUser.id,text,imageUrl:document.getElementById('composer-img')?.value.trim()||'',tag:getVal('composer-tag').replace(/^#/,''),ts:Date.now(),status:'pending',reactions:{},comments:{}};
+  const post={id:uid(),authorId:currentUser.id,text,imageUrl:document.getElementById('composer-img')?.value.trim()||'',tag:normaliseTag(getVal('composer-tag')),ts:Date.now(),status:'pending',reactions:{},comments:{}};
   await fbSet(`posts/${post.id}`,post);
   logActivity('post', 'Submitted a post for moderation');
   composerText.value='';
@@ -1432,6 +1433,7 @@ function renderFeed(){
   });
   const allTags=[...new Set(approved.map(p=>p.tag).filter(Boolean))];
   renderFilterBar(allTags);
+  updateTagOptions(allTags);
   // Only show pending notice for signed-in members
   if(currentUser){
     const myPending=Object.values(allPosts).filter(p=>p.authorId===currentUser.id&&p.status==='pending');
@@ -1504,6 +1506,19 @@ function checkHash(){
       setTimeout(()=>el.classList.remove('highlighted'), 3000);
     }, 400);
   }
+}
+
+function updateTagOptions(tags){
+  const dl=document.getElementById('tag-options');
+  if(!dl) return;
+  dl.innerHTML=tags.slice().sort((a,b)=>a.localeCompare(b)).map(t=>`<option value="${esc(t)}"><\/option>`).join('');
+}
+
+function normaliseTag(raw){
+  const t=(raw||'').replace(/^#/,'').replace(/\s+/g,' ').trim();
+  if(!t) return '';
+  const existing=[...new Set(Object.values(allPosts).filter(p=>p.status==='approved').map(p=>p.tag).filter(Boolean))];
+  return existing.find(e=>e.toLowerCase()===t.toLowerCase()) || t;
 }
 
 function renderFilterBar(tags){
@@ -1746,7 +1761,6 @@ document.getElementById('house-rules-back').onclick = () => {
 };
 
 // ── DWC Unlimited tab ────────────────────────────────────────
-const UNLIMITED_PASSWORD = 'clifton';
 const CDN = 'https://dwcmagazine.com/cdn/shop/files/';
 const UNLIMITED_CONVERSATIONS = [
   {num:1,   title:'Is This Growth Or Just Chaos?', img:CDN+'DWC-Conversations-1_-Is-This-Growth-Or-Just-Chaos_-DWC-Magazine-98099057.png?v=1777046528&width=160', href:null, pw:null},
@@ -1767,37 +1781,30 @@ const UNLIMITED_CONVERSATIONS = [
   {num:206, title:'(Video Class) How To Make Tie & Dye Clothing', img:CDN+'dwc-conversations-206-video-class-how-to-make-tie-dye-clothing-1551616.png?v=1785802928&width=160', href:null, pw:null},
   {num:246, title:'(In Person) Menopause: Turns Out... It\'s Not Just Me!', img:CDN+'dwc-conversations-246-in-person-menopause-turns-out-its-not-just-me-9606396.jpg?v=1786051746&width=160', href:null, pw:null},
 ];
-let unlimitedUnlocked = false;
+const hasUnlimited = u => !!(u && u.status !== 'pending' && ((u.labels || []).includes('unlimited') || u.role === 'admin'));
 
-function renderUnlimitedGate(){
-  const el = document.getElementById('unlimited-view-inner');
-  el.innerHTML = `
+function renderUnlimitedGuest(){
+  document.getElementById('unlimited-view-inner').innerHTML = `
     <div class="unlimited-gate">
       <h2>DWC Unlimited</h2>
-      <p class="unlimited-gate-sub">Enter your DWC Unlimited password to unlock every Conversation in one place.</p>
+      <p class="unlimited-gate-sub">DWC Unlimited lives inside the community. Join the community first, and we'll switch your access on.</p>
       <div class="unlimited-gate-form">
-        <div class="pw-wrap" style="flex:1;">
-          <input type="password" id="unlimited-pw-input" placeholder="Password" autocomplete="off" style="width:100%;"/>
-          <button type="button" class="pw-toggle" data-target="unlimited-pw-input" aria-label="Show password"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-        <button class="btn btn-primary" id="unlimited-pw-submit">Unlock</button>
+        <button class="btn btn-primary" id="unlimited-join-btn">Join the community</button>
+        <button class="btn btn-ghost" id="unlimited-signin-btn">Sign in</button>
       </div>
-      <div class="unlimited-gate-error" id="unlimited-pw-error"></div>
-      <p class="unlimited-gate-cta">Don't have the password? <a href="https://dwcmagazine.com/products/dwc-conversations-unlimited" target="_blank" rel="noopener">Purchase DWC Unlimited</a> for full access, or email <a href="mailto:hello@dwcmagazine.com">hello@dwcmagazine.com</a> and we'll sort you out.</p>
+      <p class="unlimited-gate-cta">Not bought DWC Unlimited yet? <a href="https://dwcmagazine.com/products/dwc-conversations-unlimited" target="_blank" rel="noopener">Purchase DWC Unlimited</a>, or email <a href="mailto:hello@dwcmagazine.com">hello@dwcmagazine.com</a> and we'll sort you out.</p>
     </div>`;
-  const submit = () => {
-    const val = document.getElementById('unlimited-pw-input').value.trim();
-    const err = document.getElementById('unlimited-pw-error');
-    if(val.toLowerCase() === UNLIMITED_PASSWORD){
-      unlimitedUnlocked = true;
-      renderUnlimitedList();
-    } else {
-      err.textContent = 'That password isn\'t right. Please try again.';
-    }
-  };
-  document.getElementById('unlimited-pw-submit').onclick = submit;
-  document.getElementById('unlimited-pw-input').onkeydown = e => { if(e.key==='Enter') submit(); };
-  wirePwToggle(document.querySelector('#unlimited-view-inner .pw-toggle'));
+  document.getElementById('unlimited-join-btn').onclick   = () => document.getElementById('guest-join-btn').click();
+  document.getElementById('unlimited-signin-btn').onclick = () => document.getElementById('guest-signin-btn').click();
+}
+
+function renderUnlimitedLocked(){
+  document.getElementById('unlimited-view-inner').innerHTML = `
+    <div class="unlimited-gate">
+      <h2>DWC Unlimited</h2>
+      <p class="unlimited-gate-sub">Your account isn't marked as DWC Unlimited yet. Once we've added it, every Conversation appears here automatically.</p>
+      <p class="unlimited-gate-cta">Already purchased? Email <a href="mailto:hello@dwcmagazine.com">hello@dwcmagazine.com</a> with the email address you joined with and we'll switch it on. Not yet? <a href="https://dwcmagazine.com/products/dwc-conversations-unlimited" target="_blank" rel="noopener">Purchase DWC Unlimited</a>.</p>
+    </div>`;
 }
 
 function renderUnlimitedList(){
@@ -1825,7 +1832,8 @@ function renderUnlimitedList(){
 function openUnlimitedView(){
   showView('unlimited-view');
   document.getElementById('topbar-section').textContent='DWC Unlimited';
-  unlimitedUnlocked ? renderUnlimitedList() : renderUnlimitedGate();
+  if(!currentUser){ renderUnlimitedGuest(); return; }
+  hasUnlimited(currentUser) ? renderUnlimitedList() : renderUnlimitedLocked();
 }
 document.getElementById('unlimited-tab-btn').onclick = openUnlimitedView;
 document.getElementById('unlimited-back').onclick = () => {
@@ -1955,7 +1963,7 @@ function renderAllMembers(){
       ${u.status==='approved'&&u.role!=='admin'?`
         <button class="btn btn-sm ${u.role==='moderator'?'btn-reject':'btn-approve'}" data-action="toggle-mod" data-key="${sanKey(u.email)}" data-current-role="${u.role}">${u.role==='moderator'?'Remove Mod':'Make Mod'}<\/button>
         <button class="btn btn-sm btn-admin" data-action="make-admin" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}">Make Admin<\/button>
-        <button class="btn btn-sm btn-ghost" data-action="edit-labels" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-labels="${esc(JSON.stringify(u.labels||[]))}">Labels<\/button>
+        <button class="btn btn-sm btn-ghost" data-action="edit-labels" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}">Labels<\/button>
         <button class="btn btn-sm btn-reject" data-action="remove-member" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-id="${esc(u.id)}">Remove<\/button>
       `:''}
     <\/div>`).join('')}
@@ -1974,7 +1982,7 @@ function renderAllMembers(){
         await fbUpdate(`users/${key}`,{role:'admin'});renderModDashboard();
       }
       if(btn.dataset.action==='edit-labels'){
-        openLabelsModal(key,btn.dataset.name,JSON.parse(btn.dataset.labels||'[]'));
+        openLabelsModal(key,btn.dataset.name,(allUsers[key]&&allUsers[key].labels)||[]);
       }
       if(btn.dataset.action==='remove-member'){
         const ok = await inlineConfirm('Remove Member', 'Remove ' + btn.dataset.name + '? This deletes their account and all their posts.');
