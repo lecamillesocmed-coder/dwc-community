@@ -261,7 +261,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .unlimited-conv-pw.pending{color:var(--ghost);font-style:italic;}
 
 /* Unlimited tab view */
-#unlimited-view{max-width:520px;margin:0 auto;padding:40px 16px 60px;}
+#unlimited-view,#freebies-view{max-width:520px;margin:0 auto;padding:40px 16px 60px;}
 .unlimited-gate{background:#fff;border-radius:12px;border:1px solid var(--muted);padding:32px 28px;box-shadow:0 2px 12px rgba(92,45,78,.05);text-align:center;}
 .unlimited-gate h2{font-family:'Libre Bodoni',serif;color:var(--plum);font-size:24px;margin-bottom:8px;}
 .unlimited-gate-sub{font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:22px;}
@@ -551,6 +551,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
     <nav class="mast-nav">
       <div class="mast-nav-inner" id="site-tabs">
         <button type="button" class="nav-tab-btn" id="unlimited-tab-btn">DWC Unlimited</button>
+        <button type="button" class="nav-tab-btn" id="freebies-tab-btn">Freebies</button>
         <button type="button" class="nav-tab-btn" id="house-rules-tab-btn">House Rules</button>
         <a href="https://dwcmagazine.com/" target="_blank" rel="noopener">This Week's Issue</a>
         <a href="https://dwcmagazine.com/collections/dwc-conversations" target="_blank" rel="noopener">Conversations</a>
@@ -711,6 +712,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
   <div id="unlimited-view" class="hidden">
     <div style="max-width:520px;margin:0 auto;padding:16px 16px 0;"><button class="btn btn-ghost btn-sm" id="unlimited-back">← Back to Community</button></div>
     <div id="unlimited-view-inner"></div>
+  </div>
+
+  <!-- Freebies view -->
+  <div id="freebies-view" class="hidden">
+    <div style="max-width:520px;margin:0 auto;padding:16px 16px 0;"><button class="btn btn-ghost btn-sm" id="freebies-back">← Back to Community</button></div>
+    <div id="freebies-view-inner"></div>
   </div>
 
   <!-- House Rules view -->
@@ -1738,7 +1745,7 @@ function updateModBadge(){
 }
 
 // ── Top-level view switching ─────────────────────────────────
-const ALL_VIEWS = ['feed-view','mod-view','unlimited-view','house-rules-view'];
+const ALL_VIEWS = ['feed-view','mod-view','unlimited-view','freebies-view','house-rules-view'];
 function showView(id){
   ALL_VIEWS.forEach(v => v===id ? showEl(v) : hideEl(v));
 }
@@ -1776,6 +1783,7 @@ const UNLIMITED_CONVERSATIONS = [
   {num:30,  title:'Mic Drop: How To Launch & Promote Your Podcast', img:CDN+'dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast-1770324.jpg?v=1786714386&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast', pw:'marigold'},
   {num:39,  title:'Charge It Like You Mean It', img:CDN+'dwc-conversations-39-charge-it-like-you-mean-it-2749425.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-39-charge-it-like-you-mean-it', pw:'marigold'},
   {num:100, title:'100 Ways to Get Publicity Without Social Media', img:CDN+'dwc-100th-issue-free-download-8700078.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
+  {num:150, title:'100 Ways to Get More Customers Without a Marketing Budget', img:CDN+'100-Ways-to-Get-More-Customers-Without-a-Marketing-Budget-_Issue-150_-DWC-Magazine-102051178.jpg?v=1787494534&width=160', href:'https://dwcmagazine.com/pages/100-ways-to-get-more-customers-without-a-marketing-budget', pw:'marigold'},
   {num:197, title:'(Video Class) How To Make Traditional Beer Battered Fish & Chips', img:CDN+'dwc-conversations-197-video-class-how-to-make-traditional-beer-battered-fish-chips-5622397.png?v=1785802925&width=160', href:null, pw:null},
   {num:200, title:'The Newsletter Nobody Dreads', img:CDN+'DWC-Conversations-30_-Mic-Drop-How-To-Launch-_-Promote-Your-Podcast-DWC-Magazine-101534231.png?v=1784957490&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-200-the-newsletter-nobody-dreads', pw:'marigold'},
   {num:206, title:'(Video Class) How To Make Tie & Dye Clothing', img:CDN+'dwc-conversations-206-video-class-how-to-make-tie-dye-clothing-1551616.png?v=1785802928&width=160', href:null, pw:null},
@@ -1837,6 +1845,61 @@ function openUnlimitedView(){
 }
 document.getElementById('unlimited-tab-btn').onclick = openUnlimitedView;
 document.getElementById('unlimited-back').onclick = () => {
+  showView('feed-view');
+  document.getElementById('topbar-section').textContent='Community';
+};
+
+const FREEBIES = [
+  {title:'DWC 100th Issue Special — 100 Ways to Get Publicity Without Social Media', img:CDN+'DWC-100th-Issue-Special-_-100-Ways-to-Get-Publicity-Without-Social-Media-DWC-Magazine-101802382.png?v=1787500950&width=160', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
+  {title:'Before You Spend a Penny on Meta Ads — The Pre-Launch Checklist', img:CDN+'DWC-Before-You-Spend-a-Penny-on-Meta-Ads-_-The-Pre-Launch-Checklist-DWC-Magazine-101963047.jpg?v=1787500906&width=160', href:'https://dwcmagazine.com/pages/dwc-freebie-meta-ads-pre-launch-checklist', pw:'adrianmole'},
+  {title:'100 Ways to Charge What You\'re Worth (Issue 39)', img:CDN+'100-Ways-to-Charge-What-You_re-Worth-_Issue-39_-DWC-Magazine-102051255.jpg?v=1787494723&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-39-charge-it-like-you-mean-it', pw:'marigold'},
+];
+
+const isMember = u => !!(u && u.status !== 'pending');
+
+function renderFreebiesGuest(){
+  document.getElementById('freebies-view-inner').innerHTML = `
+    <div class="unlimited-gate">
+      <h2>Freebies</h2>
+      <p class="unlimited-gate-sub">The freebies live inside the community. Join and they're yours — every one, no charge.</p>
+      <div class="unlimited-gate-form">
+        <button class="btn btn-primary" id="freebies-join-btn">Join the community</button>
+        <button class="btn btn-ghost" id="freebies-signin-btn">Sign in</button>
+      </div>
+      <p class="unlimited-gate-cta">Joining is free. <a href="https://dwcmagazine.com/collections/free-downloads" target="_blank" rel="noopener">See what's on offer</a>.</p>
+    </div>`;
+  document.getElementById('freebies-join-btn').onclick   = () => document.getElementById('guest-join-btn').click();
+  document.getElementById('freebies-signin-btn').onclick = () => document.getElementById('guest-signin-btn').click();
+}
+
+function renderFreebiesList(){
+  document.getElementById('freebies-view-inner').innerHTML = `
+    <div class="unlimited-list-card">
+      <div class="unlimited-list-header">Freebies — Yours as a Member</div>
+      <div class="unlimited-list-body">
+        ${FREEBIES.map(f=>{
+          const ready = !!(f.href && f.pw);
+          const tag = ready ? 'a' : 'div';
+          const hrefAttr = ready ? `href="${esc(f.href)}" target="_blank" rel="noopener"` : '';
+          return `<${tag} class="unlimited-conv-item${ready?'':' disabled'}" ${hrefAttr}>
+            <img class="unlimited-conv-img" src="${esc(f.img)}" alt=""/>
+            <div class="unlimited-conv-info">
+              <div class="unlimited-conv-title">${esc(f.title)}</div>
+              <div class="unlimited-conv-pw${ready?'':' pending'}">${ready?`Password: ${esc(f.pw)}`:'Password coming soon'}</div>
+            </div>
+          <\/${tag}>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+function openFreebiesView(){
+  showView('freebies-view');
+  document.getElementById('topbar-section').textContent='Freebies';
+  isMember(currentUser) ? renderFreebiesList() : renderFreebiesGuest();
+}
+document.getElementById('freebies-tab-btn').onclick = openFreebiesView;
+document.getElementById('freebies-back').onclick = () => {
   showView('feed-view');
   document.getElementById('topbar-section').textContent='Community';
 };
