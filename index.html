@@ -255,6 +255,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .unlimited-conv-item:not(.disabled):hover .unlimited-conv-title{color:var(--gold);}
 .unlimited-conv-item.disabled{opacity:.45;cursor:default;}
 .unlimited-conv-img{width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
+.unlimited-conv-img[src^="data:"]{background:var(--plum);border-color:var(--plum);}
 .unlimited-conv-info{flex:1;min-width:0;}
 .unlimited-conv-title{font-family:'DM Sans',sans-serif;font-weight:600;color:var(--plum);font-size:13px;line-height:1.35;transition:color .15s;}
 .unlimited-conv-pw{font-size:11px;color:var(--gold);margin-top:3px;}
@@ -552,9 +553,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
       <div class="mast-nav-inner" id="site-tabs">
         <button type="button" class="nav-tab-btn" id="unlimited-tab-btn">DWC Unlimited</button>
         <button type="button" class="nav-tab-btn" id="freebies-tab-btn">Freebies</button>
-        <button type="button" class="nav-tab-btn" id="house-rules-tab-btn">House Rules</button>
+        <button type="button" class="nav-tab-btn" id="house-rules-tab-btn">How To</button>
         <a href="https://dwcmagazine.com/" target="_blank" rel="noopener">This Week's Issue</a>
-        <a href="https://dwcmagazine.com/collections/dwc-conversations" target="_blank" rel="noopener">Conversations</a>
+        <a href="https://dwcmagazine.com/collections/dwc-conversations" target="_blank" rel="noopener">Shop</a>
         <a href="https://dwcmagazine.com/pages/pat-allchorne-book-picks" target="_blank" rel="noopener">Pat's Book Picks</a>
         <a href="https://dwcmagazine.com/pages/dwc-business-directory" target="_blank" rel="noopener">Directory</a>
         <a href="https://dwcmagazine.com/pages/dwc-podcast-directory" target="_blank" rel="noopener">Podcasts</a>
@@ -1127,14 +1128,10 @@ function pushPromptDismissed(){ try{ return localStorage.getItem('dwc_push_promp
 
 function refreshPushPrompt(){
   if(!currentUser || pushPromptDismissed()){ hideEl('push-prompt'); return; }
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  window.OneSignalDeferred.push(function(OneSignal){
-    try{
-      const n = OneSignal.Notifications;
-      if(n.permission || n.permissionNative === 'denied') hideEl('push-prompt');
-      else showEl('push-prompt');
-    }catch(e){ hideEl('push-prompt'); }
-  });
+  let native = 'default';
+  try{ native = (window.Notification && Notification.permission) || 'default'; }catch(e){}
+  if(native === 'granted' || native === 'denied'){ hideEl('push-prompt'); return; }
+  showEl('push-prompt');
 }
 
 document.getElementById('push-prompt-dismiss').onclick = () => {
@@ -1143,9 +1140,10 @@ document.getElementById('push-prompt-dismiss').onclick = () => {
 };
 
 document.getElementById('push-prompt-enable').onclick = () => {
+  hideEl('push-prompt');
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   window.OneSignalDeferred.push(async function(OneSignal){
-    try{ await OneSignal.Notifications.requestPermission(); }catch(e){}
+    try{ await OneSignal.User.PushSubscription.optIn(); }catch(e){}
     refreshPushPrompt();
   });
 };
@@ -1782,11 +1780,16 @@ const UNLIMITED_CONVERSATIONS = [
   {num:28,  title:'Where Are My Customers?', img:CDN+'dwc-conversations-28-where-are-my-customers-2945986.png?v=1786051748&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-28-where-are-my-customers', pw:'marigold'},
   {num:30,  title:'Mic Drop: How To Launch & Promote Your Podcast', img:CDN+'dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast-1770324.jpg?v=1786714386&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast', pw:'marigold'},
   {num:39,  title:'Charge It Like You Mean It', img:CDN+'dwc-conversations-39-charge-it-like-you-mean-it-2749425.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-39-charge-it-like-you-mean-it', pw:'marigold'},
+  {num:88,  title:'Moon Phases with Michelle Wollaston', img:CDN+'Moon-Phases-with-Michelle-Wollaston-_DWC-Conversations-88_-DWC-Magazine-102424112.jpg?v=1789021571&width=160', href:'https://dwcmagazine.com/pages/conversations-88-michelle-wollaston-moon-phases', pw:'marigold'},
   {num:100, title:'100 Ways to Get Publicity Without Social Media', img:CDN+'dwc-100th-issue-free-download-8700078.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
   {num:150, title:'100 Ways to Get More Customers Without a Marketing Budget', img:CDN+'100-Ways-to-Get-More-Customers-Without-a-Marketing-Budget-_Issue-150_-DWC-Magazine-102051178.jpg?v=1787494534&width=160', href:'https://dwcmagazine.com/pages/100-ways-to-get-more-customers-without-a-marketing-budget', pw:'marigold'},
   {num:197, title:'(Video Class) How To Make Traditional Beer Battered Fish & Chips', img:CDN+'dwc-conversations-197-video-class-how-to-make-traditional-beer-battered-fish-chips-5622397.png?v=1785802925&width=160', href:null, pw:null},
+  {num:199, title:'Find My Niche', img:CDN+'Find-My-Niche-DWC-Magazine-102374653.jpg?v=1788489377&width=160', href:'https://dwcmagazine.com/pages/find-my-niche', pw:'marigold'},
   {num:200, title:'The Newsletter Nobody Dreads', img:CDN+'DWC-Conversations-30_-Mic-Drop-How-To-Launch-_-Promote-Your-Podcast-DWC-Magazine-101534231.png?v=1784957490&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-200-the-newsletter-nobody-dreads', pw:'marigold'},
+  {num:201, title:'Where Are You Losing Customers', img:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', href:'https://dwcmagazine.com/pages/where-are-you-losing-customers', pw:'marigold'},
   {num:206, title:'(Video Class) How To Make Tie & Dye Clothing', img:CDN+'dwc-conversations-206-video-class-how-to-make-tie-dye-clothing-1551616.png?v=1785802928&width=160', href:null, pw:null},
+  {num:215, title:'Halloween Planner', img:CDN+'Halloween-Planner-DWC-Magazine-102430654.png?v=1789120853&width=160', href:'https://dwcmagazine.com/pages/halloween-planner', pw:'freddie'},
+  {num:216, title:'Christmas Planner', img:CDN+'Christmas-Planner-DWC-Magazine-102430762.png?v=1789121001&width=160', href:'https://dwcmagazine.com/pages/christmas-planner', pw:'hallmark'},
   {num:246, title:'(In Person) Menopause: Turns Out... It\'s Not Just Me!', img:CDN+'dwc-conversations-246-in-person-menopause-turns-out-its-not-just-me-9606396.jpg?v=1786051746&width=160', href:null, pw:null},
 ];
 const hasUnlimited = u => !!(u && u.status !== 'pending' && ((u.labels || []).includes('unlimited') || u.role === 'admin'));
@@ -1852,7 +1855,9 @@ document.getElementById('unlimited-back').onclick = () => {
 const FREEBIES = [
   {title:'DWC 100th Issue Special — 100 Ways to Get Publicity Without Social Media', img:CDN+'DWC-100th-Issue-Special-_-100-Ways-to-Get-Publicity-Without-Social-Media-DWC-Magazine-101802382.png?v=1787500950&width=160', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
   {title:'Before You Spend a Penny on Meta Ads — The Pre-Launch Checklist', img:CDN+'DWC-Before-You-Spend-a-Penny-on-Meta-Ads-_-The-Pre-Launch-Checklist-DWC-Magazine-101963047.jpg?v=1787500906&width=160', href:'https://dwcmagazine.com/pages/dwc-freebie-meta-ads-pre-launch-checklist', pw:'adrianmole'},
-  {title:'100 Ways to Charge What You\'re Worth (Issue 39)', img:CDN+'100-Ways-to-Charge-What-You_re-Worth-_Issue-39_-DWC-Magazine-102051255.jpg?v=1787494723&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-39-charge-it-like-you-mean-it', pw:'marigold'},
+  {title:'Find My Niche (Issue 199)', img:CDN+'Find-My-Niche-DWC-Magazine-102374653.jpg?v=1788489377&width=160', href:'https://dwcmagazine.com/pages/find-my-niche', pw:'marigold'},
+  {title:'Where Are You Losing Customers (Issue 201)', img:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', href:'https://dwcmagazine.com/pages/where-are-you-losing-customers', pw:'marigold'},
+  {title:'Halloween Planner (Issue 215)', img:CDN+'Halloween-Planner-DWC-Magazine-102430654.png?v=1789120853&width=160', href:'https://dwcmagazine.com/pages/halloween-planner', pw:'freddie'},
 ];
 
 const isMember = u => !!(u && u.status !== 'pending');
