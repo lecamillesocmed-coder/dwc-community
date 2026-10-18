@@ -280,8 +280,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .unlimited-conv-item:last-child{border-bottom:none;}
 .unlimited-conv-item:not(.disabled):hover .unlimited-conv-title{color:var(--gold);}
 .unlimited-conv-item.disabled{opacity:.45;cursor:default;}
-.unlimited-conv-img{width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--muted);flex-shrink:0;background:var(--soft);}
-.unlimited-conv-img[src^="data:"]{background:var(--plum);border-color:var(--plum);}
+.unlimited-conv-sq{width:48px;height:48px;border-radius:8px;flex-shrink:0;background:var(--plum);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;line-height:1;}
 .unlimited-conv-info{flex:1;min-width:0;}
 .unlimited-conv-title{font-family:'DM Sans',sans-serif;font-weight:600;color:var(--plum);font-size:13px;line-height:1.35;transition:color .15s;}
 .unlimited-conv-pw{font-size:11px;color:var(--gold);margin-top:3px;}
@@ -2065,29 +2064,29 @@ document.getElementById('house-rules-back').onclick = () => {
 // ── DWC Unlimited tab ────────────────────────────────────────
 const CDN = 'https://dwcmagazine.com/cdn/shop/files/';
 const UNLIMITED_CONVERSATIONS = [
-  {num:1,   title:'Is This Growth Or Just Chaos?', img:CDN+'DWC-Conversations-1_-Is-This-Growth-Or-Just-Chaos_-DWC-Magazine-98099057.png?v=1777046528&width=160', href:null, pw:null},
-  {num:3,   title:'Is Coaching Creating Growth Or Dependence?', img:CDN+'DWC-Conversations-3_-Is-Coaching-Creating-Growth-Or-Dependence_-DWC-Magazine-98091022.png?v=1777046528&width=160', href:null, pw:null},
-  {num:8,   title:'Is Manifestation a Tool or a Distraction from Reality?', img:CDN+'DWC-Conversations-8_-Is-Manifestation-a-Tool-or-a-Distraction-from-Reality_-DWC-Magazine-98098956.png?v=1777046544&width=160', href:null, pw:null},
-  {num:10,  title:'Meta Pre Launch Checklist', img:CDN+'dwc-free-download-meta-ads-pre-launch-checklist-8250467.jpg?v=1786880465&width=160', href:'https://dwcmagazine.com/pages/dwc-freebie-meta-ads-pre-launch-checklist', pw:'adrianmole'},
-  {num:11,  title:'Meta Ads Uncomplicated', img:CDN+'dwc-conversations-11-meta-ads-uncomplicated-3920761.jpg?v=1786714386&width=160', href:'https://dwcmagazine.com/pages/conversations-11-meta-ads-uncomplicated', pw:'marigold'},
-  {num:18,  title:'How To Set Boundaries and Protect Your Energy', img:CDN+'DWC-Conversations-18_-How-To-Set-Boundaries-and-Protect-Your-Energy-DWC-Magazine-98090925.png?v=1777046541&width=160', href:null, pw:null},
-  {num:19,  title:'How to Build a Business That Works Around Your Energy, Not Your Calendar', img:CDN+'DWC-Conversations-19_-How-to-Build-a-Business-That-Works-Around-Your-Energy_-Not-Your-Calendar-DWC-Magazine-98100892.png?v=1777046553&width=160', href:null, pw:null},
-  {num:20,  title:'Plan for the Future When the Present Feels Financially Overwhelming', img:CDN+'DWC-Conversations-20_-Plan-for-the-Future-When-the-Present-Feels-Financially-Overwhelming-DWC-Magazine-98101097.png?v=1777046552&width=160', href:null, pw:null},
-  {num:23,  title:'How To Get Featured in the Media Without a PR Agency or a Big Budget', img:CDN+'DWC-Conversations-23_-How-To-Get-Featured-in-the-Media-Without-a-PR-Agency-or-a-Big-Budget-DWC-Magazine-98091341.png?v=1777046544&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-23-how-to-get-featured-in-media', pw:'marigold'},
-  {num:28,  title:'Where Are My Customers?', img:CDN+'dwc-conversations-28-where-are-my-customers-2945986.png?v=1786051748&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-28-where-are-my-customers', pw:'marigold'},
-  {num:30,  title:'Mic Drop: How To Launch & Promote Your Podcast', img:CDN+'dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast-1770324.jpg?v=1786714386&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast', pw:'marigold'},
-  {num:39,  title:'Charge It Like You Mean It', img:CDN+'dwc-conversations-39-charge-it-like-you-mean-it-2749425.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-39-charge-it-like-you-mean-it', pw:'marigold'},
-  {num:88,  title:'Moon Phases with Michelle Wollaston', img:CDN+'Moon-Phases-with-Michelle-Wollaston-_DWC-Conversations-88_-DWC-Magazine-102424112.jpg?v=1789021571&width=160', href:'https://dwcmagazine.com/pages/conversations-88-michelle-wollaston-moon-phases', pw:'marigold'},
-  {num:100, title:'100 Ways to Get Publicity Without Social Media', img:CDN+'dwc-100th-issue-free-download-8700078.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
-  {num:150, title:'100 Ways to Get More Customers Without a Marketing Budget', img:CDN+'100-Ways-to-Get-More-Customers-Without-a-Marketing-Budget-_Issue-150_-DWC-Magazine-102051178.jpg?v=1787494534&width=160', href:'https://dwcmagazine.com/pages/100-ways-to-get-more-customers-without-a-marketing-budget', pw:'marigold'},
-  {num:197, title:'(Video Class) How To Make Traditional Beer Battered Fish & Chips', img:CDN+'dwc-conversations-197-video-class-how-to-make-traditional-beer-battered-fish-chips-5622397.png?v=1785802925&width=160', href:null, pw:null},
-  {num:199, title:'Find My Niche', img:CDN+'Find-My-Niche-DWC-Magazine-102374653.jpg?v=1788489377&width=160', href:'https://dwcmagazine.com/pages/find-my-niche', pw:'marigold'},
-  {num:200, title:'The Newsletter Nobody Dreads', img:CDN+'DWC-Conversations-30_-Mic-Drop-How-To-Launch-_-Promote-Your-Podcast-DWC-Magazine-101534231.png?v=1784957490&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-200-the-newsletter-nobody-dreads', pw:'marigold'},
-  {num:201, title:'Where Are You Losing Customers', img:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', href:'https://dwcmagazine.com/pages/where-are-you-losing-customers', pw:'marigold'},
-  {num:206, title:'(Video Class) How To Make Tie & Dye Clothing', img:CDN+'dwc-conversations-206-video-class-how-to-make-tie-dye-clothing-1551616.png?v=1785802928&width=160', href:null, pw:null},
-  {num:215, title:'Halloween Planner', img:CDN+'Halloween-Planner-DWC-Magazine-102430654.png?v=1789120853&width=160', href:'https://dwcmagazine.com/pages/halloween-planner', pw:'freddie'},
-  {num:216, title:'Christmas Planner', img:CDN+'Christmas-Planner-DWC-Magazine-102430762.png?v=1789121001&width=160', href:'https://dwcmagazine.com/pages/christmas-planner', pw:'hallmark'},
-  {num:246, title:'(In Person) Menopause: Turns Out... It\'s Not Just Me!', img:CDN+'dwc-conversations-246-in-person-menopause-turns-out-its-not-just-me-9606396.jpg?v=1786051746&width=160', href:null, pw:null},
+  {num:1,   title:'Is This Growth Or Just Chaos?', href:null, pw:null},
+  {num:3,   title:'Is Coaching Creating Growth Or Dependence?', href:null, pw:null},
+  {num:8,   title:'Is Manifestation a Tool or a Distraction from Reality?', href:null, pw:null},
+  {num:10,  title:'Meta Pre Launch Checklist', href:'https://dwcmagazine.com/pages/dwc-freebie-meta-ads-pre-launch-checklist', pw:'adrianmole'},
+  {num:11,  title:'Meta Ads Uncomplicated', href:'https://dwcmagazine.com/pages/conversations-11-meta-ads-uncomplicated', pw:'marigold'},
+  {num:18,  title:'How To Set Boundaries and Protect Your Energy', href:null, pw:null},
+  {num:19,  title:'How to Build a Business That Works Around Your Energy, Not Your Calendar', href:null, pw:null},
+  {num:20,  title:'Plan for the Future When the Present Feels Financially Overwhelming', href:null, pw:null},
+  {num:23,  title:'How To Get Featured in the Media Without a PR Agency or a Big Budget', href:'https://dwcmagazine.com/pages/dwc-conversations-23-how-to-get-featured-in-media', pw:'marigold'},
+  {num:28,  title:'Where Are My Customers?', href:'https://dwcmagazine.com/pages/dwc-conversations-28-where-are-my-customers', pw:'marigold'},
+  {num:30,  title:'Mic Drop: How To Launch & Promote Your Podcast', href:'https://dwcmagazine.com/pages/dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast', pw:'marigold'},
+  {num:39,  title:'Charge It Like You Mean It', href:'https://dwcmagazine.com/pages/dwc-conversations-39-charge-it-like-you-mean-it', pw:'marigold'},
+  {num:88,  title:'Moon Phases with Michelle Wollaston', href:'https://dwcmagazine.com/pages/conversations-88-michelle-wollaston-moon-phases', pw:'marigold'},
+  {num:100, title:'100 Ways to Get Publicity Without Social Media', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
+  {num:150, title:'100 Ways to Get More Customers Without a Marketing Budget', href:'https://dwcmagazine.com/pages/100-ways-to-get-more-customers-without-a-marketing-budget', pw:'marigold'},
+  {num:197, title:'(Video Class) How To Make Traditional Beer Battered Fish & Chips', href:null, pw:null},
+  {num:199, title:'Find My Niche', href:'https://dwcmagazine.com/pages/find-my-niche', pw:'marigold'},
+  {num:200, title:'The Newsletter Nobody Dreads', href:'https://dwcmagazine.com/pages/dwc-conversations-200-the-newsletter-nobody-dreads', pw:'marigold'},
+  {num:201, title:'Where Are You Losing Customers', href:'https://dwcmagazine.com/pages/where-are-you-losing-customers', pw:'marigold'},
+  {num:206, title:'(Video Class) How To Make Tie & Dye Clothing', href:null, pw:null},
+  {num:215, title:'Halloween Planner', href:'https://dwcmagazine.com/pages/halloween-planner', pw:'freddie'},
+  {num:216, title:'Christmas Planner', href:'https://dwcmagazine.com/pages/christmas-planner', pw:'hallmark'},
+  {num:246, title:'(In Person) Menopause: Turns Out... It\'s Not Just Me!', href:null, pw:null},
 ];
 const hasUnlimited = u => !!(u && u.status !== 'pending' && ((u.labels || []).includes('unlimited') || u.role === 'admin'));
 
@@ -2126,7 +2125,7 @@ function renderUnlimitedList(){
           const tag = ready ? 'a' : 'div';
           const hrefAttr = ready ? `href="${esc(c.href)}" target="_blank" rel="noopener"` : '';
           return `<${tag} class="unlimited-conv-item${ready?'':' disabled'}" ${hrefAttr}>
-            <img class="unlimited-conv-img" src="${esc(c.img)}" alt=""/>
+            <div class="unlimited-conv-sq">${c.num}<\/div>
             <div class="unlimited-conv-info">
               <div class="unlimited-conv-title">DWC Conversations ${c.num}: ${esc(c.title)}</div>
               <div class="unlimited-conv-pw${ready?'':' pending'}">${ready?`Password: ${esc(c.pw)}`:'Password coming soon'}</div>
@@ -2139,7 +2138,7 @@ function renderUnlimitedList(){
 
 function openUnlimitedView(){
   showView('unlimited-view');
-  document.getElementById('topbar-section').textContent='DWC Unlimited';
+  document.getElementById('topbar-section').textContent='Community';
   if(!currentUser){ renderUnlimitedGuest(); return; }
   hasUnlimited(currentUser) ? renderUnlimitedList() : renderUnlimitedLocked();
 }
