@@ -1024,20 +1024,35 @@ function escRe(t){ return t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
 function mentionableUsers(){
   return Object.values(allUsers).filter(u=>u&&u.name&&u.status==='approved');
 }
+// A member can be tagged by their display name ("Mike Devlin") or by the
+// same name with the spaces and punctuation taken out ("mikedevlin").
+const squash = n => String(n||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+function mentionForms(u){
+  const forms=[u.name];
+  const sq=squash(u.name);
+  if(sq && sq!==u.name.toLowerCase()) forms.push(sq);
+  return forms;
+}
+function mentionFormIndex(){
+  const map=new Map(), forms=[];
+  mentionableUsers().forEach(u=>mentionForms(u).forEach(f=>{ map.set(f.toLowerCase(), u.id); forms.push(f); }));
+  forms.sort((a,b)=>b.length-a.length);
+  return {map, forms};
+}
 function mentionify(html){
-  const names = mentionableUsers().map(u=>u.name).sort((a,b)=>b.length-a.length);
-  if(!names.length) return html;
-  const re = new RegExp('@(' + names.map(n=>escRe(esc(n))).join('|') + ')','g');
+  const {forms} = mentionFormIndex();
+  if(!forms.length) return html;
+  const re = new RegExp('(?<![A-Za-z0-9_])@(' + forms.map(f=>escRe(esc(f))).join('|') + ')','gi');
   return html.replace(re,'<span class="mention">@$1<\/span>');
 }
 function findMentions(text){
-  const users=mentionableUsers().sort((a,b)=>b.name.length-a.name.length);
-  if(!users.length) return [];
-  const re=new RegExp('@('+users.map(u=>escRe(u.name)).join('|')+')','g');
+  const {map, forms} = mentionFormIndex();
+  if(!forms.length) return [];
+  const re=new RegExp('(?<![A-Za-z0-9_])@('+forms.map(escRe).join('|')+')','gi');
   const ids=[]; let m;
   while((m=re.exec(text))!==null){
-    const u=users.find(x=>x.name===m[1]);
-    if(u) ids.push(u.id);
+    const id=map.get(m[1].toLowerCase());
+    if(id) ids.push(id);
   }
   return [...new Set(ids)];
 }
@@ -1966,8 +1981,9 @@ function updateMentionMenu(ta){
   const mq=mentionQuery(ta);
   if(!mq) return closeMentionMenu();
   const q=mq.q.toLowerCase();
+  const qs=squash(mq.q);
   const matches=mentionableUsers()
-    .filter(u=>u.id!==currentUser.id && u.name.toLowerCase().indexOf(q)===0)
+    .filter(u=>u.id!==currentUser.id && (u.name.toLowerCase().indexOf(q)===0 || (qs!=='' && squash(u.name).indexOf(qs)===0)))
     .sort((a,b)=>a.name.localeCompare(b.name))
     .slice(0,6);
   if(!matches.length) return closeMentionMenu();
