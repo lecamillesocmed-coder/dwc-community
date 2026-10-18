@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,7 +157,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .pending-notice{background:#fff8ee;border:1px solid rgba(184,150,90,.35);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--mid);display:flex;align-items:center;gap:8px;}
 
 /* Post card */
-.post-card{background:#fff;border-radius:12px;padding:20px 22px;border:1px solid var(--muted);margin-bottom:16px;box-shadow:0 2px 12px rgba(92,45,78,.05);animation:fadeUp .3s ease both;}
+.post-card{background:transparent;border:none;border-radius:0;border-bottom:1px solid var(--muted);padding:18px 4px 14px;margin-bottom:0;box-shadow:none;animation:fadeUp .3s ease both;}
+.post-card.full{border-bottom:none;}
+.thread-row{display:flex;gap:12px;align-items:stretch;}
+.thread-avatar-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:42px;}
+.thread-line{width:2px;flex:1;min-height:0;background:var(--muted);margin-top:8px;border-radius:1px;}
+.thread-main{flex:1;min-width:0;}
+.thread-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.post-points{font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;margin-top:1px;}
+.reply-more{border:none;background:none;cursor:pointer;font-size:13px;color:var(--ghost);font-family:'DM Sans',sans-serif;padding:8px 0 2px;}
+.reply-more:hover{color:var(--plum);}
+.mention{color:var(--plum);font-weight:600;}
+.mention-menu{position:absolute;z-index:200;background:#fff;border:1px solid var(--muted);border-radius:10px;box-shadow:0 6px 24px rgba(92,45,78,.16);max-height:220px;overflow-y:auto;min-width:200px;}
+.mention-item{display:flex;flex-direction:column;gap:1px;padding:8px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.mention-item.active,.mention-item:hover{background:var(--soft);}
+.mi-name{font-size:13px;font-weight:600;color:var(--plum);}
+.mi-title{font-size:11px;color:var(--ghost);}
+.bell-wrap{position:relative;display:flex;align-items:center;}
+.bell-btn{border:none;background:none;cursor:pointer;padding:4px;line-height:0;color:var(--plum);position:relative;}
+.bell-badge{position:absolute;top:-3px;right:-3px;background:#c0392b;color:#fff;border-radius:10px;font-size:10px;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 4px;font-family:'DM Sans',sans-serif;}
+.notif-panel{position:absolute;right:0;top:34px;width:300px;max-height:360px;overflow-y:auto;background:#fff;border:1px solid var(--muted);border-radius:12px;box-shadow:0 8px 30px rgba(92,45,78,.16);z-index:200;}
+.notif-item{padding:10px 14px;border-bottom:1px solid var(--muted);cursor:pointer;font-size:13px;color:var(--dark);line-height:1.5;}
+.notif-item:last-child{border-bottom:none;}
+.notif-item.unread{background:var(--soft);}
+.notif-who{font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);}
+.notif-when{font-size:11px;color:var(--ghost);}
+.notif-empty{padding:18px 14px;font-size:13px;color:var(--ghost);text-align:center;}
+.thread-wrap{max-width:720px;margin:0 auto;padding:0 16px 40px;}
 .post-card.highlighted{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,150,90,0.2);animation:fadeUp .3s ease both;}
 .post-card.pinned{border-color:var(--plum);border-width:2px;}
 .pin-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--plum);font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;opacity:0.7;}
@@ -179,7 +204,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .post-embed iframe{width:100%;display:block;border:none;}
 .post-embed-spotify{border-radius:8px;overflow:hidden;margin-bottom:14px;}
 .post-tag{display:inline-block;background:var(--soft);color:var(--mid);border:none;border-radius:20px;padding:2px 10px;font-size:10.5px;margin-bottom:12px;}
-.post-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--muted);padding-top:10px;}
+.post-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border-top:none;padding-top:4px;margin-left:-9px;}
 .reaction-btn{border:1px solid transparent;background:none;cursor:pointer;padding:4px 9px;display:flex;align-items:center;gap:4px;color:var(--ghost);font-size:13px;font-family:'DM Sans',sans-serif;transition:all .15s;border-radius:20px;}
 .reaction-btn:hover{background:var(--soft);border-color:var(--muted);}
 .reaction-btn .emoji{font-size:16px;}
@@ -193,7 +218,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .delete-btn:hover{color:#c0392b;}
 
 /* Comments */
-.comments-section{margin-top:14px;border-top:1px solid var(--muted);padding-top:14px;}
+.comments-section{margin-top:8px;border-top:none;padding-top:4px;}
 .comment-item{margin-top:10px;display:flex;gap:8px;}
 .comment-item.reply{margin-left:34px;}
 .comment-body{flex:1;background:var(--soft);border-radius:10px;padding:8px 12px;}
@@ -262,7 +287,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
 .unlimited-conv-pw.pending{color:var(--ghost);font-style:italic;}
 
 /* Unlimited tab view */
-#unlimited-view,#freebies-view{max-width:520px;margin:0 auto;padding:40px 16px 60px;}
+#unlimited-view{max-width:520px;margin:0 auto;padding:40px 16px 60px;}
 .unlimited-gate{background:#fff;border-radius:12px;border:1px solid var(--muted);padding:32px 28px;box-shadow:0 2px 12px rgba(92,45,78,.05);text-align:center;}
 .unlimited-gate h2{font-family:'Libre Bodoni',serif;color:var(--plum);font-size:24px;margin-bottom:8px;}
 .unlimited-gate-sub{font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:22px;}
@@ -542,6 +567,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
         <div class="mast-logo-right">
           <span class="mast-members"><b id="stats-members">&mdash;</b> Members</span>
           <span id="topbar-member-count" style="display:none;"></span>
+          <div class="bell-wrap hidden" id="bell-wrap">
+            <button class="bell-btn" id="bell-btn" title="Notifications" aria-label="Notifications">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span class="bell-badge hidden" id="bell-badge">0</span>
+            </button>
+            <div class="notif-panel hidden" id="notif-panel"></div>
+          </div>
           <div class="mast-push"><div class="onesignal-customlink-container"></div></div>
         </div>
       </div>
@@ -552,7 +584,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
     <nav class="mast-nav">
       <div class="mast-nav-inner" id="site-tabs">
         <button type="button" class="nav-tab-btn" id="unlimited-tab-btn">DWC Unlimited</button>
-        <button type="button" class="nav-tab-btn" id="freebies-tab-btn">Freebies</button>
         <button type="button" class="nav-tab-btn" id="house-rules-tab-btn">How To</button>
         <a href="https://dwcmagazine.com/" target="_blank" rel="noopener">This Week's Issue</a>
         <a href="https://dwcmagazine.com/collections/dwc-conversations" target="_blank" rel="noopener">Shop</a>
@@ -715,13 +746,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
     <div id="unlimited-view-inner"></div>
   </div>
 
-  <!-- Freebies view -->
-  <div id="freebies-view" class="hidden">
-    <div style="max-width:520px;margin:0 auto;padding:16px 16px 0;"><button class="btn btn-ghost btn-sm" id="freebies-back">← Back to Community</button></div>
-    <div id="freebies-view-inner"></div>
+  <!-- House Rules view -->
+  <div id="thread-view" class="hidden">
+    <div class="thread-wrap">
+      <button class="btn btn-ghost btn-sm" id="thread-back" style="margin:16px 0;">&larr; Back to feed</button>
+      <div id="thread-container"></div>
+    </div>
   </div>
 
-  <!-- House Rules view -->
   <div id="house-rules-view" class="hidden">
     <div style="max-width:520px;margin:0 auto;padding:16px 16px 0;"><button class="btn btn-ghost btn-sm" id="house-rules-back">← Back to Community</button></div>
     <div style="max-width:520px;margin:0 auto;padding:24px 16px 60px;">
@@ -729,9 +761,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);
         <div class="sidebar-card-header">House Rules</div>
         <div class="sidebar-card-body">
           <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><div class="rule-text"><strong>Be kind, always</strong>Disagreements are fine. Unkindness isn't. This is a safe space for women.</div></div>
-          <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="rule-text"><strong>One post per day</strong>Quality over quantity. You get one post every 24 hours — make it count.</div></div>
+          <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="rule-text"><strong>Two posts every 12 hours</strong>Quality over quantity. You get two posts in any 12 hour window — make them count.</div></div>
           <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div class="rule-text"><strong>Share freely</strong>Personal updates, insights, conversations — always welcome, always free.</div></div>
-          <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span><div class="rule-text"><strong>Promoting something?</strong>We love supporting your work. Promo posts are welcome — just <a href="https://buy.stripe.com/28EeVdcG5cHLeE4dkA5Rm08" target="_blank" style="color:var(--gold);">buy us a coffee</a> first. One time only.</div></div>
           <div class="rule-item"><span class="rule-emoji" style="color:var(--plum);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span><div class="rule-text"><strong>No spam or hate</strong>Spam, harassment, and hate speech will be removed without warning.</div></div>
           <div class="rule-item"><span class="rule-emoji" style="color:var(--gold);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><div class="rule-text"><strong>All posts are moderated</strong>We review everything before it goes live. Bear with us — good things take a moment.</div></div>
           <div class="rule-item" style="background:linear-gradient(135deg,#faf4ff,#fff8ee);border-radius:8px;padding:10px 12px;margin-top:4px;border:1px solid rgba(184,150,90,0.2);">
@@ -839,7 +870,8 @@ const MEMBER_LABELS = [
   {key:'contributor',text:'DWC Contributor',         cls:'label-contributor'},
   {key:'unlimited',  text:'DWC Unlimited',           cls:'label-unlimited'},
 ];
-const POST_LIMIT_MS = 24 * 60 * 60 * 1000; // 24h
+const POST_WINDOW_MS  = 12 * 60 * 60 * 1000; // 12h rolling window
+const POST_LIMIT_COUNT = 2;                  // posts allowed inside that window
 
 const firebaseConfig = {
   apiKey:            "AIzaSyCVyfftndug8Wr1A_GU2zvlSnEKG_4-LTM",
@@ -979,11 +1011,59 @@ function linkify(text){
   const escaped = esc(text);
   // Match full URLs (with protocol) and bare domain URLs (e.g. dwcmagazine.com/...)
   const urlPattern = /(https?:\/\/[^\s<>"]+|(?<![/@\w])(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s<>"]*)?(?=\s|$))/g;
-  return escaped.replace(urlPattern, function(url){
+  const withLinks = escaped.replace(urlPattern, function(url){
     const href = url.startsWith('http') ? url : 'https://' + url;
     const display = url.length > 50 ? url.slice(0,50)+'\u2026' : url;
     return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);word-break:break-all;">' + display + '<\/a>';
   });
+  return mentionify(withLinks);
+}
+
+// ── Mentions ────────────────────────────────────────────────
+function escRe(t){ return t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+function mentionableUsers(){
+  return Object.values(allUsers).filter(u=>u&&u.name&&u.status==='approved');
+}
+function mentionify(html){
+  const names = mentionableUsers().map(u=>u.name).sort((a,b)=>b.length-a.length);
+  if(!names.length) return html;
+  const re = new RegExp('@(' + names.map(n=>escRe(esc(n))).join('|') + ')','g');
+  return html.replace(re,'<span class="mention">@$1<\/span>');
+}
+function findMentions(text){
+  const users=mentionableUsers().sort((a,b)=>b.name.length-a.name.length);
+  if(!users.length) return [];
+  const re=new RegExp('@('+users.map(u=>escRe(u.name)).join('|')+')','g');
+  const ids=[]; let m;
+  while((m=re.exec(text))!==null){
+    const u=users.find(x=>x.name===m[1]);
+    if(u) ids.push(u.id);
+  }
+  return [...new Set(ids)];
+}
+// Paste your Cloudflare Worker URL here to switch push on. Empty = in-app only.
+const PUSH_ENDPOINT = '';
+
+async function notifyMentions(text, postId, kind){
+  if(!currentUser) return;
+  const ids = findMentions(text).filter(id=>id!==currentUser.id);
+  for(const id of ids){
+    const nid = uid();
+    try{
+      await fbSet('notifications/'+id+'/'+nid,{
+        id:nid, type:'mention', kind, postId,
+        fromId:currentUser.id, fromName:currentUser.name,
+        snippet:text.slice(0,140), ts:Date.now(), read:false
+      });
+      if(PUSH_ENDPOINT){
+        fetch(PUSH_ENDPOINT,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({userId:id, nid})
+        }).catch(()=>{});
+      }
+    }catch(e){}
+  }
 }
 
 function labelBadgesHTML(labels) {
@@ -1121,6 +1201,11 @@ async function signInUser(user){
   hideEl('loading-screen');
   renderFeed();
   refreshPushPrompt();
+  startNotificationListener();
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  window.OneSignalDeferred.push(async function(OneSignal){
+    try{ await OneSignal.login(String(user.id)); }catch(e){}
+  });
 }
 
 // ── Push notification prompt ─────────────────────────────
@@ -1163,7 +1248,11 @@ document.getElementById('signout-btn').onclick=()=>{
   hideEl('member-btns'); showEl('guest-btns');
   hideEl('composer'); showEl('guest-join-prompt');
   hideEl('push-prompt');
-  hideEl('mod-btn'); showView('feed-view');
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  window.OneSignalDeferred.push(async function(OneSignal){
+    try{ await OneSignal.logout(); }catch(e){}
+  });
+  hideEl('mod-btn'); hideEl('bell-wrap'); hideEl('notif-panel'); myNotifs={}; renderNotifBadge(); currentThreadId=null; showView('feed-view');
   // Reset stats bar
   const statsGuest = document.getElementById('stats-guest');
   const statsProfile = document.getElementById('stats-profile');
@@ -1405,11 +1494,14 @@ composerSubmit.onclick=async()=>{
   const text=composerText.value.trim();if(!text)return;
   // 24h post limit (not for admins/mods)
   if(!canMod(currentUser)){
-    const myPosts=Object.values(allPosts).filter(p=>p.authorId===currentUser.id&&p.status!=='rejected');
-    const lastPost=myPosts.sort((a,b)=>b.ts-a.ts)[0];
-    if(lastPost&&(Date.now()-lastPost.ts)<POST_LIMIT_MS){
-      const remaining=Math.ceil((POST_LIMIT_MS-(Date.now()-lastPost.ts))/3600000);
-      alert(`You've already posted today. You can post again in about ${remaining} hour${remaining===1?'':'s'}. One post per 24 hours keeps the community fresh!`);
+    const now=Date.now();
+    const recent=Object.values(allPosts)
+      .filter(p=>p.authorId===currentUser.id&&p.status!=='rejected'&&(now-p.ts)<POST_WINDOW_MS)
+      .sort((a,b)=>a.ts-b.ts);
+    if(recent.length>=POST_LIMIT_COUNT){
+      const oldest=recent[recent.length-POST_LIMIT_COUNT];
+      const remaining=Math.ceil((POST_WINDOW_MS-(now-oldest.ts))/3600000);
+      alert(`You've used both your posts for now. You can post again in about ${remaining} hour${remaining===1?'':'s'}. Two posts every 12 hours keeps the community fresh!`);
       return;
     }
   }
@@ -1417,6 +1509,7 @@ composerSubmit.onclick=async()=>{
   const post={id:uid(),authorId:currentUser.id,text,imageUrl:document.getElementById('composer-img')?.value.trim()||'',tag:normaliseTag(getVal('composer-tag')),ts:Date.now(),status:'pending',reactions:{},comments:{}};
   await fbSet(`posts/${post.id}`,post);
   logActivity('post', 'Submitted a post for moderation');
+  await notifyMentions(text, post.id, 'post');
   composerText.value='';
   setVal('composer-tag','');
   document.getElementById('composer-img').value='';
@@ -1442,724 +1535,4 @@ function renderFeed(){
   // Only show pending notice for signed-in members
   if(currentUser){
     const myPending=Object.values(allPosts).filter(p=>p.authorId===currentUser.id&&p.status==='pending');
-    if(myPending.length>0){showEl('pending-posts-notice');document.getElementById('pending-posts-text').textContent=myPending.length===1?'You have 1 post awaiting moderation.':`You have ${myPending.length} posts awaiting moderation.`;}
-    else hideEl('pending-posts-notice');
-  } else {
-    hideEl('pending-posts-notice');
-  }
-  const filtered=activeFilter==='all'?approved:approved.filter(p=>p.tag===activeFilter);
-  if(filtered.length===0){container.innerHTML=`<div class="empty-state"><p>Nothing here yet. Be the first to share.<\/p><\/div>`;return;}
-  container.innerHTML=filtered.map(renderPost).join('');
-  // Track post views when posts become visible
-  if('IntersectionObserver' in window){
-    const observer = new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          const btn = entry.target.querySelector('[data-action="view-post"]');
-          if(btn) btn.click();
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {threshold: 0.5});
-    container.querySelectorAll('.post-card').forEach(card=>observer.observe(card));
-  }
-  // Auto-grow textareas in newly rendered posts
-  container.querySelectorAll('textarea').forEach(ta=>{
-    ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';});
-    ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const a=ta.dataset.action;if(a==='comment-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-comment"]')?.click();if(a==='reply-input')ta.closest('.comment-input-row')?.querySelector('[data-action="submit-reply"]')?.click();}});
-  });
-  // Check for shared post link
-  checkHash();
-  // Show new posts banner
-  checkNewPosts();
-}
-
-function saveLastVisit(){
-  try{ localStorage.setItem('dwc_last_visit', Date.now()); }catch{}
-}
-
-function checkNewPosts(){
-  if(!currentUser) return;
-  let lastVisit = 0;
-  try{ lastVisit = parseInt(localStorage.getItem('dwc_last_visit')||'0'); }catch{}
-  if(!lastVisit){ saveLastVisit(); return; } // First visit — just save timestamp
-  const newPosts = Object.values(allPosts).filter(p=>
-    p.status==='approved' && postTime(p) > lastVisit && p.authorId !== currentUser.id
-  );
-  if(newPosts.length > 0){
-    const banner = document.getElementById('new-posts-banner');
-    const text = document.getElementById('new-posts-text');
-    if(banner && text){
-      text.textContent = newPosts.length === 1
-        ? '✦ 1 new post since your last visit'
-        : `✦ ${newPosts.length} new posts since your last visit`;
-      banner.classList.remove('hidden');
-    }
-  }
-  saveLastVisit();
-}
-
-function checkHash(){
-  const hash = window.location.hash;
-  if(!hash || !hash.startsWith('#post-')) return;
-  const postId = hash.replace('#post-','');
-  const el = document.getElementById('post-'+postId);
-  if(el){
-    setTimeout(()=>{
-      el.scrollIntoView({behavior:'smooth', block:'center'});
-      el.classList.add('highlighted');
-      setTimeout(()=>el.classList.remove('highlighted'), 3000);
-    }, 400);
-  }
-}
-
-function updateTagOptions(tags){
-  const dl=document.getElementById('tag-options');
-  if(!dl) return;
-  dl.innerHTML=tags.slice().sort((a,b)=>a.localeCompare(b)).map(t=>`<option value="${esc(t)}"><\/option>`).join('');
-}
-
-function normaliseTag(raw){
-  const t=(raw||'').replace(/^#/,'').replace(/\s+/g,' ').trim();
-  if(!t) return '';
-  const existing=[...new Set(Object.values(allPosts).filter(p=>p.status==='approved').map(p=>p.tag).filter(Boolean))];
-  return existing.find(e=>e.toLowerCase()===t.toLowerCase()) || t;
-}
-
-function renderFilterBar(tags){
-  const bar=document.getElementById('filter-bar');
-  if(tags.length===0){hideEl('filter-bar');return;}
-  showEl('filter-bar');
-  bar.innerHTML=['all',...tags].map(t=>`<button class="filter-tag${activeFilter===t?' active':''}" data-tag="${esc(t)}">#${esc(t)}<\/button>`).join('');
-  bar.querySelectorAll('.filter-tag').forEach(btn=>{btn.onclick=()=>{activeFilter=btn.dataset.tag;renderFeed();};});
-}
-
-function getReactorNames(post, key){
-  const ids = post.reactions&&post.reactions[key]?Object.values(post.reactions[key]):[];
-  return ids.map(id=>{ const u=Object.values(allUsers).find(u=>u.id===id); return u?u.name:'Someone'; });
-}
-
-function renderReactions(post){
-  if(!currentUser){
-    return REACTIONS.map(function(r){
-      const names = getReactorNames(post, r.key);
-      if(!names.length) return '';
-      const titleStr = esc(names.join(', '));
-      return '<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid var(--muted);font-size:13px;color:var(--ghost);" title="'+titleStr+'">'
-        +'<span style="font-size:16px;">'+r.emoji+'<\/span><span>'+names.length+'<\/span><\/span>';
-    }).join('');
-  }
-  return REACTIONS.map(function(r){
-    const names = getReactorNames(post, r.key);
-    const ids = post.reactions&&post.reactions[r.key]?Object.values(post.reactions[r.key]):[];
-    const reacted = currentUser && ids.includes(currentUser.id);
-    const titleStr = esc(names.length ? r.label+': '+names.join(', ') : r.label);
-    return '<button class="reaction-btn'+(reacted?' reacted-'+r.key:'')+'" data-action="react" data-post-id="'+post.id+'" data-reaction="'+r.key+'" title="'+titleStr+'">'
-      +'<span class="emoji">'+r.emoji+'<\/span>'+(names.length?'<span>'+names.length+'<\/span>':'')+'<\/button>';
-  }).join('');
-}
-
-
-function renderPost(p){
-  const author=getAuthor(p.authorId);
-  const comments=p.comments?Object.values(p.comments).sort((a,b)=>a.ts-b.ts):[];
-  const commentCount=comments.reduce((n,c)=>n+1+(c.replies?Object.values(c.replies).length:0),0);
-  const canDelete=currentUser&&(p.authorId===currentUser.id||canMod(currentUser));
-  const authorLabels=labelBadgesHTML(author.labels||[]);
-  const commentInputHTML = currentUser
-    ? `<div class="comment-input-row" style="margin-top:${comments.length>0?'10px':'0'}">
-        <textarea placeholder="Add a comment…" rows="1" data-action="comment-input" data-id="${p.id}"><\/textarea>
-        <button class="comment-submit" data-action="submit-comment" data-id="${p.id}">Post<\/button>
-      <\/div>`
-    : `<p style="font-size:12px;color:var(--ghost);text-align:center;padding:10px 0;"><button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');" style="font-size:12px;">Sign in<\/button> or <button class="btn-link" onclick="document.getElementById('app-screen').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden');document.getElementById('register-form').classList.remove('hidden');" style="font-size:12px;">join<\/button> to comment.<\/p>`;
-  return `
-  <article class="post-card${p.pinned?' pinned':''}" data-id="${p.id}" id="post-${p.id}">
-    ${p.pinned?`<div class="pin-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><\/svg> Pinned<\/div>`:''}
-    <div class="post-header">
-      <div class="post-author">
-        ${avHTML(author.name,42,author.photo)}
-        <div>
-          <div class="post-author-name">${esc(author.name)}<\/div>
-          ${author.title?`<div class="post-author-title">${esc(author.title)}<\/div>`:''}
-          ${authorLabels?`<div class="post-author-labels">${authorLabels}<\/div>`:''}
-          ${(author.points&&author.points>0)?`<div style="font-size:10px;color:var(--gold);font-family:'DM Sans',sans-serif;margin-top:1px;">★ ${author.points} pts<\/div>`:''}
-          <div class="post-time">${timeAgo(postTime(p))}<\/div>
-        <\/div>
-      <\/div>
-      <div style="display:flex;align-items:center;gap:4px;">
-        ${canMod(currentUser)?`<button class="pin-btn${p.pinned?' active':''}" data-action="pin-post" data-id="${p.id}" title="${p.pinned?'Unpin':'Pin post'}"><svg width="13" height="13" viewBox="0 0 24 24" fill="${p.pinned?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><\/svg><\/button>`:''}
-        ${canDelete?`<button class="delete-btn" data-action="delete-post" data-id="${p.id}">✕<\/button>`:''}
-      <\/div>
-    <\/div>
-    <div class="post-body">${linkify(p.text)}<\/div>
-    ${renderMediaEmbed(p)}
-    ${p.tag?`<span class="post-tag">#${esc(p.tag)}<\/span>`:''}
-    <div class="post-actions">
-      ${renderReactions(p)}
-      <button class="comment-toggle" data-action="toggle-comments" data-id="${p.id}">💬 ${commentCount>0?commentCount+' ':''}Comment${commentCount!==1?'s':''}<\/button>
-      <button class="comment-toggle" data-action="share-post" data-id="${p.id}" style="margin-left:0;" title="Copy link">🔗 Share<\/button>
-      ${(p.views&&p.views>0)?`<span style="font-size:12px;color:var(--ghost);margin-left:auto;display:flex;align-items:center;gap:3px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><\/svg> ${p.views}<\/span>`:''}
-      <button style="display:none;" data-action="view-post" data-id="${p.id}"><\/button>
-    <\/div>
-    <div class="comments-section${commentCount>0?'':' hidden'}" id="comments-${p.id}">
-      ${comments.map(c=>renderComment(c,p.id,false)).join('')}
-      ${commentInputHTML}
-    <\/div>
-  <\/article>`;
-}
-
-function renderComment(c,postId,isReply){
-  const author=getAuthor(c.authorId);
-  const replies=c.replies?Object.values(c.replies).sort((a,b)=>a.ts-b.ts):[];
-  const canDel=currentUser&&(c.authorId===currentUser.id||canMod(currentUser));
-  return `
-  <div class="comment-item${isReply?' reply':''}" data-comment-id="${c.id}">
-    ${avHTML(author.name,28,author.photo)}
-    <div style="flex:1">
-      <div class="comment-body${isReply?' reply-body':''}">
-        <div class="comment-meta">
-          <span class="comment-author">${esc(author.name)}<\/span>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <span style="font-size:10px;color:var(--ghost)">${timeAgo(c.ts)}<\/span>
-            ${canDel?`<button class="delete-btn" style="font-size:11px;" data-action="delete-comment" data-post-id="${postId}" data-comment-id="${c.id}">✕<\/button>`:''}
-          <\/div>
-        <\/div>
-        <div class="comment-text">${esc(c.text)}<\/div>
-      <\/div>
-      <div class="comment-actions">
-        ${!isReply?`<button class="reply-btn" data-action="toggle-reply" data-post-id="${postId}" data-comment-id="${c.id}">Reply<\/button>`:''}
-      <\/div>
-      ${!isReply?`<div class="reply-form hidden" id="reply-form-${c.id}"><div class="comment-input-row"><textarea placeholder="Reply…" rows="1" data-action="reply-input"><\/textarea><button class="comment-submit" data-action="submit-reply" data-post-id="${postId}" data-comment-id="${c.id}">Post<\/button><\/div><\/div>`:''}
-      ${replies.map(r=>renderComment(r,postId,true)).join('')}
-    <\/div>
-  <\/div>`;
-}
-
-function setupPostEvents(){
-  const container = document.getElementById('posts-container');
-  container.addEventListener('click',async e=>{
-    const btn=e.target.closest('[data-action]');if(!btn)return;
-    const action=btn.dataset.action;
-    if(action==='react'){
-      if(!currentUser) return;
-      const postId=btn.dataset.postId;const newKey=btn.dataset.reaction;
-      const reactionBase = 'posts/'+postId+'/reactions';
-      // Check current state fresh from Firebase
-      const currentReactions = await fbGet(reactionBase);
-      // Remove any existing reaction by this user
-      if(currentReactions){
-        for(const rKey of Object.keys(currentReactions)){
-          if(currentReactions[rKey]&&currentReactions[rKey][currentUser.id]){
-            await fbRemove(reactionBase+'/'+rKey+'/'+currentUser.id);
-          }
-        }
-      }
-      // If they clicked a different reaction (not removing their current one), set it
-      const hadThis = currentReactions&&currentReactions[newKey]&&currentReactions[newKey][currentUser.id];
-      if(!hadThis){
-        await fbSet(reactionBase+'/'+newKey+'/'+currentUser.id, currentUser.id);
-        const r=REACTIONS.find(x=>x.key===newKey);
-        logActivity('reaction','Reacted with '+r.emoji+' '+r.label);
-        // Award 5 points to post author for heart reactions
-        if(newKey==='heart'){
-          const post = allPosts[postId];
-          if(post && post.authorId !== currentUser.id){
-            await awardPoints(post.authorId, 5, 'heart reaction received');
-          }
-        }
-      }
-    }
-    if(action==='delete-post'){
-      const ok = await inlineConfirm('Delete post', 'This will permanently remove this post.');
-      if(!ok) return;
-      await fbRemove('posts/'+btn.dataset.id);
-    }
-    if(action==='pin-post'){
-      if(!canMod(currentUser)) return;
-      const pid = btn.dataset.id;
-      const post = allPosts[pid];
-      if(!post) return;
-      const alreadyPinned = !!post.pinned;
-      if(!alreadyPinned){
-        const pinnedCount = Object.values(allPosts).filter(p=>p.pinned&&p.status==='approved').length;
-        if(pinnedCount >= 3){
-          await inlineConfirm('Pin limit reached', 'You already have 3 pinned posts. Unpin one first before pinning another.');
-          return;
-        }
-      }
-      await fbUpdate('posts/'+pid, {pinned: alreadyPinned ? null : true});
-    }
-    if(action==='toggle-comments'){document.getElementById(`comments-${btn.dataset.id}`)?.classList.toggle('hidden');}
-    if(action==='view-post'){
-      // Increment view count once per session per post
-      const pid = btn.dataset.id;
-      const sessionKey = 'dwc_viewed_'+pid;
-      try {
-        if(!sessionStorage.getItem(sessionKey)){
-          sessionStorage.setItem(sessionKey,'1');
-          const current = await fbGet('posts/'+pid+'/views') || 0;
-          await fbSet('posts/'+pid+'/views', current+1);
-        }
-      } catch{}
-    }
-    if(action==='share-post'){
-      const url = window.location.href.split('#')[0] + '#post-' + btn.dataset.id;
-      navigator.clipboard.writeText(url).then(()=>{
-        const orig = btn.textContent;
-        btn.textContent = '✓ Copied';
-        btn.style.color = 'var(--plum)';
-        setTimeout(()=>{ btn.textContent = orig; btn.style.color = ''; }, 2000);
-      }).catch(()=>{
-        prompt('Copy this link:', url);
-      });
-    }
-    if(action==='submit-comment'){
-      const ta=btn.closest('.comment-input-row')?.querySelector('textarea');
-      const text=ta?.value.trim();if(!text)return;
-      const cid=uid();
-      await fbSet(`posts/${btn.dataset.id}/comments/${cid}`,{id:cid,authorId:currentUser.id,text,ts:Date.now(),replies:{}});
-      logActivity('comment','Left a comment');
-      if(text.split(/\s+/).filter(Boolean).length > 5) await awardPoints(currentUser.id, 3, 'qualifying comment');
-      ta.value='';ta.style.height='';
-    }
-    if(action==='toggle-reply'){document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.toggle('hidden');}
-    if(action==='submit-reply'){const ta=btn.closest('.comment-input-row')?.querySelector('textarea');const text=ta?.value.trim();if(!text)return;const rid=uid();await fbSet(`posts/${btn.dataset.postId}/comments/${btn.dataset.commentId}/replies/${rid}`,{id:rid,authorId:currentUser.id,text,ts:Date.now()});logActivity('reply','Replied to a comment');ta.value='';ta.style.height='';document.getElementById(`reply-form-${btn.dataset.commentId}`)?.classList.add('hidden');}
-    if(action==='delete-comment'){
-      const ok = await inlineConfirm('Delete comment', 'This will permanently remove this comment.');
-      if(!ok) return;
-      await fbRemove('posts/'+btn.dataset.postId+'/comments/'+btn.dataset.commentId);
-    }
-  });
-}
-
-// ── Mod badge ────────────────────────────────────────────────
-function updateModBadge(){
-  const pu=Object.values(allUsers).filter(u=>u.status==='pending').length;
-  const pp=Object.values(allPosts).filter(p=>p.status==='pending').length;
-  const pr=Object.values(allResets).filter(r=>r.status==='pending').length;
-  const total=pu+pp+pr;
-  const badge=document.getElementById('mod-count');
-  if(total>0){badge.textContent=total;showEl('mod-count');}else hideEl('mod-count');
-}
-
-// ── Top-level view switching ─────────────────────────────────
-const ALL_VIEWS = ['feed-view','mod-view','unlimited-view','freebies-view','house-rules-view'];
-function showView(id){
-  ALL_VIEWS.forEach(v => v===id ? showEl(v) : hideEl(v));
-}
-
-// ── Mod dashboard ────────────────────────────────────────────
-function openMod(){
-  if(!canMod(currentUser)){return;}
-  showView('mod-view');document.getElementById('topbar-section').textContent='Moderation';renderModDashboard();
-}
-document.getElementById('mod-back').onclick=()=>{showView('feed-view');document.getElementById('topbar-section').textContent='Community';};
-
-// ── House Rules tab ───────────────────────────────────────────
-document.getElementById('house-rules-tab-btn').onclick = () => {
-  showView('house-rules-view');
-  document.getElementById('topbar-section').textContent='House Rules';
-};
-document.getElementById('house-rules-back').onclick = () => {
-  showView('feed-view');
-  document.getElementById('topbar-section').textContent='Community';
-};
-
-// ── DWC Unlimited tab ────────────────────────────────────────
-const CDN = 'https://dwcmagazine.com/cdn/shop/files/';
-const UNLIMITED_CONVERSATIONS = [
-  {num:1,   title:'Is This Growth Or Just Chaos?', img:CDN+'DWC-Conversations-1_-Is-This-Growth-Or-Just-Chaos_-DWC-Magazine-98099057.png?v=1777046528&width=160', href:null, pw:null},
-  {num:3,   title:'Is Coaching Creating Growth Or Dependence?', img:CDN+'DWC-Conversations-3_-Is-Coaching-Creating-Growth-Or-Dependence_-DWC-Magazine-98091022.png?v=1777046528&width=160', href:null, pw:null},
-  {num:8,   title:'Is Manifestation a Tool or a Distraction from Reality?', img:CDN+'DWC-Conversations-8_-Is-Manifestation-a-Tool-or-a-Distraction-from-Reality_-DWC-Magazine-98098956.png?v=1777046544&width=160', href:null, pw:null},
-  {num:10,  title:'Meta Pre Launch Checklist', img:CDN+'dwc-free-download-meta-ads-pre-launch-checklist-8250467.jpg?v=1786880465&width=160', href:'https://dwcmagazine.com/pages/dwc-freebie-meta-ads-pre-launch-checklist', pw:'adrianmole'},
-  {num:11,  title:'Meta Ads Uncomplicated', img:CDN+'dwc-conversations-11-meta-ads-uncomplicated-3920761.jpg?v=1786714386&width=160', href:'https://dwcmagazine.com/pages/conversations-11-meta-ads-uncomplicated', pw:'marigold'},
-  {num:18,  title:'How To Set Boundaries and Protect Your Energy', img:CDN+'DWC-Conversations-18_-How-To-Set-Boundaries-and-Protect-Your-Energy-DWC-Magazine-98090925.png?v=1777046541&width=160', href:null, pw:null},
-  {num:19,  title:'How to Build a Business That Works Around Your Energy, Not Your Calendar', img:CDN+'DWC-Conversations-19_-How-to-Build-a-Business-That-Works-Around-Your-Energy_-Not-Your-Calendar-DWC-Magazine-98100892.png?v=1777046553&width=160', href:null, pw:null},
-  {num:20,  title:'Plan for the Future When the Present Feels Financially Overwhelming', img:CDN+'DWC-Conversations-20_-Plan-for-the-Future-When-the-Present-Feels-Financially-Overwhelming-DWC-Magazine-98101097.png?v=1777046552&width=160', href:null, pw:null},
-  {num:23,  title:'How To Get Featured in the Media Without a PR Agency or a Big Budget', img:CDN+'DWC-Conversations-23_-How-To-Get-Featured-in-the-Media-Without-a-PR-Agency-or-a-Big-Budget-DWC-Magazine-98091341.png?v=1777046544&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-23-how-to-get-featured-in-media', pw:'marigold'},
-  {num:28,  title:'Where Are My Customers?', img:CDN+'dwc-conversations-28-where-are-my-customers-2945986.png?v=1786051748&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-28-where-are-my-customers', pw:'marigold'},
-  {num:30,  title:'Mic Drop: How To Launch & Promote Your Podcast', img:CDN+'dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast-1770324.jpg?v=1786714386&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-30-mic-drop-how-to-launch-promote-your-podcast', pw:'marigold'},
-  {num:39,  title:'Charge It Like You Mean It', img:CDN+'dwc-conversations-39-charge-it-like-you-mean-it-2749425.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-39-charge-it-like-you-mean-it', pw:'marigold'},
-  {num:88,  title:'Moon Phases with Michelle Wollaston', img:CDN+'Moon-Phases-with-Michelle-Wollaston-_DWC-Conversations-88_-DWC-Magazine-102424112.jpg?v=1789021571&width=160', href:'https://dwcmagazine.com/pages/conversations-88-michelle-wollaston-moon-phases', pw:'marigold'},
-  {num:100, title:'100 Ways to Get Publicity Without Social Media', img:CDN+'dwc-100th-issue-free-download-8700078.png?v=1786465805&width=160', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
-  {num:150, title:'100 Ways to Get More Customers Without a Marketing Budget', img:CDN+'100-Ways-to-Get-More-Customers-Without-a-Marketing-Budget-_Issue-150_-DWC-Magazine-102051178.jpg?v=1787494534&width=160', href:'https://dwcmagazine.com/pages/100-ways-to-get-more-customers-without-a-marketing-budget', pw:'marigold'},
-  {num:197, title:'(Video Class) How To Make Traditional Beer Battered Fish & Chips', img:CDN+'dwc-conversations-197-video-class-how-to-make-traditional-beer-battered-fish-chips-5622397.png?v=1785802925&width=160', href:null, pw:null},
-  {num:199, title:'Find My Niche', img:CDN+'Find-My-Niche-DWC-Magazine-102374653.jpg?v=1788489377&width=160', href:'https://dwcmagazine.com/pages/find-my-niche', pw:'marigold'},
-  {num:200, title:'The Newsletter Nobody Dreads', img:CDN+'DWC-Conversations-30_-Mic-Drop-How-To-Launch-_-Promote-Your-Podcast-DWC-Magazine-101534231.png?v=1784957490&width=160', href:'https://dwcmagazine.com/pages/dwc-conversations-200-the-newsletter-nobody-dreads', pw:'marigold'},
-  {num:201, title:'Where Are You Losing Customers', img:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', href:'https://dwcmagazine.com/pages/where-are-you-losing-customers', pw:'marigold'},
-  {num:206, title:'(Video Class) How To Make Tie & Dye Clothing', img:CDN+'dwc-conversations-206-video-class-how-to-make-tie-dye-clothing-1551616.png?v=1785802928&width=160', href:null, pw:null},
-  {num:215, title:'Halloween Planner', img:CDN+'Halloween-Planner-DWC-Magazine-102430654.png?v=1789120853&width=160', href:'https://dwcmagazine.com/pages/halloween-planner', pw:'freddie'},
-  {num:216, title:'Christmas Planner', img:CDN+'Christmas-Planner-DWC-Magazine-102430762.png?v=1789121001&width=160', href:'https://dwcmagazine.com/pages/christmas-planner', pw:'hallmark'},
-  {num:246, title:'(In Person) Menopause: Turns Out... It\'s Not Just Me!', img:CDN+'dwc-conversations-246-in-person-menopause-turns-out-its-not-just-me-9606396.jpg?v=1786051746&width=160', href:null, pw:null},
-];
-const hasUnlimited = u => !!(u && u.status !== 'pending' && ((u.labels || []).includes('unlimited') || u.role === 'admin'));
-
-function renderUnlimitedGuest(){
-  document.getElementById('unlimited-view-inner').innerHTML = `
-    <div class="unlimited-gate">
-      <h2>DWC Unlimited</h2>
-      <p class="unlimited-gate-sub">DWC Unlimited lives inside the community. Join the community first, and we'll switch your access on.</p>
-      <div class="unlimited-gate-form">
-        <button class="btn btn-primary" id="unlimited-join-btn">Join the community</button>
-        <button class="btn btn-ghost" id="unlimited-signin-btn">Sign in</button>
-      </div>
-      <p class="unlimited-gate-cta">Not bought DWC Unlimited yet? <a href="https://dwcmagazine.com/products/dwc-conversations-unlimited" target="_blank" rel="noopener">Purchase DWC Unlimited</a>, or email <a href="mailto:hello@dwcmagazine.com">hello@dwcmagazine.com</a> and we'll sort you out.</p>
-    </div>`;
-  document.getElementById('unlimited-join-btn').onclick   = () => document.getElementById('guest-join-btn').click();
-  document.getElementById('unlimited-signin-btn').onclick = () => document.getElementById('guest-signin-btn').click();
-}
-
-function renderUnlimitedLocked(){
-  document.getElementById('unlimited-view-inner').innerHTML = `
-    <div class="unlimited-gate">
-      <h2>DWC Unlimited</h2>
-      <p class="unlimited-gate-sub">Your account isn't marked as DWC Unlimited yet. Once we've added it, every Conversation appears here automatically.</p>
-      <p class="unlimited-gate-cta">Already purchased? Email <a href="mailto:hello@dwcmagazine.com">hello@dwcmagazine.com</a> with the email address you joined with and we'll switch it on. Not yet? <a href="https://dwcmagazine.com/products/dwc-conversations-unlimited" target="_blank" rel="noopener">Purchase DWC Unlimited</a>.</p>
-    </div>`;
-}
-
-function renderUnlimitedList(){
-  const el = document.getElementById('unlimited-view-inner');
-  el.innerHTML = `
-    <div class="unlimited-list-card">
-      <div class="unlimited-list-header">DWC Unlimited — All Conversations</div>
-      <div class="unlimited-list-body">
-        ${UNLIMITED_CONVERSATIONS.map(c=>{
-          const ready = !!(c.href && c.pw);
-          const tag = ready ? 'a' : 'div';
-          const hrefAttr = ready ? `href="${esc(c.href)}" target="_blank" rel="noopener"` : '';
-          return `<${tag} class="unlimited-conv-item${ready?'':' disabled'}" ${hrefAttr}>
-            <img class="unlimited-conv-img" src="${esc(c.img)}" alt=""/>
-            <div class="unlimited-conv-info">
-              <div class="unlimited-conv-title">DWC Conversations ${c.num}: ${esc(c.title)}</div>
-              <div class="unlimited-conv-pw${ready?'':' pending'}">${ready?`Password: ${esc(c.pw)}`:'Password coming soon'}</div>
-            </div>
-          <\/${tag}>`;
-        }).join('')}
-      </div>
-    </div>`;
-}
-
-function openUnlimitedView(){
-  showView('unlimited-view');
-  document.getElementById('topbar-section').textContent='DWC Unlimited';
-  if(!currentUser){ renderUnlimitedGuest(); return; }
-  hasUnlimited(currentUser) ? renderUnlimitedList() : renderUnlimitedLocked();
-}
-document.getElementById('unlimited-tab-btn').onclick = openUnlimitedView;
-document.getElementById('unlimited-back').onclick = () => {
-  showView('feed-view');
-  document.getElementById('topbar-section').textContent='Community';
-};
-
-const FREEBIES = [
-  {title:'DWC 100th Issue Special — 100 Ways to Get Publicity Without Social Media', img:CDN+'DWC-100th-Issue-Special-_-100-Ways-to-Get-Publicity-Without-Social-Media-DWC-Magazine-101802382.png?v=1787500950&width=160', href:'https://dwcmagazine.com/pages/dwc-100th-issue-freebie', pw:'wintour'},
-  {title:'Before You Spend a Penny on Meta Ads — The Pre-Launch Checklist', img:CDN+'DWC-Before-You-Spend-a-Penny-on-Meta-Ads-_-The-Pre-Launch-Checklist-DWC-Magazine-101963047.jpg?v=1787500906&width=160', href:'https://dwcmagazine.com/pages/dwc-freebie-meta-ads-pre-launch-checklist', pw:'adrianmole'},
-  {title:'Find My Niche (Issue 199)', img:CDN+'Find-My-Niche-DWC-Magazine-102374653.jpg?v=1788489377&width=160', href:'https://dwcmagazine.com/pages/find-my-niche', pw:'marigold'},
-  {title:'Where Are You Losing Customers (Issue 201)', img:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', href:'https://dwcmagazine.com/pages/where-are-you-losing-customers', pw:'marigold'},
-  {title:'Halloween Planner (Issue 215)', img:CDN+'Halloween-Planner-DWC-Magazine-102430654.png?v=1789120853&width=160', href:'https://dwcmagazine.com/pages/halloween-planner', pw:'freddie'},
-];
-
-const isMember = u => !!(u && u.status !== 'pending');
-
-function renderFreebiesGuest(){
-  document.getElementById('freebies-view-inner').innerHTML = `
-    <div class="unlimited-gate">
-      <h2>Freebies</h2>
-      <p class="unlimited-gate-sub">The freebies live inside the community. Join and they're yours — every one, no charge.</p>
-      <div class="unlimited-gate-form">
-        <button class="btn btn-primary" id="freebies-join-btn">Join the community</button>
-        <button class="btn btn-ghost" id="freebies-signin-btn">Sign in</button>
-      </div>
-      <p class="unlimited-gate-cta">Joining is free. <a href="https://dwcmagazine.com/collections/free-downloads" target="_blank" rel="noopener">See what's on offer</a>.</p>
-    </div>`;
-  document.getElementById('freebies-join-btn').onclick   = () => document.getElementById('guest-join-btn').click();
-  document.getElementById('freebies-signin-btn').onclick = () => document.getElementById('guest-signin-btn').click();
-}
-
-function renderFreebiesList(){
-  document.getElementById('freebies-view-inner').innerHTML = `
-    <div class="unlimited-list-card">
-      <div class="unlimited-list-header">Freebies — Yours as a Member</div>
-      <div class="unlimited-list-body">
-        ${FREEBIES.map(f=>{
-          const ready = !!(f.href && f.pw);
-          const tag = ready ? 'a' : 'div';
-          const hrefAttr = ready ? `href="${esc(f.href)}" target="_blank" rel="noopener"` : '';
-          return `<${tag} class="unlimited-conv-item${ready?'':' disabled'}" ${hrefAttr}>
-            <img class="unlimited-conv-img" src="${esc(f.img)}" alt=""/>
-            <div class="unlimited-conv-info">
-              <div class="unlimited-conv-title">${esc(f.title)}</div>
-              <div class="unlimited-conv-pw${ready?'':' pending'}">${ready?`Password: ${esc(f.pw)}`:'Password coming soon'}</div>
-            </div>
-          <\/${tag}>`;
-        }).join('')}
-      </div>
-    </div>`;
-}
-
-function openFreebiesView(){
-  showView('freebies-view');
-  document.getElementById('topbar-section').textContent='Freebies';
-  isMember(currentUser) ? renderFreebiesList() : renderFreebiesGuest();
-}
-document.getElementById('freebies-tab-btn').onclick = openFreebiesView;
-document.getElementById('freebies-back').onclick = () => {
-  showView('feed-view');
-  document.getElementById('topbar-section').textContent='Community';
-};
-
-function renderModDashboard(){renderPendingUsers();renderPendingPosts();renderPasswordResets();renderAllMembers();renderActivity();updateTabCounts();}
-
-function updateTabCounts(){
-  const pu=Object.values(allUsers).filter(u=>u.status==='pending').length;
-  const pp=Object.values(allPosts).filter(p=>p.status==='pending').length;
-  const pr=Object.values(allResets).filter(r=>r.status==='pending').length;
-  const uc=document.getElementById('tab-users-count');const pc=document.getElementById('tab-posts-count');const rc=document.getElementById('tab-resets-count');
-  if(pu>0){uc.textContent=pu;showEl('tab-users-count');}else hideEl('tab-users-count');
-  if(pp>0){pc.textContent=pp;showEl('tab-posts-count');}else hideEl('tab-posts-count');
-  if(pr>0){rc.textContent=pr;showEl('tab-resets-count');}else hideEl('tab-resets-count');
-}
-
-function renderPendingUsers(){
-  const container=document.getElementById('tab-pending-users');
-  const pending=Object.values(allUsers).filter(u=>u.status==='pending');
-  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No pending account requests.<\/p><\/div>`;return;}
-  container.innerHTML=pending.map(u=>`
-    <div class="mod-card">
-      <div class="mod-card-header">${avHTML(u.name,44)}<div><div class="mod-name">${esc(u.name)}<\/div><div class="mod-email">${esc(u.email)}<\/div><div class="mod-registered">Registered ${timeAgo(u.joinedAt)}<\/div><\/div><\/div>
-      <div class="title-row">
-        <input class="title-input" type="text" placeholder="Assign a title (e.g. Editor, Coach, Writer…)" id="title-${sanKey(u.email)}"/>
-        <button class="btn btn-approve btn-sm" data-action="approve-user" data-key="${sanKey(u.email)}">Approve<\/button>
-        <button class="btn btn-reject btn-sm" data-action="reject-user" data-key="${sanKey(u.email)}">Reject<\/button>
-      <\/div>
-    <\/div>`).join('');
-  container.querySelectorAll('[data-action]').forEach(btn=>{btn.onclick=async()=>{const key=btn.dataset.key;if(btn.dataset.action==='approve-user'){const title=document.getElementById(`title-${key}`)?.value.trim();if(!title){alert('Please assign a title before approving.');return;}await fbUpdate(`users/${key}`,{status:'approved',title});const uData=await fbGet('users/'+key);const aid=uid();await fbSet('activity/'+aid,{id:aid,type:'joined',detail:'Joined the community',userId:key,userName:uData?.name||'Member',ts:Date.now()});}else{await fbUpdate(`users/${key}`,{status:'rejected'});}renderModDashboard();};});
-}
-
-function renderPendingPosts(){
-  const container=document.getElementById('tab-pending-posts');
-  const pending=Object.values(allPosts).filter(p=>p.status==='pending').sort((a,b)=>a.ts-b.ts);
-  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No posts awaiting approval.<\/p><\/div>`;return;}
-  container.innerHTML=pending.map(p=>{const author=getAuthor(p.authorId);return `<div class="mod-card"><div class="mod-card-header">${avHTML(author.name,36)}<div><div class="mod-name">${esc(author.name)}<\/div><div class="mod-registered">${timeAgo(p.ts)}<\/div><\/div><\/div><p style="font-size:14px;color:var(--dark);line-height:1.7;margin-bottom:12px;white-space:pre-wrap">${esc(p.text)}<\/p>${p.imageUrl?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:220px;object-fit:cover;"/>`:''}${p.tag?`<span class="post-tag" style="display:inline-block;margin-bottom:12px">#${esc(p.tag)}<\/span>`:''}<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn btn-approve btn-sm" data-action="approve-post" data-id="${p.id}">Approve<\/button><button class="btn btn-reject btn-sm" data-action="reject-post" data-id="${p.id}">Reject<\/button><\/div><\/div>`;}).join('');
-  container.querySelectorAll('[data-action]').forEach(btn=>{btn.onclick=async()=>{
-    const status = btn.dataset.action==='approve-post'?'approved':'rejected';
-    await fbUpdate(`posts/${btn.dataset.id}`, status==='approved'?{status,approvedAt:Date.now()}:{status});
-    if(status==='approved'){
-      const post = allPosts[btn.dataset.id];
-      if(post) await awardPoints(post.authorId, 10, 'post approved');
-    }
-    renderModDashboard();
-  };});
-}
-
-function renderPasswordResets(){
-  const container=document.getElementById('tab-password-resets');
-  const pending=Object.values(allResets).filter(r=>r.status==='pending').sort((a,b)=>a.requestedAt-b.requestedAt);
-  if(pending.length===0){container.innerHTML=`<div class="empty-state"><p>No password reset requests.<\/p><\/div>`;return;}
-  container.innerHTML=pending.map(r=>`
-    <div class="mod-card">
-      <div class="mod-card-header">
-        ${avHTML(r.name||'?',44)}
-        <div>
-          <div class="mod-name">${esc(r.name)}<\/div>
-          <div class="mod-email">${esc(r.email)}<\/div>
-          <div class="mod-registered">Requested ${timeAgo(r.requestedAt)}<\/div>
-        <\/div>
-      <\/div>
-      <div class="title-row">
-        <input class="title-input" type="text" placeholder="Enter a temporary password for this member" id="tmppw-${sanKey(r.email)}"/>
-        <button class="btn btn-approve btn-sm" data-action="resolve-reset" data-key="${sanKey(r.email)}" data-name="${esc(r.name)}">Set &amp; Resolve<\/button>
-        <button class="btn btn-reject btn-sm" data-action="dismiss-reset" data-key="${sanKey(r.email)}">Dismiss<\/button>
-      <\/div>
-      <p style="font-size:11px;color:var(--ghost);margin-top:8px;">Once you set a temporary password, share it with the member privately. They should sign in and change it immediately.<\/p>
-    <\/div>`).join('');
-  container.querySelectorAll('[data-action]').forEach(btn=>{
-    btn.onclick=async()=>{
-      const key=btn.dataset.key;
-      if(btn.dataset.action==='resolve-reset'){
-        const tmp=document.getElementById(`tmppw-${key}`)?.value.trim();
-        if(!tmp||tmp.length<6){alert('Please enter a temporary password of at least 6 characters.');return;}
-        await fbUpdate(`users/${key}`,{password:hashPw(tmp)});
-        await fbUpdate(`passwordResets/${key}`,{status:'resolved',resolvedAt:Date.now(),tempPassword:tmp});
-        alert(`Done. Share this temporary password with ${btn.dataset.name}: "${tmp}"\n\nThey should change it immediately after signing in.`);
-      } else {
-        await fbUpdate(`passwordResets/${key}`,{status:'dismissed'});
-      }
-      renderModDashboard();
-    };
-  });
-}
-
-const ACTIVITY_ICONS = { post:'📝', comment:'💬', reply:'↩️', reaction:'', approved:'✅', joined:'👋' };
-
-function renderActivity(){
-  const container = document.getElementById('tab-activity');
-  const items = Object.values(allActivity).sort((a,b)=>b.ts-a.ts).slice(0,100);
-  if(items.length===0){ container.innerHTML=`<div class="empty-state"><p>No activity yet.<\/p><\/div>`; return; }
-  container.innerHTML = `<div style="background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;">
-    ${items.map((a,i,arr)=>`
-    <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:${i<arr.length-1?'1px solid var(--muted)':'none'}">
-      ${avHTML(a.userName||'?', 32)}
-      <div style="flex:1;">
-        <span style="font-family:'DM Sans',sans-serif;font-weight:700;color:var(--plum);font-size:14px;">${esc(a.userName)}<\/span>
-        <span style="font-size:13px;color:var(--mid);"> ${esc(a.detail)}<\/span>
-      <\/div>
-      <span style="font-size:11px;color:var(--ghost);white-space:nowrap;">${timeAgo(a.ts)}<\/span>
-    <\/div>`).join('')}
-  <\/div>`;
-}
-
-function renderAllMembers(){
-  const container=document.getElementById('tab-all-members');
-  const members=Object.values(allUsers).filter(u=>u.email!==ADMIN_EMAIL.toLowerCase()).sort((a,b)=>a.name.localeCompare(b.name));
-  if(members.length===0){container.innerHTML=`<div class="empty-state"><p>No members yet.<\/p><\/div>`;return;}
-  container.innerHTML=`<div style="background:#fff;border-radius:12px;border:1px solid var(--muted);overflow:hidden;">
-    ${members.map(u=>`
-    <div class="member-row">
-      ${avHTML(u.name,36)}
-      <div class="member-info">
-        <div class="member-name">${esc(u.name)}<\/div>
-        <div class="member-email">${esc(u.email)}<\/div>
-        <div style="font-size:11px;color:var(--ghost);">Joined ${u.joinedAt ? new Date(u.joinedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '—'}<\/div>
-        ${u.emailUpdates?'<div style="font-size:10px;color:#2e7d52;font-family:\'DM Sans\',sans-serif;">✓ Email updates<\/div>':''}
-        ${(u.labels&&u.labels.length)?`<div class="member-labels-row">${labelBadgesHTML(u.labels)}<\/div>`:''}
-      <\/div>
-      ${u.title?`<span class="title-badge">${esc(u.title)}<\/span>`:''}
-      ${(u.points&&u.points>0)?`<span style="font-size:11px;color:var(--gold);font-family:'DM Sans',sans-serif;white-space:nowrap;">★ ${u.points}<\/span>`:''}
-      <span class="status-badge status-${u.role==='moderator'?'moderator':u.status}">${u.role==='moderator'?'Moderator':u.status}<\/span>
-      ${u.status==='approved'&&u.role!=='admin'?`
-        <button class="btn btn-sm ${u.role==='moderator'?'btn-reject':'btn-approve'}" data-action="toggle-mod" data-key="${sanKey(u.email)}" data-current-role="${u.role}">${u.role==='moderator'?'Remove Mod':'Make Mod'}<\/button>
-        <button class="btn btn-sm btn-admin" data-action="make-admin" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}">Make Admin<\/button>
-        <button class="btn btn-sm btn-ghost" data-action="edit-labels" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}">Labels<\/button>
-        <button class="btn btn-sm btn-reject" data-action="remove-member" data-key="${sanKey(u.email)}" data-name="${esc(u.name)}" data-id="${esc(u.id)}">Remove<\/button>
-      `:''}
-    <\/div>`).join('')}
-  <\/div>`;
-
-  container.querySelectorAll('[data-action]').forEach(btn=>{
-    btn.onclick=async()=>{
-      const key=btn.dataset.key;
-      if(btn.dataset.action==='toggle-mod'){
-        const newRole=btn.dataset.currentRole==='moderator'?'member':'moderator';
-        await fbUpdate(`users/${key}`,{role:newRole});renderModDashboard();
-      }
-      if(btn.dataset.action==='make-admin'){
-        const ok = await inlineConfirm('Make Admin', 'Give ' + btn.dataset.name + ' full admin access?');
-        if(!ok) return;
-        await fbUpdate(`users/${key}`,{role:'admin'});renderModDashboard();
-      }
-      if(btn.dataset.action==='edit-labels'){
-        openLabelsModal(key,btn.dataset.name,(allUsers[key]&&allUsers[key].labels)||[]);
-      }
-      if(btn.dataset.action==='remove-member'){
-        const ok = await inlineConfirm('Remove Member', 'Remove ' + btn.dataset.name + '? This deletes their account and all their posts.');
-        if(!ok) return;
-        const userId=btn.dataset.id;
-        const postsToRemove=Object.values(allPosts).filter(p=>p.authorId===userId);
-        for(const p of postsToRemove){ await fbRemove(`posts/${p.id}`); }
-        await fbRemove(`passwordResets/${key}`);
-        await fbRemove(`users/${key}`);
-        renderModDashboard();
-      }
-    };
-  });
-}
-
-// ── Labels modal ──────────────────────────────────────────────
-function openLabelsModal(key,name,currentLabels){
-  labelsTarget=key;
-  document.getElementById('labels-modal-title').textContent=`Labels for ${name}`;
-  const box=document.getElementById('labels-checkboxes');
-  box.innerHTML=MEMBER_LABELS.map(l=>`
-    <div class="label-checkbox-row">
-      <input type="checkbox" id="lbl-${l.key}" value="${l.key}" ${currentLabels.includes(l.key)?'checked':''}>
-      <label for="lbl-${l.key}"><span class="member-label ${l.cls}">${l.text}<\/span></label>
-    <\/div>`).join('');
-  showEl('labels-modal');
-}
-document.getElementById('labels-cancel').onclick=()=>{hideEl('labels-modal');labelsTarget=null;};
-document.getElementById('labels-save').onclick=async()=>{
-  if(!labelsTarget)return;
-  const checked=[...document.querySelectorAll('#labels-checkboxes input:checked')].map(i=>i.value);
-  await fbUpdate(`users/${labelsTarget}`,{labels:checked});
-  hideEl('labels-modal');labelsTarget=null;renderModDashboard();
-};
-
-// Tab switching
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-    const tab=btn.dataset.tab;
-    document.getElementById('tab-pending-users').classList.toggle('hidden',tab!=='pending-users');
-    document.getElementById('tab-pending-posts').classList.toggle('hidden',tab!=='pending-posts');
-    document.getElementById('tab-password-resets').classList.toggle('hidden',tab!=='password-resets');
-    document.getElementById('tab-all-members').classList.toggle('hidden',tab!=='all-members');
-    document.getElementById('tab-activity').classList.toggle('hidden',tab!=='activity');
-    if(tab==='activity') renderActivity();
-  };
-});
-
-async function boot() {
-  hideEl('loading-screen');
-  hideEl('auth-screen');
-  showEl('app-screen');
-  showEl('feed-view');
-  showGuestUI();
-  startPublicListeners();
-  startPresence();
-  const email = loadSession();
-  if(email){
-    const users = await fbGet('users');
-    if(users){
-      allUsers = users;
-      const u = users[sanKey(email)];
-      if(u && u.status === 'approved'){
-        if(!u.role) u.role = 'member';
-        await signInUser(u);
-        return;
-      }
-    }
-  }
-}
-
-function showGuestUI(){
-  showEl('guest-btns'); hideEl('member-btns');
-  showEl('guest-join-prompt'); hideEl('composer');
-}
-
-function startPublicListeners(){
-  onValue(ref(db,'posts'),snap=>{
-    allPosts=snap.exists()?snap.val():{};
-    renderFeed();
-    if(currentUser&&canMod(currentUser)) updateModBadge();
-  });
-  onValue(ref(db,'users'),snap=>{
-    allUsers=snap.exists()?snap.val():{};
-    updateMemberCount();
-    if(currentUser&&canMod(currentUser)) updateModBadge();
-    // Refresh current user points in stats bar
-    if(currentUser){
-      const key = Object.keys(allUsers).find(k=>allUsers[k].id===currentUser.id);
-      if(key){
-        currentUser.points = allUsers[key].points||0;
-        const sp = document.getElementById('stats-points');
-        if(sp) sp.textContent = currentUser.points > 0 ? '★ '+currentUser.points+' pts' : '';
-      }
-    }
-  });
-  onValue(ref(db,'passwordResets'),snap=>{
-    allResets=snap.exists()?snap.val():{};
-    if(currentUser&&canMod(currentUser)) updateModBadge();
-  });
-  onValue(ref(db,'activity'),snap=>{
-    allActivity=snap.exists()?snap.val():{};
-  });
-}
-
-
-setupPostEvents();
-boot();
-</script>
-</body>
-</html>
+    if(myPending.length>0){showEl('pending-posts-notice');document.getElementById('pending-posts-text').textContent=myPending.length===1?'You have 1 post awaiting moderation.':`You have ${myPending.length} posts awaiting 
